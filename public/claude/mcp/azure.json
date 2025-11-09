@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "azure": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-azure"
+      ],
+      "env": {
+        "AZURE_TENANT_ID": "",
+        "AZURE_CLIENT_ID": "",
+        "AZURE_CLIENT_SECRET": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official Azure MCP server exists.",
+  "_note": "Use Azure SDK",
+  "_alternative": "@azure/* packages",
+  "_status": "CUSTOM_REQUIRED"
+}

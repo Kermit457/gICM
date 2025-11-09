@@ -22,7 +22,9 @@ export async function GET(
 
     for (const filePath of (item.files || [])) {
       try {
-        const fullPath = join(process.cwd(), filePath);
+        // Read from public/claude/ instead of .claude/ for Vercel compatibility
+        const publicPath = filePath.replace('.claude/', 'public/claude/');
+        const fullPath = join(process.cwd(), publicPath);
         const content = readFileSync(fullPath, 'utf-8');
 
         // Extract relative path after .claude/

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "firecrawl": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-firecrawl"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use Firecrawl API or puppeteer server.",
+  "_note": "Web scraping service",
+  "_alternative": "@modelcontextprotocol/server-puppeteer or firecrawl-api",
+  "_status": "API_SERVICE"
+}

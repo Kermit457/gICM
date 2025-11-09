@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "thegraph": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-thegraph"
+      ],
+      "env": {
+        "THEGRAPH_API_KEY": "your-thegraph-api-key-here",
+        "THEGRAPH_SUBGRAPH_ENDPOINT": "https://api.thegraph.com/subgraphs/name",
+        "THEGRAPH_STUDIO_ENDPOINT": "https://api.studio.thegraph.com/query",
+        "THEGRAPH_DECENTRALIZED_NETWORK": "false"
+      }
+    }
+  },
+  "_comment": "⚠️ The Graph is a GraphQL query protocol, not an MCP package.",
+  "_note": "Use GraphQL client to query subgraphs",
+  "_alternative": "Custom implementation with graphql-request",
+  "_status": "API_SERVICE"
+}

@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "alchemy": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-alchemy"
+      ],
+      "env": {
+        "ALCHEMY_API_KEY": "your-alchemy-api-key-here",
+        "ALCHEMY_NETWORK": "eth-mainnet",
+        "ALCHEMY_WEBHOOK_TOKEN": "your-webhook-token-optional"
+      }
+    }
+  },
+  "_comment": "⚠️ Alchemy is an RPC provider API service, not an MCP package.",
+  "_note": "Use Alchemy SDK or REST API for blockchain RPC access (Ethereum, Polygon, etc.)",
+  "_alternative": "Custom implementation using @alch/alchemy-sdk or HTTP client",
+  "_status": "API_SERVICE"
+}

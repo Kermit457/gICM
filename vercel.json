@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "src/app/api/items/[slug]/files/route.ts": {
-      "includeFiles": ".claude/**"
-    }
-  }
-}

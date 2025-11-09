@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "infura": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-infura"
+      ],
+      "env": {
+        "INFURA_API_KEY": "your-infura-api-key-here",
+        "INFURA_API_SECRET": "your-infura-api-secret-optional",
+        "INFURA_NETWORK": "mainnet",
+        "INFURA_IPFS_GATEWAY": "https://infura-ipfs.io",
+        "INFURA_ENABLE_IPFS": "true"
+      }
+    }
+  },
+  "_comment": "⚠️ Infura is an RPC provider API service, not an MCP package.",
+  "_note": "Use Infura endpoints directly via Web3.js or ethers.js",
+  "_alternative": "Custom implementation with web3.js/ethers.js",
+  "_status": "API_SERVICE"
+}

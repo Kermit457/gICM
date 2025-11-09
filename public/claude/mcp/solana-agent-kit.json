@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "solana-agent-kit": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-solana-agent-kit"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Package does not exist on npm.",
+  "_note": "Use Solana Web3.js SDK directly",
+  "_alternative": "@solana/web3.js with custom integration",
+  "_status": "CUSTOM_REQUIRED"
+}

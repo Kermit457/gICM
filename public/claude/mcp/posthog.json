@@ -1,0 +1,38 @@
+{
+  "id": "mcp-posthog",
+  "name": "PostHog MCP",
+  "description": "PostHog product analytics: events, feature flags, cohorts, experiments. 91% feature adoption.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @posthog/mcp-server",
+  "env": {
+    "POSTHOG_API_KEY": "Required: PostHog API key",
+    "POSTHOG_PROJECT_TOKEN": "Required: PostHog project token"
+  },
+  "capabilities": [
+    "event_tracking",
+    "feature_flags",
+    "cohort_analysis",
+    "experiment_management",
+    "user_segmentation",
+    "analytics_queries"
+  ],
+  "features": {
+    "product_analytics": "Track user events and build analytics dashboards",
+    "feature_flags": "Deploy features safely with feature flags and rollouts",
+    "experiments": "A/B testing and multivariate experiments",
+    "cohorts": "Create user segments for targeting and analysis",
+    "dashboards": "Create custom analytics dashboards",
+    "api_access": "Query analytics data via API"
+  },
+  "category": "Analytics MCPs",
+  "tags": [
+    "PostHog",
+    "Analytics",
+    "Feature Flags"
+  ],
+  "installs": 1234,
+  "remixes": 356,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

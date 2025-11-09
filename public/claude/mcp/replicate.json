@@ -1,0 +1,38 @@
+{
+  "id": "mcp-replicate",
+  "name": "Replicate MCP",
+  "description": "Replicate ML models: image, text, audio generation. Run 50k+ open-source models. 93% generation quality.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @replicate/mcp-server",
+  "env": {
+    "REPLICATE_API_TOKEN": "Required: Replicate API token"
+  },
+  "capabilities": [
+    "image_generation",
+    "text_generation",
+    "audio_generation",
+    "model_inference",
+    "webhook_callbacks",
+    "batch_processing"
+  ],
+  "features": {
+    "50k_models": "Access to 50,000+ open-source models",
+    "text_to_image": "DALL-E, Stable Diffusion, and more",
+    "language_models": "LLMs like Llama, Mistral, etc.",
+    "speech": "Text-to-speech and speech-to-text",
+    "webhooks": "Get notified when predictions complete",
+    "batch_api": "Run predictions in batch"
+  },
+  "category": "AI MCPs",
+  "tags": [
+    "Replicate",
+    "ML",
+    "Models",
+    "API"
+  ],
+  "installs": 1567,
+  "remixes": 467,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

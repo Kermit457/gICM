@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "cloudflare": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-cloudflare"
+      ],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "",
+        "CLOUDFLARE_ACCOUNT_ID": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official Cloudflare MCP server exists.",
+  "_note": "Use Cloudflare API",
+  "_alternative": "Custom implementation with Cloudflare API",
+  "_status": "CUSTOM_REQUIRED"
+}

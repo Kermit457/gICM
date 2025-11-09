@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "",
+        "SLACK_APP_TOKEN": ""
+      }
+    }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-slack exists on npm",
+  "_status": "VALID_PACKAGE"
+}

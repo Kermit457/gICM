@@ -1,0 +1,38 @@
+{
+  "id": "mcp-warp",
+  "name": "Warp MCP",
+  "description": "Warp distributed SQL: edge caching, global replication, multi-region writes. 97% query performance.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @warp/mcp-server",
+  "env": {
+    "WARP_API_KEY": "Required: Warp API key",
+    "WARP_ENDPOINT": "Required: Warp endpoint URL"
+  },
+  "capabilities": [
+    "distributed_sql",
+    "edge_caching",
+    "global_replication",
+    "multi_region_writes",
+    "query_optimization",
+    "analytics"
+  ],
+  "features": {
+    "distributed_sql": "SQL with global distribution",
+    "edge_caching": "Automatic edge caching for queries",
+    "multi_region": "Write to multiple regions, strong consistency",
+    "query_optimization": "Smart query optimization",
+    "replication": "Global data replication",
+    "monitoring": "Performance metrics and insights"
+  },
+  "category": "Database MCPs",
+  "tags": [
+    "Warp",
+    "DistributedSQL",
+    "Edge"
+  ],
+  "installs": 832,
+  "remixes": 245,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

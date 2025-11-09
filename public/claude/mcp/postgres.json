@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "DATABASE_URL": ""
+      }
+    }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-postgres exists on npm",
+  "_status": "VALID_PACKAGE"
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "chainstack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-chainstack"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Chainstack is an infrastructure provider, not an MCP package.",
+  "_note": "Use Chainstack RPC endpoints",
+  "_alternative": "Custom HTTP integration",
+  "_status": "API_SERVICE"
+}

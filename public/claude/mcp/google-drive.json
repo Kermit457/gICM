@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "google-drive": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-google-drive"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Package does not exist on npm yet.",
+  "_note": "Use Google Drive API via googleapis",
+  "_alternative": "googleapis npm package (drive v3 API)",
+  "_status": "PLACEHOLDER"
+}

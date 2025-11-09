@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "elasticsearch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-elasticsearch"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use Elasticsearch client directly.",
+  "_note": "Elasticsearch search",
+  "_alternative": "@elastic/elasticsearch",
+  "_status": "SDK_DIRECT"
+}

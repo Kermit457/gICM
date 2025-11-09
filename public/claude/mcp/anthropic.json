@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "anthropic": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-anthropic"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No MCP server needed - use Anthropic SDK directly.",
+  "_note": "Use @anthropic-ai/sdk for Claude API access",
+  "_alternative": "@anthropic-ai/sdk",
+  "_status": "SDK_DIRECT"
+}

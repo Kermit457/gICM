@@ -1,0 +1,39 @@
+{
+  "id": "mcp-logto",
+  "name": "Logto MCP",
+  "description": "Logto identity platform: OAuth, SAML, MFA, user management, SSO. 96% auth security.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @logto/mcp-server",
+  "env": {
+    "LOGTO_ENDPOINT": "Required: Logto server endpoint",
+    "LOGTO_ADMIN_KEY": "Required: Logto admin API key"
+  },
+  "capabilities": [
+    "authentication",
+    "user_management",
+    "oauth_saml",
+    "mfa",
+    "sso",
+    "audit_logs"
+  ],
+  "features": {
+    "authentication": "OAuth 2.0, OIDC, SAML support",
+    "mfa": "Multi-factor authentication (TOTP, SMS, email)",
+    "user_management": "Manage users and their profiles",
+    "sso": "Single Sign-On across applications",
+    "roles_permissions": "Fine-grained role-based access control",
+    "audit_logs": "Comprehensive audit logging"
+  },
+  "category": "Security MCPs",
+  "tags": [
+    "Logto",
+    "Auth",
+    "Identity",
+    "SSO"
+  ],
+  "installs": 1345,
+  "remixes": 401,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

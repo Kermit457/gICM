@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "quicknode": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-quicknode"
+      ],
+      "env": {
+        "QUICKNODE_API_URL": "https://your-endpoint.quicknode.pro/your-token",
+        "QUICKNODE_NETWORK": "ethereum-mainnet",
+        "QUICKNODE_TOKEN_API_KEY": "your-token-api-key-optional",
+        "QUICKNODE_NFT_API_KEY": "your-nft-api-key-optional",
+        "QUICKNODE_ENABLE_ADDONS": "true"
+      }
+    }
+  },
+  "_comment": "⚠️ QuickNode is an RPC provider, not an MCP package.",
+  "_note": "Use QuickNode RPC endpoints with web3 libraries",
+  "_alternative": "Custom implementation with web3.js",
+  "_status": "API_SERVICE"
+}

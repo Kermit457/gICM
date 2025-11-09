@@ -1,0 +1,39 @@
+{
+  "id": "mcp-metabase",
+  "name": "Metabase MCP",
+  "description": "Metabase BI: dashboards, SQL queries, data exploration, sharing. 93% analytics adoption.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @metabase/mcp-server",
+  "env": {
+    "METABASE_URL": "Required: Metabase server URL",
+    "METABASE_API_KEY": "Required: Metabase API key"
+  },
+  "capabilities": [
+    "dashboard_creation",
+    "sql_queries",
+    "data_exploration",
+    "visualization",
+    "sharing",
+    "permissions"
+  ],
+  "features": {
+    "dashboards": "Create interactive dashboards",
+    "sql_interface": "Write and execute SQL queries",
+    "data_exploration": "Visual data exploration tools",
+    "visualizations": "Rich set of chart types",
+    "sharing": "Share dashboards and queries",
+    "alerts": "Set up data alerts"
+  },
+  "category": "Analytics MCPs",
+  "tags": [
+    "Metabase",
+    "BI",
+    "Dashboards",
+    "Analytics"
+  ],
+  "installs": 1456,
+  "remixes": 423,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

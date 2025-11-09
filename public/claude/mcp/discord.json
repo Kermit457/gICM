@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "discord": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-discord"
+      ],
+      "env": {
+        "DISCORD_BOT_TOKEN": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official Discord MCP server exists.",
+  "_note": "Use Discord.js for bot integration",
+  "_alternative": "discord.js",
+  "_status": "CUSTOM_REQUIRED"
+}

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-notion"
+      ],
+      "env": {
+        "NOTION_API_KEY": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official Notion MCP server exists.",
+  "_note": "Use Notion API SDK",
+  "_alternative": "@notionhq/client",
+  "_status": "CUSTOM_REQUIRED"
+}

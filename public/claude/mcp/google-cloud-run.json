@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "google-cloud-run": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-google-cloud-run"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ No official Google Cloud Run MCP server exists.",
+  "_note": "Use Google Cloud SDK",
+  "_alternative": "@google-cloud/run",
+  "_status": "CUSTOM_REQUIRED"
+}

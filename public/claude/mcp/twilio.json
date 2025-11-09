@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "twilio": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-twilio"
+      ],
+      "env": {
+        "TWILIO_ACCOUNT_SID": "",
+        "TWILIO_AUTH_TOKEN": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official Twilio MCP server exists.",
+  "_note": "Use Twilio SDK",
+  "_alternative": "twilio npm package",
+  "_status": "CUSTOM_REQUIRED"
+}

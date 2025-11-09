@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "planetscale": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-planetscale"
+      ],
+      "env": {
+        "PLANETSCALE_TOKEN": "",
+        "PLANETSCALE_ORG": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official PlanetScale MCP server exists.",
+  "_note": "PlanetScale is MySQL-compatible - use MySQL client",
+  "_alternative": "@planetscale/database with custom integration",
+  "_status": "CUSTOM_REQUIRED"
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "openai-image": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-openai-image"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ No MCP server needed - use OpenAI SDK for DALL-E.",
+  "_note": "Use OpenAI SDK directly for image generation",
+  "_alternative": "openai npm package",
+  "_status": "SDK_DIRECT"
+}

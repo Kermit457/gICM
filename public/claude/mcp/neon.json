@@ -1,0 +1,38 @@
+{
+  "id": "mcp-neon",
+  "name": "Neon MCP",
+  "description": "Neon serverless Postgres: branching, instant clone, auto-scaling, compute separation. 98% availability.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @neon/mcp-server",
+  "env": {
+    "NEON_API_KEY": "Required: Neon API key",
+    "NEON_PROJECT_ID": "Required: Neon project ID"
+  },
+  "capabilities": [
+    "database_branching",
+    "autoscaling",
+    "compute_separation",
+    "connection_pooling",
+    "instant_provisioning",
+    "analytics"
+  ],
+  "features": {
+    "instant_branching": "Create database branches instantly for testing",
+    "autoscaling": "Auto-scale compute based on demand",
+    "compute_separation": "Separate compute from storage",
+    "connection_pooling": "Built-in PgBouncer for connection management",
+    "serverless_driver": "Query PostgreSQL from serverless functions",
+    "analytics": "Usage metrics and performance insights"
+  },
+  "category": "Database MCPs",
+  "tags": [
+    "Neon",
+    "PostgreSQL",
+    "Serverless"
+  ],
+  "installs": 1678,
+  "remixes": 501,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

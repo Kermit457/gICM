@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "tenderly": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-tenderly"
+      ],
+      "env": {
+        "TENDERLY_API_KEY": "your-tenderly-api-key-here",
+        "TENDERLY_ACCOUNT_ID": "your-tenderly-account-id",
+        "TENDERLY_PROJECT_SLUG": "your-project-slug",
+        "TENDERLY_NETWORK": "mainnet",
+        "TENDERLY_RPC_URL": "https://mainnet.tenderly.co/your-key"
+      }
+    }
+  },
+  "_comment": "⚠️ Tenderly is a debugging/monitoring platform, not an MCP package.",
+  "_note": "Use Tenderly REST API for transaction simulation and monitoring",
+  "_alternative": "Custom implementation with Tenderly API",
+  "_status": "API_SERVICE"
+}

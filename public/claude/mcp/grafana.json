@@ -1,0 +1,39 @@
+{
+  "id": "mcp-grafana",
+  "name": "Grafana MCP",
+  "description": "Grafana observability: dashboards, alerts, data sources, incident management. 96% monitoring accuracy.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @grafana/mcp-server",
+  "env": {
+    "GRAFANA_URL": "Required: Grafana server URL",
+    "GRAFANA_API_TOKEN": "Required: Grafana API token"
+  },
+  "capabilities": [
+    "dashboard_management",
+    "alerting",
+    "data_sources",
+    "incident_management",
+    "annotations",
+    "reporting"
+  ],
+  "features": {
+    "dashboards": "Create and manage monitoring dashboards",
+    "alerting": "Set up alerts and notifications",
+    "data_sources": "Connect to multiple data sources",
+    "incident_mgmt": "Track and manage incidents",
+    "annotations": "Add context to dashboards",
+    "reporting": "Generate automated reports"
+  },
+  "category": "Monitoring MCPs",
+  "tags": [
+    "Grafana",
+    "Monitoring",
+    "Dashboards",
+    "Alerts"
+  ],
+  "installs": 1634,
+  "remixes": 489,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

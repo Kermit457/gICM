@@ -1,0 +1,39 @@
+{
+  "id": "mcp-supabase-ext",
+  "name": "Supabase Extensions MCP",
+  "description": "Supabase extensions: storage management, auth customization, vector search, realtime. 94% integration success.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @supabase/mcp-server-ext",
+  "env": {
+    "SUPABASE_URL": "Required: Supabase project URL",
+    "SUPABASE_SERVICE_KEY": "Required: Supabase service key"
+  },
+  "capabilities": [
+    "storage_management",
+    "auth_customization",
+    "vector_search",
+    "realtime_subscriptions",
+    "edge_functions",
+    "database_extensions"
+  ],
+  "features": {
+    "storage": "Manage files with S3-compatible storage",
+    "auth": "Customize authentication flows and JWT tokens",
+    "vector_search": "pgvector integration for semantic search",
+    "realtime": "Real-time database subscriptions via WebSocket",
+    "edge_functions": "Deno-based serverless functions",
+    "extensions": "Install PostgreSQL extensions for advanced features"
+  },
+  "category": "Backend MCPs",
+  "tags": [
+    "Supabase",
+    "Extensions",
+    "Storage",
+    "Auth"
+  ],
+  "installs": 1456,
+  "remixes": 434,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

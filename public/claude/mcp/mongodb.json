@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "mongodb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-mongodb"
+      ],
+      "env": {
+        "MONGODB_URI": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official MongoDB MCP server exists.",
+  "_note": "Use MongoDB driver directly or consider @modelcontextprotocol/server-postgres for SQL needs",
+  "_alternative": "mongodb npm package with custom integration",
+  "_status": "CUSTOM_REQUIRED"
+}

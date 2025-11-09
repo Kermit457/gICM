@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "perplexity": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-perplexity"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use Perplexity API directly.",
+  "_note": "Perplexity search API",
+  "_alternative": "Custom HTTP client for Perplexity API",
+  "_status": "API_SERVICE"
+}

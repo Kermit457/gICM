@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "openai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-openai"
+      ],
+      "env": {
+        "OPENAI_API_KEY": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No MCP server needed - use OpenAI SDK directly.",
+  "_note": "OpenAI API should be used directly in your application",
+  "_alternative": "openai npm package",
+  "_status": "SDK_DIRECT"
+}

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-linear"
+      ],
+      "env": {
+        "LINEAR_API_KEY": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official Linear MCP server exists.",
+  "_note": "Use Linear SDK or GraphQL API",
+  "_alternative": "@linear/sdk",
+  "_status": "CUSTOM_REQUIRED"
+}

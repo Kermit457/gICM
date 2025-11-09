@@ -1,0 +1,38 @@
+{
+  "id": "mcp-langfuse",
+  "name": "Langfuse MCP",
+  "description": "Langfuse prompt management: versioning, evaluation, cost tracking, feedback loops. 94% accuracy improvement.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @langfuse/mcp-server",
+  "env": {
+    "LANGFUSE_SECRET_KEY": "Required: Langfuse secret key",
+    "LANGFUSE_PUBLIC_KEY": "Required: Langfuse public key"
+  },
+  "capabilities": [
+    "prompt_management",
+    "versioning",
+    "evaluation",
+    "cost_tracking",
+    "feedback_collection",
+    "analytics"
+  ],
+  "features": {
+    "prompt_versioning": "Version control for prompts",
+    "prompt_templates": "Manage prompt templates",
+    "evaluation": "Test and evaluate prompts",
+    "cost_tracking": "Track LLM API costs",
+    "feedback": "Collect user feedback on outputs",
+    "analytics": "Performance and usage analytics"
+  },
+  "category": "AI MCPs",
+  "tags": [
+    "Langfuse",
+    "Prompts",
+    "Evaluation"
+  ],
+  "installs": 1089,
+  "remixes": 312,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

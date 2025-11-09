@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-figma"
+      ],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": ""
+      }
+    }
+  },
+  "_comment": "⚠️ No official MCP server, but community package exists.",
+  "_note": "Use figma-mcp (v0.1.4) community package or Figma API",
+  "_alternative": "figma-mcp (community) or figma-api npm package",
+  "_status": "USE_COMMUNITY"
+}

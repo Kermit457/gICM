@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "prisma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-prisma"
+      ],
+      "env": {
+        "DATABASE_URL": ""
+      }
+    }
+  },
+  "_comment": "⚠️ Prisma is an ORM, not an MCP server.",
+  "_note": "Use database MCP servers directly or Prisma Client in your code",
+  "_alternative": "@prisma/client with custom integration",
+  "_status": "CUSTOM_REQUIRED"
+}

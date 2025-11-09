@@ -1,0 +1,37 @@
+{
+  "id": "mcp-langsmith",
+  "name": "LangSmith MCP",
+  "description": "LangSmith observability: trace runs, evaluate agents, debug chains. 95% debugging efficiency.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @langsmith/mcp-server",
+  "env": {
+    "LANGSMITH_API_KEY": "Required: LangSmith API key"
+  },
+  "capabilities": [
+    "trace_logging",
+    "run_evaluation",
+    "agent_debugging",
+    "feedback_collection",
+    "analytics",
+    "collaboration"
+  ],
+  "features": {
+    "tracing": "Comprehensive tracing of LLM chains",
+    "evaluation": "Run evaluations on your chains",
+    "debugging": "Debug agents and LLM interactions",
+    "feedback": "Collect and track feedback",
+    "analytics": "Performance analytics for runs",
+    "collaboration": "Share runs and datasets with team"
+  },
+  "category": "DevTools MCPs",
+  "tags": [
+    "LangSmith",
+    "Observability",
+    "Debugging"
+  ],
+  "installs": 987,
+  "remixes": 289,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

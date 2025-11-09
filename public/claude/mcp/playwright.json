@@ -1,0 +1,16 @@
+{
+  "_comment": "⚠️ @modelcontextprotocol/server-playwright does NOT exist on npm.",
+  "_note": "Recommendation: Use @modelcontextprotocol/server-puppeteer (v2025.5.12) for browser automation instead",
+  "_alternative": "@modelcontextprotocol/server-puppeteer",
+  "_status": "PLACEHOLDER - USE PUPPETEER INSTEAD",
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {}
+    }
+  }
+}

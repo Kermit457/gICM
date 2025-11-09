@@ -1,0 +1,38 @@
+{
+  "id": "mcp-huggingface",
+  "name": "Hugging Face MCP",
+  "description": "Hugging Face Model Hub: inference API, model management, datasets, spaces. 95% model accuracy.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @huggingface/mcp-server",
+  "env": {
+    "HUGGINGFACE_API_KEY": "Required: Hugging Face API key"
+  },
+  "capabilities": [
+    "model_inference",
+    "model_management",
+    "dataset_access",
+    "spaces_deployment",
+    "fine_tuning",
+    "community_models"
+  ],
+  "features": {
+    "inference_api": "API for model inference on Hugging Face",
+    "model_hub": "Access to 1M+ models",
+    "transformers": "State-of-the-art NLP, CV, audio models",
+    "datasets": "Access to 10k+ datasets",
+    "spaces": "Deploy models as interactive apps",
+    "fine_tuning": "Fine-tune models on your data"
+  },
+  "category": "AI MCPs",
+  "tags": [
+    "HuggingFace",
+    "ML",
+    "Models",
+    "NLP"
+  ],
+  "installs": 1789,
+  "remixes": 534,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

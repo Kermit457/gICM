@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "redis": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-redis"
+      ],
+      "env": {
+        "REDIS_URL": ""
+      }
+    }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-redis exists on npm",
+  "_status": "VALID_PACKAGE"
+}
