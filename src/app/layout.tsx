@@ -12,10 +12,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "gICM://SEND - The AI Marketplace for Web3 Builders",
-  description: "90 specialized agents • 96 progressive skills • 93 commands • 82 MCP integrations • 48 production settings. Build your custom AI dev stack with 88-92% token savings.",
+  description: "91 specialized agents • 96 progressive skills • 93 commands • 82 MCP integrations • 48 production settings. Build your custom AI dev stack with 88-92% token savings.",
   openGraph: {
     title: "gICM://SEND - The AI Marketplace for Web3 Builders",
-    description: "Build your custom AI dev stack with 90 agents, 96 skills, 93 commands, and 82 MCP integrations. Progressive Disclosure saves 88-92% tokens.",
+    description: "Build your custom AI dev stack with 91 agents, 96 skills, 93 commands, and 82 MCP integrations. Progressive Disclosure saves 88-92% tokens.",
     type: "website",
     url: "https://gicm.io",
     siteName: "gICM",
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "gICM Marketplace - 90 Agents, 96 Skills, Progressive Disclosure",
+        alt: "gICM Marketplace - 91 Agents, 96 Skills, Progressive Disclosure",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "gICM://SEND - The AI Marketplace for Web3 Builders",
-    description: "90 agents • 96 skills • 93 commands • 82 MCPs • 88-92% token savings",
+    description: "91 agents • 96 skills • 93 commands • 82 MCPs • 88-92% token savings",
     images: ["/og-image.png"],
     creator: "@icm_motion",
   },
