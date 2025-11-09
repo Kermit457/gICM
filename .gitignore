@@ -64,7 +64,7 @@ com2
 lpt1
 lpt2
 
-# CLI package (not part of web app)
-packages/
+# Allow packages/cli (published to npm)
+# packages/ is commented out to allow CLI package in repo
 
 .vercel
