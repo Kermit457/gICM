@@ -252,7 +252,7 @@ export const AGENTS: RegistryItem[] = [
     longDescription: "Automated security auditor for Anchor programs. Scans for common exploits: missing signer checks, unchecked account ownership, integer overflow, CPI vulnerabilities, and reentrancy attacks. Provides remediation guidance and security best practices.",
     category: "Security & Audit",
     tags: ["Security", "Audit", "Solana", "Rust", "Vulnerability Detection"],
-    dependencies: ["icm-anchor-architect"],
+    dependencies: [],
     files: [".claude/agents/solana-guardian-auditor.md"],
     install: "npx @gicm/cli add agent/solana-guardian-auditor",
     layer: ".claude",
