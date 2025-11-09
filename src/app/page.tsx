@@ -341,10 +341,10 @@ function CatalogPageContent() {
       {/* Header */}
       <HeroBanner />
 
-      {/* ========== LANDING1 START ========== */}
-      {/* Web3 Hero Section */}
-      {/* <Web3HeroSection /> */}
+      {/* Web3 Hero Section - KEEP VISIBLE */}
+      <Web3HeroSection />
 
+      {/* ========== LANDING1 START ========== */}
       {/* Live Ticker */}
       {/* <LiveTicker /> */}
 
