@@ -52,19 +52,19 @@ async function sendConfirmationEmail(email: string, position: number) {
                   <ul style="margin: 0; padding: 0; list-style: none;">
                     <li style="margin: 0 0 12px; font-size: 15px; color: #E4E4E7; padding-left: 28px; position: relative;">
                       <span style="position: absolute; left: 0; color: #D1FD0A;">✓</span>
-                      <strong>68 specialized AI agents</strong> - From Solana to full-stack development
+                      <strong>90 specialized AI agents</strong> - From Solana to full-stack development
                     </li>
                     <li style="margin: 0 0 12px; font-size: 15px; color: #E4E4E7; padding-left: 28px; position: relative;">
                       <span style="position: absolute; left: 0; color: #D1FD0A;">✓</span>
-                      <strong>92 progressive skills</strong> - 88-92% token savings
+                      <strong>96 progressive skills</strong> - 88-92% token savings
                     </li>
                     <li style="margin: 0 0 12px; font-size: 15px; color: #E4E4E7; padding-left: 28px; position: relative;">
                       <span style="position: absolute; left: 0; color: #D1FD0A;">✓</span>
-                      <strong>94 commands</strong> - One-command installs
+                      <strong>93 commands</strong> - One-command installs
                     </li>
                     <li style="margin: 0; font-size: 15px; color: #E4E4E7; padding-left: 28px; position: relative;">
                       <span style="position: absolute; left: 0; color: #D1FD0A;">✓</span>
-                      <strong>66 MCP integrations</strong> - Complete Web3 tooling
+                      <strong>82 MCP integrations</strong> - Complete Web3 tooling
                     </li>
                   </ul>
                 </div>

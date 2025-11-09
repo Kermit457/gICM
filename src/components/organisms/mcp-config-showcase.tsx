@@ -376,7 +376,7 @@ export function MCPConfigShowcase() {
               Want more MCP configs?
             </h3>
             <p className="text-sm text-zinc-700 dark:text-zinc-300 mb-4">
-              We have 66 MCPs in the registry, each with optimized configurations and setup guides.
+              We have 82 MCPs in the registry, each with optimized configurations and setup guides.
             </p>
             <div className="flex gap-3">
               <Button>

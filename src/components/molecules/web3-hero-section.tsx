@@ -95,7 +95,7 @@ export function Web3HeroSection() {
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-zinc-300 max-w-3xl mb-6">
-            68 specialized agents, 92 progressive skills, and 66 MCP integrations optimized for
+            90 specialized agents, 96 progressive skills, and 82 MCP integrations optimized for
             Solana, DeFi, and Web3 development. Ship faster with 88-92% token savings.
           </p>
 

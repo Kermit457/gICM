@@ -12,10 +12,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "gICM://SEND - The AI Marketplace for Web3 Builders",
-  description: "68 specialized agents • 92 progressive skills • 94 commands • 66 MCP integrations • 48 production settings. Build your custom AI dev stack with 88-92% token savings.",
+  description: "90 specialized agents • 96 progressive skills • 93 commands • 82 MCP integrations • 48 production settings. Build your custom AI dev stack with 88-92% token savings.",
   openGraph: {
     title: "gICM://SEND - The AI Marketplace for Web3 Builders",
-    description: "Build your custom AI dev stack with 68 agents, 92 skills, 94 commands, and 66 MCP integrations. Progressive Disclosure saves 88-92% tokens.",
+    description: "Build your custom AI dev stack with 90 agents, 96 skills, 93 commands, and 82 MCP integrations. Progressive Disclosure saves 88-92% tokens.",
     type: "website",
     url: "https://gicm.io",
     siteName: "gICM",
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "gICM Marketplace - 68 Agents, 92 Skills, Progressive Disclosure",
+        alt: "gICM Marketplace - 90 Agents, 96 Skills, Progressive Disclosure",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "gICM://SEND - The AI Marketplace for Web3 Builders",
-    description: "68 agents • 92 skills • 94 commands • 66 MCPs • 88-92% token savings",
+    description: "90 agents • 96 skills • 93 commands • 82 MCPs • 88-92% token savings",
     images: ["/og-image.png"],
     creator: "@icm_motion",
   },
@@ -52,6 +52,8 @@ export default function RootLayout({
         <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <ErrorBoundary>

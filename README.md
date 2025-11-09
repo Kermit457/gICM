@@ -312,7 +312,7 @@ The stack builder automatically resolves dependencies. If you select an item tha
 
 ## 📊 Success Metrics (Launch + 30 Days)
 
-With 68 agents, 92 skills, 94 commands, and 66 MCPs:
+With 90 agents, 96 skills, 93 commands, and 82 MCPs:
 
 - **10k+** unique site visits
 - **2k+** stack exports
