@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useBundleStore } from "@/lib/store/bundle";
 import { calculateTokenSavings, generateInstallCommand } from "@/lib/stack-builder";
 import type { RegistryItem } from "@/types/registry";
@@ -26,6 +26,12 @@ export function StackPreview({ allItems }: StackPreviewProps) {
   const [tagsExpanded, setTagsExpanded] = useState(false);
   const [hoverHeader, setHoverHeader] = useState(false);
   const [hoverSelectedItems, setHoverSelectedItems] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by only reading from store after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Get icon for item kind
   const getKindIcon = () => {
@@ -107,7 +113,8 @@ export function StackPreview({ allItems }: StackPreviewProps) {
     toast.success("Stack cleared");
   };
 
-  if (itemCount() === 0) {
+  // Show empty state during SSR and when no items
+  if (!mounted || itemCount() === 0) {
     return (
       <div className="sticky top-4 relative overflow-hidden rounded-xl border border-black/20 dark:border-lime-300/20 bg-white/90 dark:bg-gradient-to-r dark:from-[#0f0f0f] dark:via-[#0a0a0a] dark:to-[#070707] backdrop-blur dark:backdrop-blur-xl p-3 shadow-sm dark:shadow-lg">
         {/* Glow effect - dark mode only */}
