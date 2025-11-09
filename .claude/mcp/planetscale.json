@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "planetscale": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-planetscale"
+      ],
+      "env": {
+        "PLANETSCALE_TOKEN": "",
+        "PLANETSCALE_ORG": ""
+      }
+    }
+  }
+}

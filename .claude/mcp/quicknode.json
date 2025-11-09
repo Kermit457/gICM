@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "quicknode": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-quicknode"
+      ],
+      "env": {
+        "QUICKNODE_API_URL": "https://your-endpoint.quicknode.pro/your-token",
+        "QUICKNODE_NETWORK": "ethereum-mainnet",
+        "QUICKNODE_TOKEN_API_KEY": "your-token-api-key-optional",
+        "QUICKNODE_NFT_API_KEY": "your-nft-api-key-optional",
+        "QUICKNODE_ENABLE_ADDONS": "true"
+      }
+    }
+  }
+}

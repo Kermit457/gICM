@@ -1,0 +1,34 @@
+{
+  "id": "mcp-hasura",
+  "name": "Hasura MCP",
+  "description": "Hasura GraphQL engine: instant APIs, real-time subscriptions, permissions. 93% query optimization.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @hasura/mcp-server",
+  "env": {
+    "HASURA_ENDPOINT": "Required: Hasura GraphQL endpoint",
+    "HASURA_ADMIN_SECRET": "Required: Hasura admin secret for authentication"
+  },
+  "capabilities": [
+    "graphql_api_generation",
+    "realtime_subscriptions",
+    "access_control",
+    "mutations_management",
+    "query_optimization",
+    "event_triggers"
+  ],
+  "features": {
+    "instant_graphql_api": "Auto-generate GraphQL API from database schema",
+    "realtime_subscriptions": "WebSocket-based real-time data updates",
+    "row_level_security": "Fine-grained access control with RLS",
+    "custom_resolvers": "Extend GraphQL with custom business logic",
+    "event_system": "Trigger webhooks on database changes",
+    "performance": "Query optimization and caching strategies"
+  },
+  "category": "Backend MCPs",
+  "tags": ["Hasura", "GraphQL", "Database", "API"],
+  "installs": 1456,
+  "remixes": 423,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

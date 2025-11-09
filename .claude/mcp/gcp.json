@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-gcp"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": ""
+      }
+    }
+  }
+}

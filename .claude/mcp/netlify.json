@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "netlify": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-netlify"
+      ],
+      "env": {
+        "NETLIFY_TOKEN": ""
+      }
+    }
+  }
+}

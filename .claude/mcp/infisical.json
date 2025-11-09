@@ -1,0 +1,34 @@
+{
+  "id": "mcp-infisical",
+  "name": "Infisical MCP",
+  "description": "Infisical secrets: encryption, rotation, environment sync, audit logs. 99% secrets security.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @infisical/mcp-server",
+  "env": {
+    "INFISICAL_TOKEN": "Required: Infisical API token",
+    "INFISICAL_WORKSPACE_ID": "Required: Infisical workspace ID"
+  },
+  "capabilities": [
+    "secrets_management",
+    "encryption",
+    "rotation",
+    "environment_sync",
+    "audit_logs",
+    "access_control"
+  ],
+  "features": {
+    "end_to_end_encryption": "E2E encrypted secrets storage",
+    "secrets_rotation": "Automatic secrets rotation",
+    "environment_sync": "Sync secrets across environments",
+    "audit_logs": "Complete audit trail",
+    "access_control": "Fine-grained access control",
+    "compliance": "HIPAA, SOC 2 compliant"
+  },
+  "category": "Security MCPs",
+  "tags": ["Infisical", "Secrets", "Encryption", "Compliance"],
+  "installs": 876,
+  "remixes": 256,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

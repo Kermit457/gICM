@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "e2b": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@e2b/mcp-server"
+      ],
+      "env": {
+        "E2B_API_KEY": "your-e2b-api-key-here"
+      }
+    }
+  }
+}

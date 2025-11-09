@@ -1,0 +1,16 @@
+# gICM Marketplace - robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow private pages and admin areas
+Disallow: /api/
+Disallow: /analytics
+Disallow: /.analytics/
+Disallow: /.waitlist/
+
+# Sitemap
+Sitemap: https://gicm.io/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1

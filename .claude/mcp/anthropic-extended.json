@@ -1,0 +1,33 @@
+{
+  "id": "mcp-anthropic-extended",
+  "name": "Anthropic Extended MCP",
+  "description": "Anthropic extended: Claude Vision, batch processing, token counting, fine-tuning. 96% vision accuracy.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @anthropic/mcp-server-extended",
+  "env": {
+    "ANTHROPIC_API_KEY": "Required: Anthropic API key"
+  },
+  "capabilities": [
+    "text_generation",
+    "vision_api",
+    "batch_processing",
+    "token_counting",
+    "function_calling",
+    "streaming"
+  ],
+  "features": {
+    "claude_models": "Latest Claude models (3 Opus, Sonnet, Haiku)",
+    "vision": "Analyze images, PDFs, and documents",
+    "batch_api": "Process multiple requests efficiently",
+    "token_counting": "Accurate token counting before API calls",
+    "function_calling": "Structured outputs and tool use",
+    "streaming": "Real-time streaming responses"
+  },
+  "category": "AI MCPs",
+  "tags": ["Anthropic", "Claude", "Vision", "Batches"],
+  "installs": 1456,
+  "remixes": 423,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

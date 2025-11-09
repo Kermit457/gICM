@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "infura": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-infura"
+      ],
+      "env": {
+        "INFURA_API_KEY": "your-infura-api-key-here",
+        "INFURA_API_SECRET": "your-infura-api-secret-optional",
+        "INFURA_NETWORK": "mainnet",
+        "INFURA_IPFS_GATEWAY": "https://infura-ipfs.io",
+        "INFURA_ENABLE_IPFS": "true"
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "mcp-bytebase",
+  "name": "Bytebase MCP",
+  "description": "Bytebase database CI/CD: schema migration, version control, approval workflows. 98% deployment safety.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @bytebase/mcp-server",
+  "env": {
+    "BYTEBASE_URL": "Required: Bytebase server URL",
+    "BYTEBASE_API_TOKEN": "Required: Bytebase API token"
+  },
+  "capabilities": [
+    "schema_migration",
+    "version_control",
+    "approval_workflows",
+    "change_tracking",
+    "rollback",
+    "analytics"
+  ],
+  "features": {
+    "database_ci_cd": "CI/CD for database changes",
+    "version_control": "Git-like version control for schemas",
+    "approval_workflows": "Multi-level approval for changes",
+    "change_tracking": "Track all database changes",
+    "rollback": "Easy rollback of changes",
+    "multi_database": "Support for multiple databases"
+  },
+  "category": "DevOps MCPs",
+  "tags": ["Bytebase", "Database", "CI/CD", "Schema"],
+  "installs": 1178,
+  "remixes": 345,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

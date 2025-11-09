@@ -1,0 +1,34 @@
+{
+  "id": "mcp-planetscale-advanced",
+  "name": "PlanetScale Advanced MCP",
+  "description": "PlanetScale advanced: branching strategy, promotion workflows, analytics, backup management. 96% zero-downtime.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @planetscale/mcp-server-advanced",
+  "env": {
+    "PLANETSCALE_ORG": "Required: PlanetScale organization name",
+    "PLANETSCALE_TOKEN": "Required: PlanetScale API token"
+  },
+  "capabilities": [
+    "branch_management",
+    "schema_migration",
+    "promotion_workflows",
+    "analytics",
+    "backup_management",
+    "deploy_strategies"
+  ],
+  "features": {
+    "database_branching": "Create instant database branches for testing",
+    "zero_downtime_migrations": "Deploy schema changes without downtime",
+    "deploy_requests": "Code review for database changes",
+    "analytics": "Query and connection analytics",
+    "automatic_backups": "Point-in-time recovery",
+    "replication": "Global read replicas for scale"
+  },
+  "category": "Database MCPs",
+  "tags": ["PlanetScale", "MySQL", "DevOps"],
+  "installs": 987,
+  "remixes": 289,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

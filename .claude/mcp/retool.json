@@ -1,0 +1,34 @@
+{
+  "id": "mcp-retool",
+  "name": "Retool MCP",
+  "description": "Retool low-code platform: apps, database connections, REST APIs, components. 95% app delivery speed.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @retool/mcp-server",
+  "env": {
+    "RETOOL_HOST": "Required: Retool instance host URL",
+    "RETOOL_API_KEY": "Required: Retool API key for authentication"
+  },
+  "capabilities": [
+    "app_builder",
+    "database_connections",
+    "rest_api_integration",
+    "component_library",
+    "query_building",
+    "app_deployment"
+  ],
+  "features": {
+    "drag_and_drop": "Build UIs with drag-and-drop components",
+    "database_connections": "Connect to any database (SQL, NoSQL, APIs)",
+    "rest_apis": "Expose apps as REST APIs",
+    "component_library": "Pre-built components and templates",
+    "query_builder": "Visual query builder for databases",
+    "collaboration": "Real-time collaboration on app building"
+  },
+  "category": "Integration MCPs",
+  "tags": ["Retool", "Low-Code", "AppBuilder"],
+  "installs": 1198,
+  "remixes": 345,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

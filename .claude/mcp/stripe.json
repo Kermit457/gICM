@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "stripe": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-stripe"
+      ],
+      "env": {
+        "STRIPE_SECRET_KEY": ""
+      }
+    }
+  }
+}

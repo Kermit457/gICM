@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "tenderly": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-tenderly"
+      ],
+      "env": {
+        "TENDERLY_API_KEY": "your-tenderly-api-key-here",
+        "TENDERLY_ACCOUNT_ID": "your-tenderly-account-id",
+        "TENDERLY_PROJECT_SLUG": "your-project-slug",
+        "TENDERLY_NETWORK": "mainnet",
+        "TENDERLY_RPC_URL": "https://mainnet.tenderly.co/your-key"
+      }
+    }
+  }
+}

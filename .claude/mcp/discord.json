@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "discord": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-discord"
+      ],
+      "env": {
+        "DISCORD_BOT_TOKEN": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "alchemy": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-alchemy"
+      ],
+      "env": {
+        "ALCHEMY_API_KEY": "your-alchemy-api-key-here",
+        "ALCHEMY_NETWORK": "eth-mainnet",
+        "ALCHEMY_WEBHOOK_TOKEN": "your-webhook-token-optional"
+      }
+    }
+  }
+}

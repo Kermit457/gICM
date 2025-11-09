@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "railway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-railway"
+      ],
+      "env": {
+        "RAILWAY_TOKEN": ""
+      }
+    }
+  }
+}

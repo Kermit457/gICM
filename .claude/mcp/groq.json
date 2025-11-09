@@ -1,0 +1,33 @@
+{
+  "id": "mcp-groq",
+  "name": "Groq MCP",
+  "description": "Groq fast LLM inference: 10x faster generation, streaming, token optimization. 98% uptime.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @groq/mcp-server",
+  "env": {
+    "GROQ_API_KEY": "Required: Groq API key"
+  },
+  "capabilities": [
+    "fast_inference",
+    "llm_generation",
+    "streaming",
+    "token_optimization",
+    "low_latency",
+    "cost_efficiency"
+  ],
+  "features": {
+    "10x_faster": "10x faster inference than traditional GPUs",
+    "models": "Access to LLaMA, Mixtral, and other models",
+    "streaming": "Real-time token streaming",
+    "low_latency": "Sub-100ms latency for most queries",
+    "cost_effective": "Pay only for tokens generated",
+    "reliable": "99%+ uptime SLA"
+  },
+  "category": "AI MCPs",
+  "tags": ["Groq", "LLM", "Fast Inference"],
+  "installs": 1234,
+  "remixes": 367,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

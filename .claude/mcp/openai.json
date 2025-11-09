@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "openai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-openai"
+      ],
+      "env": {
+        "OPENAI_API_KEY": ""
+      }
+    }
+  }
+}

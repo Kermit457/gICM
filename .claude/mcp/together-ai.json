@@ -1,0 +1,33 @@
+{
+  "id": "mcp-together-ai",
+  "name": "Together AI MCP",
+  "description": "Together AI LLM services: fast inference, fine-tuning, open-source models, custom endpoints. 94% throughput.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @together-ai/mcp-server",
+  "env": {
+    "TOGETHER_API_KEY": "Required: Together AI API key"
+  },
+  "capabilities": [
+    "llm_inference",
+    "fine_tuning",
+    "custom_models",
+    "batch_processing",
+    "streaming",
+    "model_endpoints"
+  ],
+  "features": {
+    "open_source_models": "Run open-source LLMs with low latency",
+    "fine_tuning": "Fine-tune models on your data",
+    "custom_endpoints": "Deploy custom models and endpoints",
+    "batch_processing": "Process multiple requests efficiently",
+    "low_cost": "Competitive pricing for inference",
+    "flexibility": "Use any open-source model"
+  },
+  "category": "AI MCPs",
+  "tags": ["TogetherAI", "LLM", "Inference"],
+  "installs": 1089,
+  "remixes": 312,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

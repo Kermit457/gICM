@@ -1,0 +1,35 @@
+{
+  "id": "mcp-upstash",
+  "name": "Upstash MCP",
+  "description": "Upstash serverless: Redis, Kafka, QStash messaging. 99% uptime, auto-scaling. Edge-ready.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @upstash/mcp-server",
+  "env": {
+    "UPSTASH_REDIS_URL": "Required: Upstash Redis connection URL",
+    "UPSTASH_KAFKA_URL": "Optional: Upstash Kafka URL",
+    "UPSTASH_QSTASH_TOKEN": "Optional: Upstash QStash token"
+  },
+  "capabilities": [
+    "redis_operations",
+    "kafka_messaging",
+    "qstash_scheduling",
+    "edge_support",
+    "autoscaling",
+    "serverless_ready"
+  ],
+  "features": {
+    "redis": "Serverless Redis with per-request pricing",
+    "kafka": "Serverless Kafka for event streaming",
+    "qstash": "Message queuing and scheduling",
+    "edge_support": "Deploy at the edge with Cloudflare Workers, Vercel",
+    "autoscaling": "Automatic scaling based on demand",
+    "monitoring": "Real-time monitoring and alerts"
+  },
+  "category": "Messaging MCPs",
+  "tags": ["Upstash", "Redis", "Kafka", "Serverless"],
+  "installs": 1345,
+  "remixes": 412,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

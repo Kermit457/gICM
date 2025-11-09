@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "datadog": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-datadog"
+      ],
+      "env": {
+        "DATADOG_API_KEY": "",
+        "DATADOG_APP_KEY": ""
+      }
+    }
+  }
+}

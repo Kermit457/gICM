@@ -1,0 +1,34 @@
+{
+  "id": "mcp-n8n",
+  "name": "N8N MCP",
+  "description": "N8N workflow automation: workflows, credentials, executions, webhooks. 92% automation coverage.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @n8n/mcp-server",
+  "env": {
+    "N8N_HOST": "Required: N8N instance host URL",
+    "N8N_API_KEY": "Required: N8N API key for authentication"
+  },
+  "capabilities": [
+    "workflow_creation",
+    "workflow_execution",
+    "credential_management",
+    "webhook_management",
+    "node_integration",
+    "execution_history"
+  ],
+  "features": {
+    "visual_workflows": "Build automation workflows visually",
+    "500_integrations": "Connect to 500+ SaaS and internal tools",
+    "webhooks": "Trigger workflows via webhooks",
+    "scheduling": "Schedule workflow execution",
+    "error_handling": "Advanced error handling and retry logic",
+    "monitoring": "Track workflow executions and performance"
+  },
+  "category": "Integration MCPs",
+  "tags": ["N8N", "Automation", "Workflows"],
+  "installs": 1367,
+  "remixes": 401,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

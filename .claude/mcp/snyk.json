@@ -1,0 +1,33 @@
+{
+  "id": "mcp-snyk",
+  "name": "Snyk MCP",
+  "description": "Snyk security scanning: vulnerabilities, dependencies, container scanning, SBOM. 97% detection accuracy.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @snyk/mcp-server",
+  "env": {
+    "SNYK_TOKEN": "Required: Snyk API token"
+  },
+  "capabilities": [
+    "vulnerability_scanning",
+    "dependency_analysis",
+    "container_scanning",
+    "sbom_generation",
+    "fix_recommendations",
+    "reporting"
+  ],
+  "features": {
+    "sca": "Software Composition Analysis (SCA)",
+    "dependency_scanning": "Scan dependencies for vulnerabilities",
+    "container_scanning": "Scan Docker images for vulnerabilities",
+    "sbom": "Generate Software Bill of Materials",
+    "fix_automation": "Automated fix recommendations",
+    "reporting": "Detailed security reports"
+  },
+  "category": "Security MCPs",
+  "tags": ["Snyk", "Security", "Scanning", "Dependencies"],
+  "installs": 1234,
+  "remixes": 356,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

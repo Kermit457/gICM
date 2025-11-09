@@ -1,0 +1,35 @@
+{
+  "id": "mcp-vectara",
+  "name": "Vectara MCP",
+  "description": "Vectara RAG platform: semantic search, query understanding, corpus management, chat. 97% relevance.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @vectara/mcp-server",
+  "env": {
+    "VECTARA_API_KEY": "Required: Vectara API key",
+    "VECTARA_CUSTOMER_ID": "Required: Vectara customer ID",
+    "VECTARA_CORPUS_ID": "Required: Vectara corpus ID"
+  },
+  "capabilities": [
+    "semantic_search",
+    "rag_pipelines",
+    "corpus_management",
+    "query_understanding",
+    "chat_interface",
+    "analytics"
+  ],
+  "features": {
+    "semantic_search": "Powerful semantic search on your documents",
+    "rag": "Build RAG applications easily",
+    "corpus_management": "Manage documents and knowledge bases",
+    "query_understanding": "Advanced query understanding and expansion",
+    "chat": "Build chat applications on your data",
+    "analytics": "Track search and chat analytics"
+  },
+  "category": "AI MCPs",
+  "tags": ["Vectara", "RAG", "SemanticSearch"],
+  "installs": 1123,
+  "remixes": 334,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

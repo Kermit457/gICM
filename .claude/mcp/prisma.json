@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "prisma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-prisma"
+      ],
+      "env": {
+        "DATABASE_URL": ""
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "mcp-mixpanel",
+  "name": "Mixpanel MCP",
+  "description": "Mixpanel advanced analytics: user segmentation, funnel analysis, retention cohorts. 94% insights accuracy.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @mixpanel/mcp-server",
+  "env": {
+    "MIXPANEL_TOKEN": "Required: Mixpanel project token",
+    "MIXPANEL_PROJECT_TOKEN": "Required: Mixpanel project token for data access"
+  },
+  "capabilities": [
+    "event_tracking",
+    "user_segmentation",
+    "funnel_analysis",
+    "retention_cohorts",
+    "behavioral_analysis",
+    "data_export"
+  ],
+  "features": {
+    "user_insights": "Deep user behavior and journey analysis",
+    "funnel_analysis": "Measure conversion rates and identify drop-off points",
+    "cohort_retention": "Track user retention across cohorts over time",
+    "behavioral_queries": "Complex behavioral segmentation",
+    "predictive_analytics": "Churn prediction and lifetime value estimation",
+    "data_export": "Export data for external analysis"
+  },
+  "category": "Analytics MCPs",
+  "tags": ["Mixpanel", "Analytics", "User Insights"],
+  "installs": 1123,
+  "remixes": 334,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "mcp-temporal",
+  "name": "Temporal MCP",
+  "description": "Temporal workflow orchestration: durable execution, retries, saga patterns. 96% reliability.",
+  "version": "1.0.0",
+  "type": "mcp",
+  "command": "npx @temporal/mcp-server",
+  "env": {
+    "TEMPORAL_ENDPOINT": "Required: Temporal server endpoint (e.g., localhost:7233)",
+    "TEMPORAL_NAMESPACE": "Optional: Temporal namespace (default: default)"
+  },
+  "capabilities": [
+    "workflow_management",
+    "workflow_execution",
+    "retry_policies",
+    "saga_patterns",
+    "activity_invocation",
+    "durable_execution"
+  ],
+  "features": {
+    "workflow_orchestration": "Define and execute durable, fault-tolerant workflows",
+    "retry_logic": "Automatic retry with exponential backoff and custom policies",
+    "distributed_transactions": "ACID properties across distributed systems using Sagas",
+    "activity_management": "Manage long-running operations with failure handling",
+    "temporal_queries": "Query workflow state in real-time",
+    "monitoring": "Built-in visibility and debugging tools"
+  },
+  "category": "Orchestration MCPs",
+  "tags": ["Temporal", "Workflows", "Distributed Systems", "Orchestration"],
+  "installs": 1245,
+  "remixes": 378,
+  "installCount": "75-1800",
+  "remixCount": "20-600"
+}
