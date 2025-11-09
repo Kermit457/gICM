@@ -26,6 +26,20 @@ npm run dev
 
 ---
 
+## 📚 Content Library
+
+All agents, skills, commands, MCP servers, and settings are stored in a separate repository for easy access:
+
+**[gICM-library](https://github.com/gicm/gICM-library)** - 388 curated items
+
+Users can:
+- Clone the library directly
+- Install via CLI: `npx gicm-stack add agent/icm-anchor-architect`
+- Browse content on GitHub
+- Submit pull requests to add new items
+
+---
+
 ## 📦 What's Included
 
 ### ✅ Complete Foundation
