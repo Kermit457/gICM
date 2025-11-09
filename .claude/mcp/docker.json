@@ -7,5 +7,9 @@
         "@modelcontextprotocol/server-docker"
       ]
     }
-  }
+  },
+  "_comment": "⚠️ No official Docker MCP server exists.",
+  "_note": "Use Docker SDK or CLI",
+  "_alternative": "dockerode npm package",
+  "_status": "CUSTOM_REQUIRED"
 }

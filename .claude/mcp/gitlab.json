@@ -11,5 +11,7 @@
         "GITLAB_URL": "https://gitlab.com"
       }
     }
-  }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-gitlab exists on npm",
+  "_status": "VALID_PACKAGE"
 }

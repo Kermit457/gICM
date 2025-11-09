@@ -10,5 +10,9 @@
         "NETLIFY_TOKEN": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Netlify MCP server exists.",
+  "_note": "Use Netlify API",
+  "_alternative": "netlify npm package",
+  "_status": "CUSTOM_REQUIRED"
 }

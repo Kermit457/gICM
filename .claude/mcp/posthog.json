@@ -26,7 +26,11 @@
     "api_access": "Query analytics data via API"
   },
   "category": "Analytics MCPs",
-  "tags": ["PostHog", "Analytics", "Feature Flags"],
+  "tags": [
+    "PostHog",
+    "Analytics",
+    "Feature Flags"
+  ],
   "installs": 1234,
   "remixes": 356,
   "installCount": "75-1800",

@@ -10,5 +10,7 @@
         "GITHUB_TOKEN": "your-github-personal-access-token"
       }
     }
-  }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-github exists on npm",
+  "_status": "VALID_PACKAGE"
 }

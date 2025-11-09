@@ -25,7 +25,11 @@
     "reliable": "99%+ uptime SLA"
   },
   "category": "AI MCPs",
-  "tags": ["Groq", "LLM", "Fast Inference"],
+  "tags": [
+    "Groq",
+    "LLM",
+    "Fast Inference"
+  ],
   "installs": 1234,
   "remixes": 367,
   "installCount": "75-1800",

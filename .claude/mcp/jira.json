@@ -12,5 +12,9 @@
         "JIRA_API_TOKEN": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Jira MCP server exists.",
+  "_note": "Use Atlassian REST API",
+  "_alternative": "jira-client npm package",
+  "_status": "CUSTOM_REQUIRED"
 }

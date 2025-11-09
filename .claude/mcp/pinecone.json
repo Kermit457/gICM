@@ -11,5 +11,9 @@
         "PINECONE_ENVIRONMENT": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ Use Pinecone SDK directly.",
+  "_note": "Pinecone vector database",
+  "_alternative": "@pinecone-database/pinecone",
+  "_status": "SDK_DIRECT"
 }

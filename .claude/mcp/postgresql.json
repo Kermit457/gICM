@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "postgresql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgresql"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use @modelcontextprotocol/server-postgres instead (v0.6.2 exists).",
+  "_note": "The 'postgres' package covers PostgreSQL",
+  "_alternative": "@modelcontextprotocol/server-postgres",
+  "_status": "USE_ALTERNATIVE"
+}

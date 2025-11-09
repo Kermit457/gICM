@@ -10,5 +10,9 @@
         "VERCEL_TOKEN": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Vercel MCP server exists.",
+  "_note": "Use Vercel API",
+  "_alternative": "@vercel/client",
+  "_status": "CUSTOM_REQUIRED"
 }

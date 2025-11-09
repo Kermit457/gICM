@@ -11,5 +11,9 @@
         "SUPABASE_SERVICE_KEY": "your-service-role-key-here"
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Supabase MCP server exists.",
+  "_note": "Use @modelcontextprotocol/server-postgres for database, or Supabase SDK for full features",
+  "_alternative": "@supabase/supabase-js with custom integration",
+  "_status": "CUSTOM_REQUIRED"
 }

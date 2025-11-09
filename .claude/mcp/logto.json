@@ -26,7 +26,12 @@
     "audit_logs": "Comprehensive audit logging"
   },
   "category": "Security MCPs",
-  "tags": ["Logto", "Auth", "Identity", "SSO"],
+  "tags": [
+    "Logto",
+    "Auth",
+    "Identity",
+    "SSO"
+  ],
   "installs": 1345,
   "remixes": 401,
   "installCount": "75-1800",

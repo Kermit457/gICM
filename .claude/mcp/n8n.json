@@ -26,7 +26,11 @@
     "monitoring": "Track workflow executions and performance"
   },
   "category": "Integration MCPs",
-  "tags": ["N8N", "Automation", "Workflows"],
+  "tags": [
+    "N8N",
+    "Automation",
+    "Workflows"
+  ],
   "installs": 1367,
   "remixes": 401,
   "installCount": "75-1800",

@@ -25,7 +25,11 @@
     "collaboration": "Share runs and datasets with team"
   },
   "category": "DevTools MCPs",
-  "tags": ["LangSmith", "Observability", "Debugging"],
+  "tags": [
+    "LangSmith",
+    "Observability",
+    "Debugging"
+  ],
   "installs": 987,
   "remixes": 289,
   "installCount": "75-1800",

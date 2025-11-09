@@ -26,7 +26,12 @@
     "compliance": "HIPAA, SOC 2 compliant"
   },
   "category": "Security MCPs",
-  "tags": ["Infisical", "Secrets", "Encryption", "Compliance"],
+  "tags": [
+    "Infisical",
+    "Secrets",
+    "Encryption",
+    "Compliance"
+  ],
   "installs": 876,
   "remixes": 256,
   "installCount": "75-1800",

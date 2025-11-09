@@ -10,5 +10,9 @@
         "SENDGRID_API_KEY": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official SendGrid MCP server exists.",
+  "_note": "Use SendGrid API",
+  "_alternative": "@sendgrid/mail",
+  "_status": "CUSTOM_REQUIRED"
 }

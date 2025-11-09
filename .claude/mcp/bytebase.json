@@ -26,7 +26,12 @@
     "multi_database": "Support for multiple databases"
   },
   "category": "DevOps MCPs",
-  "tags": ["Bytebase", "Database", "CI/CD", "Schema"],
+  "tags": [
+    "Bytebase",
+    "Database",
+    "CI/CD",
+    "Schema"
+  ],
   "installs": 1178,
   "remixes": 345,
   "installCount": "75-1800",

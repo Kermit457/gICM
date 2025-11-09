@@ -25,7 +25,12 @@
     "fine_tuning": "Fine-tune models on your data"
   },
   "category": "AI MCPs",
-  "tags": ["HuggingFace", "ML", "Models", "NLP"],
+  "tags": [
+    "HuggingFace",
+    "ML",
+    "Models",
+    "NLP"
+  ],
   "installs": 1789,
   "remixes": 534,
   "installCount": "75-1800",

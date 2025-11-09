@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "aws-bedrock": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-aws-bedrock"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use @modelcontextprotocol/server-aws-kb-retrieval instead.",
+  "_note": "The aws-kb-retrieval package covers Bedrock Knowledge Base",
+  "_alternative": "@modelcontextprotocol/server-aws-kb-retrieval",
+  "_status": "USE_ALTERNATIVE"
+}

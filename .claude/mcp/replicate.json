@@ -25,7 +25,12 @@
     "batch_api": "Run predictions in batch"
   },
   "category": "AI MCPs",
-  "tags": ["Replicate", "ML", "Models", "API"],
+  "tags": [
+    "Replicate",
+    "ML",
+    "Models",
+    "API"
+  ],
   "installs": 1567,
   "remixes": 467,
   "installCount": "75-1800",

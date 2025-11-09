@@ -26,7 +26,12 @@
     "performance": "Query optimization and caching strategies"
   },
   "category": "Backend MCPs",
-  "tags": ["Hasura", "GraphQL", "Database", "API"],
+  "tags": [
+    "Hasura",
+    "GraphQL",
+    "Database",
+    "API"
+  ],
   "installs": 1456,
   "remixes": 423,
   "installCount": "75-1800",

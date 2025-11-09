@@ -26,7 +26,12 @@
     "alerts": "Set up data alerts"
   },
   "category": "Analytics MCPs",
-  "tags": ["Metabase", "BI", "Dashboards", "Analytics"],
+  "tags": [
+    "Metabase",
+    "BI",
+    "Dashboards",
+    "Analytics"
+  ],
   "installs": 1456,
   "remixes": 423,
   "installCount": "75-1800",

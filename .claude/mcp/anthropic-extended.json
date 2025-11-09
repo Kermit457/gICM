@@ -25,7 +25,12 @@
     "streaming": "Real-time streaming responses"
   },
   "category": "AI MCPs",
-  "tags": ["Anthropic", "Claude", "Vision", "Batches"],
+  "tags": [
+    "Anthropic",
+    "Claude",
+    "Vision",
+    "Batches"
+  ],
   "installs": 1456,
   "remixes": 423,
   "installCount": "75-1800",

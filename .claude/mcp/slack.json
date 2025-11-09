@@ -11,5 +11,7 @@
         "SLACK_APP_TOKEN": ""
       }
     }
-  }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-slack exists on npm",
+  "_status": "VALID_PACKAGE"
 }

@@ -10,5 +10,9 @@
         "GOOGLE_APPLICATION_CREDENTIALS": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official GCP MCP server exists.",
+  "_note": "Use Google Cloud client libraries",
+  "_alternative": "@google-cloud/* packages",
+  "_status": "CUSTOM_REQUIRED"
 }

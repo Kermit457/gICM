@@ -25,7 +25,11 @@
     "flexibility": "Use any open-source model"
   },
   "category": "AI MCPs",
-  "tags": ["TogetherAI", "LLM", "Inference"],
+  "tags": [
+    "TogetherAI",
+    "LLM",
+    "Inference"
+  ],
   "installs": 1089,
   "remixes": 312,
   "installCount": "75-1800",

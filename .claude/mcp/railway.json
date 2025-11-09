@@ -10,5 +10,9 @@
         "RAILWAY_TOKEN": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Railway MCP server exists.",
+  "_note": "Use Railway API",
+  "_alternative": "Custom Railway API integration",
+  "_status": "CUSTOM_REQUIRED"
 }

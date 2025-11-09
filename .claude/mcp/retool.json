@@ -26,7 +26,11 @@
     "collaboration": "Real-time collaboration on app building"
   },
   "category": "Integration MCPs",
-  "tags": ["Retool", "Low-Code", "AppBuilder"],
+  "tags": [
+    "Retool",
+    "Low-Code",
+    "AppBuilder"
+  ],
   "installs": 1198,
   "remixes": 345,
   "installCount": "75-1800",

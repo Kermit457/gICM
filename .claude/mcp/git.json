@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use @modelcontextprotocol/server-github instead.",
+  "_note": "The GitHub server covers Git operations",
+  "_alternative": "@modelcontextprotocol/server-github",
+  "_status": "USE_ALTERNATIVE"
+}

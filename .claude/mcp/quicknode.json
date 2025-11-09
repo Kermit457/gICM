@@ -14,5 +14,9 @@
         "QUICKNODE_ENABLE_ADDONS": "true"
       }
     }
-  }
+  },
+  "_comment": "⚠️ QuickNode is an RPC provider, not an MCP package.",
+  "_note": "Use QuickNode RPC endpoints with web3 libraries",
+  "_alternative": "Custom implementation with web3.js",
+  "_status": "API_SERVICE"
 }

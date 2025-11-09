@@ -1,0 +1,16 @@
+{
+  "_comment": "⚠️ Package does not exist on npm yet.",
+  "_note": "Use @modelcontextprotocol/server-filesystem for SQLite file access, or implement with better-sqlite3",
+  "_status": "PLACEHOLDER",
+  "mcpServers": {
+    "sqlite": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite"
+      ],
+      "env": {}
+    }
+  },
+  "_alternative": "@modelcontextprotocol/server-filesystem or better-sqlite3"
+}

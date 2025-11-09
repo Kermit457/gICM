@@ -12,5 +12,9 @@
         "AZURE_CLIENT_SECRET": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Azure MCP server exists.",
+  "_note": "Use Azure SDK",
+  "_alternative": "@azure/* packages",
+  "_status": "CUSTOM_REQUIRED"
 }

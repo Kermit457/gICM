@@ -26,7 +26,12 @@
     "reporting": "Generate automated reports"
   },
   "category": "Monitoring MCPs",
-  "tags": ["Grafana", "Monitoring", "Dashboards", "Alerts"],
+  "tags": [
+    "Grafana",
+    "Monitoring",
+    "Dashboards",
+    "Alerts"
+  ],
   "installs": 1634,
   "remixes": 489,
   "installCount": "75-1800",

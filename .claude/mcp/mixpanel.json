@@ -26,7 +26,11 @@
     "data_export": "Export data for external analysis"
   },
   "category": "Analytics MCPs",
-  "tags": ["Mixpanel", "Analytics", "User Insights"],
+  "tags": [
+    "Mixpanel",
+    "Analytics",
+    "User Insights"
+  ],
   "installs": 1123,
   "remixes": 334,
   "installCount": "75-1800",

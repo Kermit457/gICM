@@ -12,5 +12,9 @@
         "SENTRY_PROJECT": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ Use Sentry SDK directly.",
+  "_note": "Sentry error tracking",
+  "_alternative": "@sentry/node",
+  "_status": "SDK_DIRECT"
 }

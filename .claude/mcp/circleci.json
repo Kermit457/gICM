@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "circleci": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-circleci"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Use CircleCI API directly.",
+  "_note": "CircleCI CI/CD",
+  "_alternative": "Custom HTTP client for CircleCI API",
+  "_status": "API_SERVICE"
+}

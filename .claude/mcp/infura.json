@@ -14,5 +14,9 @@
         "INFURA_ENABLE_IPFS": "true"
       }
     }
-  }
+  },
+  "_comment": "⚠️ Infura is an RPC provider API service, not an MCP package.",
+  "_note": "Use Infura endpoints directly via Web3.js or ethers.js",
+  "_alternative": "Custom implementation with web3.js/ethers.js",
+  "_status": "API_SERVICE"
 }

@@ -11,5 +11,9 @@
         "CLOUDFLARE_ACCOUNT_ID": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Cloudflare MCP server exists.",
+  "_note": "Use Cloudflare API",
+  "_alternative": "Custom implementation with Cloudflare API",
+  "_status": "CUSTOM_REQUIRED"
 }

@@ -10,5 +10,9 @@
         "AIRTABLE_API_KEY": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Airtable MCP server exists.",
+  "_note": "Use Airtable API",
+  "_alternative": "airtable npm package",
+  "_status": "CUSTOM_REQUIRED"
 }

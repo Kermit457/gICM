@@ -27,7 +27,12 @@
     "monitoring": "Real-time monitoring and alerts"
   },
   "category": "Messaging MCPs",
-  "tags": ["Upstash", "Redis", "Kafka", "Serverless"],
+  "tags": [
+    "Upstash",
+    "Redis",
+    "Kafka",
+    "Serverless"
+  ],
   "installs": 1345,
   "remixes": 412,
   "installCount": "75-1800",

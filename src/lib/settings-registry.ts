@@ -20,7 +20,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/mcp-timeout-duration.md"],
     install:
-      "npx gicm-stack settings add performance/mcp-timeout-duration --value 30000",
+      "npx @gicm/cli add setting/mcp-timeout-duration",
     settingType: "number",
     defaultValue: 30000,
     affectedComponents: [
@@ -58,7 +58,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/mcp-retry-attempts.md"],
     install:
-      "npx gicm-stack settings add performance/mcp-retry-attempts --value 3",
+      "npx @gicm/cli add setting/mcp-retry-attempts",
     settingType: "number",
     defaultValue: 3,
     affectedComponents: [
@@ -96,7 +96,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/skill-cache-ttl.md"],
     install:
-      "npx gicm-stack settings add performance/skill-cache-ttl --value 3600",
+      "npx @gicm/cli add setting/skill-cache-ttl",
     settingType: "number",
     defaultValue: 3600,
     affectedComponents: [], // Affects all skills
@@ -123,7 +123,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/parallel-tool-execution.md"],
     install:
-      "npx gicm-stack settings add performance/parallel-tool-execution --value true",
+      "npx @gicm/cli add setting/parallel-tool-execution",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [
@@ -151,7 +151,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/token-budget-limit.md"],
     install:
-      "npx gicm-stack settings add performance/token-budget-limit --value 200000",
+      "npx @gicm/cli add setting/token-budget-limit",
     settingType: "number",
     defaultValue: 200000,
     affectedComponents: [],
@@ -178,7 +178,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/response-streaming.md"],
     install:
-      "npx gicm-stack settings add performance/response-streaming --value true",
+      "npx @gicm/cli add setting/response-streaming",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [],
@@ -202,7 +202,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/context-window-size.md"],
     install:
-      "npx gicm-stack settings add performance/context-window-size --value 200000",
+      "npx @gicm/cli add setting/context-window-size",
     settingType: "number",
     defaultValue: 200000,
     affectedComponents: [],
@@ -229,7 +229,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/agent-cache-strategy.md"],
     install:
-      "npx gicm-stack settings add performance/agent-cache-strategy --value session",
+      "npx @gicm/cli add setting/agent-cache-strategy",
     settingType: "string",
     defaultValue: "session",
     affectedComponents: [], // Affects all agents
@@ -255,7 +255,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/batch-operation-size.md"],
     install:
-      "npx gicm-stack settings add performance/batch-operation-size --value 10",
+      "npx @gicm/cli add setting/batch-operation-size",
     settingType: "number",
     defaultValue: 10,
     affectedComponents: [],
@@ -282,7 +282,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/network-timeout.md"],
     install:
-      "npx gicm-stack settings add performance/network-timeout --value 30000",
+      "npx @gicm/cli add setting/network-timeout",
     settingType: "number",
     defaultValue: 30000,
     affectedComponents: [],
@@ -309,7 +309,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/lazy-skill-loading.md"],
     install:
-      "npx gicm-stack settings add performance/lazy-skill-loading --value true",
+      "npx @gicm/cli add setting/lazy-skill-loading",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [], // Affects all 32 skills
@@ -333,7 +333,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/performance/compression-enabled.md"],
     install:
-      "npx gicm-stack settings add performance/compression-enabled --value true",
+      "npx @gicm/cli add setting/compression-enabled",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [],
@@ -359,7 +359,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/require-env-validation.md"],
     install:
-      "npx gicm-stack settings add security/require-env-validation --value true",
+      "npx @gicm/cli add setting/require-env-validation",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [],
@@ -382,7 +382,7 @@ export const SETTINGS: Setting[] = [
     tags: ["Sandbox", "File System", "Security", "Isolation"],
     dependencies: [],
     files: [".claude/settings/security/sandbox-mode.md"],
-    install: "npx gicm-stack settings add security/sandbox-mode --value true",
+    install: "npx @gicm/cli add setting/sandbox-mode",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: [],
@@ -406,7 +406,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/api-key-rotation-days.md"],
     install:
-      "npx gicm-stack settings add security/api-key-rotation-days --value 90",
+      "npx @gicm/cli add setting/api-key-rotation-days",
     settingType: "number",
     defaultValue: 90,
     affectedComponents: [],
@@ -433,7 +433,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/allowed-domains.md"],
     install:
-      'npx gicm-stack settings add security/allowed-domains --value "api.anthropic.com,supabase.io,alchemy.com"',
+      "npx @gicm/cli add setting/allowed-domains",
     settingType: "array",
     defaultValue: [],
     affectedComponents: [],
@@ -457,7 +457,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/audit-log-enabled.md"],
     install:
-      "npx gicm-stack settings add security/audit-log-enabled --value true",
+      "npx @gicm/cli add setting/audit-log-enabled",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: [],
@@ -481,7 +481,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/mcp-permission-model.md"],
     install:
-      "npx gicm-stack settings add security/mcp-permission-model --value strict",
+      "npx @gicm/cli add setting/mcp-permission-model",
     settingType: "string",
     defaultValue: "permissive",
     affectedComponents: [
@@ -518,7 +518,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/credential-encryption.md"],
     install:
-      "npx gicm-stack settings add security/credential-encryption --value true",
+      "npx @gicm/cli add setting/credential-encryption",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: [],
@@ -542,7 +542,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/rate-limit-per-hour.md"],
     install:
-      "npx gicm-stack settings add security/rate-limit-per-hour --value 1000",
+      "npx @gicm/cli add setting/rate-limit-per-hour",
     settingType: "number",
     defaultValue: 1000,
     affectedComponents: [],
@@ -569,7 +569,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/disallowed-commands.md"],
     install:
-      'npx gicm-stack settings add security/disallowed-commands --value "rm -rf,dd,mkfs,:(){ :|:& };:"',
+      "npx @gicm/cli add setting/disallowed-commands",
     settingType: "array",
     defaultValue: ["rm -rf /", "dd if=", "mkfs", ":(){ :|:& };:"],
     affectedComponents: [],
@@ -593,7 +593,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/security/require-signature-verification.md"],
     install:
-      "npx gicm-stack settings add security/require-signature-verification --value true",
+      "npx @gicm/cli add setting/require-signature-verification",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: [],
@@ -619,7 +619,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/auto-git-commit.md"],
     install:
-      "npx gicm-stack settings add development/auto-git-commit --value false",
+      "npx @gicm/cli add setting/auto-git-commit",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: ["git-workflow-specialist", "code-review-orchestrator"],
@@ -643,7 +643,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/conventional-commits.md"],
     install:
-      "npx gicm-stack settings add development/conventional-commits --value true",
+      "npx @gicm/cli add setting/conventional-commits",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: ["git-workflow-specialist"],
@@ -667,7 +667,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/pre-commit-hooks.md"],
     install:
-      "npx gicm-stack settings add development/pre-commit-hooks --value true",
+      "npx @gicm/cli add setting/pre-commit-hooks",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: ["git-workflow-specialist", "test-automation-engineer"],
@@ -691,7 +691,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/test-before-deploy.md"],
     install:
-      "npx gicm-stack settings add development/test-before-deploy --value true",
+      "npx @gicm/cli add setting/test-before-deploy",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [
@@ -719,7 +719,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/linting-enabled.md"],
     install:
-      "npx gicm-stack settings add development/linting-enabled --value true",
+      "npx @gicm/cli add setting/linting-enabled",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [],
@@ -743,7 +743,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/format-on-save.md"],
     install:
-      "npx gicm-stack settings add development/format-on-save --value true",
+      "npx @gicm/cli add setting/format-on-save",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: [],
@@ -767,7 +767,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/typescript-strict-mode.md"],
     install:
-      "npx gicm-stack settings add development/typescript-strict-mode --value true",
+      "npx @gicm/cli add setting/typescript-strict-mode",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: ["typescript-precision-engineer"],
@@ -791,7 +791,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/development/dependency-auto-update.md"],
     install:
-      "npx gicm-stack settings add development/dependency-auto-update --value patch",
+      "npx @gicm/cli add setting/dependency-auto-update",
     settingType: "string",
     defaultValue: "none",
     affectedComponents: ["package-manager-expert"],
@@ -819,7 +819,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/default-rpc-provider.md"],
     install:
-      "npx gicm-stack settings add integration/default-rpc-provider --value helius",
+      "npx @gicm/cli add setting/default-rpc-provider",
     settingType: "string",
     defaultValue: "helius",
     affectedComponents: [
@@ -850,7 +850,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/subgraph-endpoint.md"],
     install:
-      "npx gicm-stack settings add integration/subgraph-endpoint --value studio",
+      "npx @gicm/cli add setting/subgraph-endpoint",
     settingType: "string",
     defaultValue: "studio",
     affectedComponents: ["thegraph-mcp", "graph-protocol-indexer"],
@@ -876,7 +876,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/wallet-adapter-priority.md"],
     install:
-      'npx gicm-stack settings add integration/wallet-adapter-priority --value "phantom,solflare,backpack"',
+      "npx @gicm/cli add setting/wallet-adapter-priority",
     settingType: "array",
     defaultValue: ["phantom", "solflare", "backpack"],
     affectedComponents: ["frontend-fusion-engine"],
@@ -900,7 +900,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/ipfs-gateway-url.md"],
     install:
-      "npx gicm-stack settings add integration/ipfs-gateway-url --value cloudflare-ipfs.com",
+      "npx @gicm/cli add setting/ipfs-gateway-url",
     settingType: "string",
     defaultValue: "cloudflare-ipfs.com",
     affectedComponents: [],
@@ -924,7 +924,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/analytics-enabled.md"],
     install:
-      "npx gicm-stack settings add integration/analytics-enabled --value true",
+      "npx @gicm/cli add setting/analytics-enabled",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: [],
@@ -948,7 +948,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/error-reporting-service.md"],
     install:
-      "npx gicm-stack settings add integration/error-reporting-service --value sentry",
+      "npx @gicm/cli add setting/error-reporting-service",
     settingType: "string",
     defaultValue: "none",
     affectedComponents: ["monitoring-specialist"],
@@ -974,7 +974,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/integration/monitoring-dashboard.md"],
     install:
-      "npx gicm-stack settings add integration/monitoring-dashboard --value datadog",
+      "npx @gicm/cli add setting/monitoring-dashboard",
     settingType: "string",
     defaultValue: "none",
     affectedComponents: ["monitoring-specialist", "performance-profiler"],
@@ -1002,7 +1002,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/monitoring/performance-profiling.md"],
     install:
-      "npx gicm-stack settings add monitoring/performance-profiling --value true",
+      "npx @gicm/cli add setting/performance-profiling-setting",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: ["performance-profiler", "context-sculptor"],
@@ -1026,7 +1026,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/monitoring/memory-usage-alerts.md"],
     install:
-      "npx gicm-stack settings add monitoring/memory-usage-alerts --value 1024",
+      "npx @gicm/cli add setting/memory-usage-alerts",
     settingType: "number",
     defaultValue: 0,
     affectedComponents: [],
@@ -1053,7 +1053,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/monitoring/slow-query-threshold-ms.md"],
     install:
-      "npx gicm-stack settings add monitoring/slow-query-threshold-ms --value 1000",
+      "npx @gicm/cli add setting/slow-query-threshold-ms",
     settingType: "number",
     defaultValue: 1000,
     affectedComponents: ["database-schema-oracle"],
@@ -1080,7 +1080,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/monitoring/error-notification-webhook.md"],
     install:
-      "npx gicm-stack settings add monitoring/error-notification-webhook --value https://hooks.slack.com/...",
+      "npx @gicm/cli add setting/error-notification-webhook",
     settingType: "string",
     defaultValue: "",
     affectedComponents: [],
@@ -1104,7 +1104,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/monitoring/uptime-monitoring.md"],
     install:
-      "npx gicm-stack settings add monitoring/uptime-monitoring --value true",
+      "npx @gicm/cli add setting/uptime-monitoring",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: ["monitoring-specialist", "deployment-strategist"],
@@ -1128,7 +1128,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/monitoring/cost-tracking.md"],
     install:
-      "npx gicm-stack settings add monitoring/cost-tracking --value true",
+      "npx @gicm/cli add setting/cost-tracking",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: [],
@@ -1154,7 +1154,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/optimization/bundle-analyzer-enabled.md"],
     install:
-      "npx gicm-stack settings add optimization/bundle-analyzer-enabled --value true",
+      "npx @gicm/cli add setting/bundle-analyzer-enabled",
     settingType: "boolean",
     defaultValue: false,
     affectedComponents: ["bundler-optimizer", "performance-profiler"],
@@ -1178,7 +1178,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/optimization/tree-shaking.md"],
     install:
-      "npx gicm-stack settings add optimization/tree-shaking --value true",
+      "npx @gicm/cli add setting/tree-shaking",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: ["bundler-optimizer", "build-system-engineer"],
@@ -1202,7 +1202,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/optimization/code-splitting-strategy.md"],
     install:
-      "npx gicm-stack settings add optimization/code-splitting-strategy --value route",
+      "npx @gicm/cli add setting/code-splitting-strategy",
     settingType: "string",
     defaultValue: "route",
     affectedComponents: ["bundler-optimizer", "frontend-fusion-engine"],
@@ -1228,7 +1228,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/optimization/image-optimization.md"],
     install:
-      "npx gicm-stack settings add optimization/image-optimization --value true",
+      "npx @gicm/cli add setting/image-optimization",
     settingType: "boolean",
     defaultValue: true,
     affectedComponents: ["frontend-fusion-engine", "performance-profiler"],
@@ -1252,7 +1252,7 @@ export const SETTINGS: Setting[] = [
     dependencies: [],
     files: [".claude/settings/optimization/cdn-caching-strategy.md"],
     install:
-      "npx gicm-stack settings add optimization/cdn-caching-strategy --value balanced",
+      "npx @gicm/cli add setting/cdn-caching-strategy",
     settingType: "string",
     defaultValue: "balanced",
     affectedComponents: ["deployment-strategist"],

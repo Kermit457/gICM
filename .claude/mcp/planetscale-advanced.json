@@ -26,7 +26,11 @@
     "replication": "Global read replicas for scale"
   },
   "category": "Database MCPs",
-  "tags": ["PlanetScale", "MySQL", "DevOps"],
+  "tags": [
+    "PlanetScale",
+    "MySQL",
+    "DevOps"
+  ],
   "installs": 987,
   "remixes": 289,
   "installCount": "75-1800",

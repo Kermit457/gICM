@@ -26,7 +26,11 @@
     "analytics": "Performance and usage analytics"
   },
   "category": "AI MCPs",
-  "tags": ["Langfuse", "Prompts", "Evaluation"],
+  "tags": [
+    "Langfuse",
+    "Prompts",
+    "Evaluation"
+  ],
   "installs": 1089,
   "remixes": 312,
   "installCount": "75-1800",

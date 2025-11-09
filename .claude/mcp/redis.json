@@ -10,5 +10,7 @@
         "REDIS_URL": ""
       }
     }
-  }
+  },
+  "_comment": "✅ @modelcontextprotocol/server-redis exists on npm",
+  "_status": "VALID_PACKAGE"
 }

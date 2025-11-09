@@ -26,7 +26,12 @@
     "extensions": "Install PostgreSQL extensions for advanced features"
   },
   "category": "Backend MCPs",
-  "tags": ["Supabase", "Extensions", "Storage", "Auth"],
+  "tags": [
+    "Supabase",
+    "Extensions",
+    "Storage",
+    "Auth"
+  ],
   "installs": 1456,
   "remixes": 434,
   "installCount": "75-1800",

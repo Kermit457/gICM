@@ -26,7 +26,11 @@
     "monitoring": "Performance metrics and insights"
   },
   "category": "Database MCPs",
-  "tags": ["Warp", "DistributedSQL", "Edge"],
+  "tags": [
+    "Warp",
+    "DistributedSQL",
+    "Edge"
+  ],
   "installs": 832,
   "remixes": 245,
   "installCount": "75-1800",

@@ -10,5 +10,9 @@
         "STRIPE_SECRET_KEY": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ Use Stripe SDK directly.",
+  "_note": "Stripe payment processing",
+  "_alternative": "stripe npm package",
+  "_status": "SDK_DIRECT"
 }

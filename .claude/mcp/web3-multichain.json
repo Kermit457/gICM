@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "web3-multichain": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-web3-multichain"
+      ],
+      "env": {}
+    }
+  },
+  "_comment": "⚠️ Package does not exist on npm.",
+  "_note": "Implement custom multi-chain integration",
+  "_alternative": "Build using ethers.js/web3.js with multiple providers",
+  "_status": "CUSTOM_REQUIRED"
+}

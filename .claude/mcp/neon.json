@@ -26,7 +26,11 @@
     "analytics": "Usage metrics and performance insights"
   },
   "category": "Database MCPs",
-  "tags": ["Neon", "PostgreSQL", "Serverless"],
+  "tags": [
+    "Neon",
+    "PostgreSQL",
+    "Serverless"
+  ],
   "installs": 1678,
   "remixes": 501,
   "installCount": "75-1800",

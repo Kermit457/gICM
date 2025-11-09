@@ -27,7 +27,11 @@
     "analytics": "Track search and chat analytics"
   },
   "category": "AI MCPs",
-  "tags": ["Vectara", "RAG", "SemanticSearch"],
+  "tags": [
+    "Vectara",
+    "RAG",
+    "SemanticSearch"
+  ],
   "installs": 1123,
   "remixes": 334,
   "installCount": "75-1800",

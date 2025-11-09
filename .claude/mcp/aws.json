@@ -12,5 +12,9 @@
         "AWS_REGION": "us-east-1"
       }
     }
-  }
+  },
+  "_comment": "⚠️ Generic AWS server doesn't exist. Use AWS-specific servers.",
+  "_note": "For AWS Bedrock Knowledge Base, use @modelcontextprotocol/server-aws-kb-retrieval",
+  "_alternative": "@modelcontextprotocol/server-aws-kb-retrieval",
+  "_status": "USE_ALTERNATIVE"
 }

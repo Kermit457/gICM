@@ -25,7 +25,12 @@
     "reporting": "Detailed security reports"
   },
   "category": "Security MCPs",
-  "tags": ["Snyk", "Security", "Scanning", "Dependencies"],
+  "tags": [
+    "Snyk",
+    "Security",
+    "Scanning",
+    "Dependencies"
+  ],
   "installs": 1234,
   "remixes": 356,
   "installCount": "75-1800",

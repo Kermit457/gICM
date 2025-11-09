@@ -10,5 +10,9 @@
         "KUBECONFIG": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ No official Kubernetes MCP server exists.",
+  "_note": "Use kubectl or Kubernetes client libraries",
+  "_alternative": "@kubernetes/client-node",
+  "_status": "CUSTOM_REQUIRED"
 }

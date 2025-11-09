@@ -11,5 +11,9 @@
         "DATADOG_APP_KEY": ""
       }
     }
-  }
+  },
+  "_comment": "⚠️ Use Datadog API/SDK directly.",
+  "_note": "Datadog monitoring",
+  "_alternative": "dd-trace or Datadog API",
+  "_status": "API_SERVICE"
 }
