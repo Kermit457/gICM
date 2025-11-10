@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Trophy, MessageSquare, DollarSign, Coins, TrendingUp, Zap, Star } from "lucide-react";
+import { Trophy, DollarSign, Coins, TrendingUp, Zap, Star } from "lucide-react";
 import { AnimatedCounter } from "../hero/AnimatedCounter";
 
 interface FOMOSectionProps {
@@ -14,11 +14,6 @@ interface Builder {
   trend: "up" | "down" | "same";
 }
 
-interface Testimonial {
-  text: string;
-  author: string;
-}
-
 export function FOMOSection({ theme }: FOMOSectionProps) {
   const [topBuilders, setTopBuilders] = useState<Builder[]>([
     { name: "Alex M.", stacksBuilt: 43, trend: "up" },
@@ -28,36 +23,8 @@ export function FOMOSection({ theme }: FOMOSectionProps) {
     { name: "Taylor B.", stacksBuilt: 29, trend: "up" },
   ]);
 
-  const [testimonials] = useState<Testimonial[]>([
-    { text: "Built a complete DeFi stack in under 10 minutes!", author: "Alex M." },
-    { text: "The live activity feed is so motivating to see what others are building", author: "Jordan K." },
-    { text: "Best marketplace for finding quality blockchain stacks", author: "Casey R." },
-    { text: "Love the real-time collaboration aspect", author: "Morgan L." },
-  ]);
-
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [launchedToday, setLaunchedToday] = useState(12);
-
-  // Rotate testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
-
-  // Simulate launched projects count
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLaunchedToday(prev => prev + Math.floor(Math.random() * 2));
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Leaderboard */}
       <div className={`
         rounded-2xl border p-6
@@ -118,81 +85,6 @@ export function FOMOSection({ theme }: FOMOSectionProps) {
                 <Star className="w-5 h-5 text-yellow-400 animate-float" />
               )}
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Testimonial Ticker */}
-      <div className={`
-        rounded-2xl border p-6
-        ${theme === "dark" ? "glass-card" : "glass-card-light bg-white"}
-      `}>
-        <div className="flex items-center gap-2 mb-6">
-          <MessageSquare className={`w-6 h-6 ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`} />
-          <h3 className={`
-            text-lg font-black uppercase tracking-wide
-            ${theme === "dark" ? "text-white" : "text-black"}
-          `}>
-            Builder Feedback
-          </h3>
-        </div>
-
-        <div className="relative min-h-[200px] flex items-center">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className={`
-                absolute inset-0 transition-opacity duration-500
-                ${index === currentTestimonial ? "opacity-100" : "opacity-0"}
-              `}
-            >
-              <div className={`
-                p-6 rounded-xl border
-                ${theme === "dark"
-                  ? "bg-gradient-to-br from-lime-500/10 to-transparent border-lime-500/30"
-                  : "bg-gradient-to-br from-lime-50 to-transparent border-lime-200"
-                }
-              `}>
-                <p className={`
-                  text-lg italic mb-4
-                  ${theme === "dark" ? "text-white" : "text-black"}
-                `}>
-                  "{testimonial.text}"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className={`
-                    w-10 h-10 rounded-full flex items-center justify-center font-bold
-                    ${theme === "dark"
-                      ? "bg-lime-500/20 text-lime-400"
-                      : "bg-lime-100 text-lime-600"
-                    }
-                  `}>
-                    {testimonial.author[0]}
-                  </div>
-                  <span className={`text-sm font-semibold ${theme === "dark" ? "text-white/70" : "text-black/70"}`}>
-                    {testimonial.author}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Testimonial indicators */}
-        <div className="flex justify-center gap-2 mt-4">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentTestimonial(index)}
-              className={`
-                w-2 h-2 rounded-full transition-all
-                ${index === currentTestimonial
-                  ? (theme === "dark" ? "bg-lime-400 w-6" : "bg-lime-600 w-6")
-                  : (theme === "dark" ? "bg-white/20" : "bg-black/20")
-                }
-              `}
-              aria-label={`View testimonial ${index + 1}`}
-            />
           ))}
         </div>
       </div>
