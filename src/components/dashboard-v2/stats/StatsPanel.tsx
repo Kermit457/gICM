@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { LiveStatsResponse } from "@/types/live-activity";
 import { DollarSign, Coins, TrendingUp, Zap } from "lucide-react";
 import { AnimatedCounter } from "../hero/AnimatedCounter";
 
@@ -9,7 +8,71 @@ interface StatsPanelProps {
   theme: "dark" | "light";
 }
 
+interface TokenSavingsData {
+  tokensSavedToday: number;
+  costSavedToday: number;
+  avgTokensPerStack: number;
+  avgCostPerStack: number;
+  totalTokensSaved: number;
+  totalCostSaved: number;
+  savingsRate: number;
+  itemsSavedToday: number;
+  itemsSavedTotal: number;
+  formatted: {
+    tokensSavedToday: string;
+    costSavedToday: string;
+    avgTokensPerStack: string;
+    avgCostPerStack: string;
+    totalTokensSaved: string;
+    totalCostSaved: string;
+    savingsRate: string;
+  };
+}
+
 export function StatsPanel({ theme }: StatsPanelProps) {
+  const [savings, setSavings] = useState<TokenSavingsData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchSavings = async () => {
+    try {
+      const response = await fetch("/api/analytics/token-savings");
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const data: TokenSavingsData = await response.json();
+      setSavings(data);
+    } catch (err) {
+      console.error("Failed to fetch token savings:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSavings();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchSavings();
+    }, 5000); // Update every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (isLoading || !savings) {
+    return (
+      <div className={`
+        h-[600px] rounded-2xl border p-6
+        ${theme === "dark" ? "glass-card" : "glass-card-light bg-white"}
+      `}>
+        <div className="animate-pulse space-y-4">
+          <div className={`h-8 rounded ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
+          <div className={`h-32 rounded ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
+          <div className={`h-32 rounded ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={`
       h-[600px] rounded-2xl border p-6 overflow-y-auto custom-scrollbar
@@ -42,10 +105,10 @@ export function StatsPanel({ theme }: StatsPanelProps) {
             </span>
           </div>
           <div className={`text-3xl font-black ${theme === "dark" ? "text-white" : "text-black"}`}>
-            <AnimatedCounter value={2847} /> tokens
+            <AnimatedCounter value={savings.tokensSavedToday} /> tokens
           </div>
           <p className={`text-xl font-bold mt-1 ${theme === "dark" ? "text-lime-400" : "text-lime-600"}`}>
-            $142.35 saved
+            {savings.formatted.costSavedToday} saved
           </p>
         </div>
 
@@ -66,11 +129,11 @@ export function StatsPanel({ theme }: StatsPanelProps) {
                 </span>
               </div>
               <span className={`text-sm font-bold ${theme === "dark" ? "text-white" : "text-black"}`}>
-                127 tokens
+                {savings.formatted.avgTokensPerStack} tokens
               </span>
             </div>
             <p className={`text-xs text-right ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`}>
-              $6.35 saved/stack
+              {savings.formatted.avgCostPerStack} saved/stack
             </p>
           </div>
 
@@ -89,11 +152,11 @@ export function StatsPanel({ theme }: StatsPanelProps) {
                 </span>
               </div>
               <span className={`text-sm font-bold ${theme === "dark" ? "text-white" : "text-black"}`}>
-                1.2M
+                {savings.formatted.totalTokensSaved}
               </span>
             </div>
             <p className={`text-xs text-right ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`}>
-              $60,000 total saved
+              {savings.formatted.totalCostSaved} total saved
             </p>
           </div>
 
@@ -112,7 +175,7 @@ export function StatsPanel({ theme }: StatsPanelProps) {
                 </span>
               </div>
               <span className={`text-sm font-bold ${theme === "dark" ? "text-lime-400" : "text-lime-600"}`}>
-                +43% this week
+                {savings.formatted.savingsRate} this week
               </span>
             </div>
           </div>
