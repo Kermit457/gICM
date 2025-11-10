@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { AnalyticsStats } from "@/types/analytics";
 import { toast } from "sonner";
+import { LiveActivityTicker } from "@/components/organisms/live-activity-ticker";
+import { LiveStatsPanel } from "@/components/organisms/live-stats-panel";
 import {
   BarChart,
   Bar,
@@ -414,6 +416,28 @@ export default function AnalyticsPage() {
               <div className="text-black/60 mb-1">Bundle Downloads</div>
               <div className="text-lg font-bold text-black">
                 {stats.bundleDownloads || 0}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Activity Feed Section */}
+        <div className="rounded-xl border border-black/20 bg-white/90 backdrop-blur p-6">
+          <h3 className="text-lg font-black text-black mb-4">🔴 Live Activity Stream</h3>
+          <p className="text-sm text-black/60 mb-4">
+            Real-time platform activity with simulated viral events for marketing
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            {/* Live Stats */}
+            <div className="lg:col-span-4 min-h-[500px]">
+              <LiveStatsPanel />
+            </div>
+
+            {/* Live Activity Feed */}
+            <div className="lg:col-span-8 min-h-[500px]">
+              <div className="h-full rounded-xl border border-black/20 bg-white/90 backdrop-blur overflow-hidden">
+                <LiveActivityTicker />
               </div>
             </div>
           </div>
