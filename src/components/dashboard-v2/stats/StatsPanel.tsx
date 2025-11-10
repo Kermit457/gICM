@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { LiveStatsResponse } from "@/types/live-activity";
-import { TrendingUp, Package, Users } from "lucide-react";
-import { AnimatedCounter } from "../hero/AnimatedCounter";
+import { TrendingUp, Clock, Rocket, Zap, Target } from "lucide-react";
 
 interface StatsPanelProps {
   theme: "dark" | "light";
@@ -12,6 +11,27 @@ interface StatsPanelProps {
 export function StatsPanel({ theme }: StatsPanelProps) {
   const [stats, setStats] = useState<LiveStatsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Mock hourly activity data (in real app, fetch from API)
+  const hourlyActivity = [
+    { hour: "00:00", count: 12 },
+    { hour: "03:00", count: 8 },
+    { hour: "06:00", count: 15 },
+    { hour: "09:00", count: 45 },
+    { hour: "12:00", count: 67 },
+    { hour: "15:00", count: 58 },
+    { hour: "18:00", count: 72 },
+    { hour: "21:00", count: 54 },
+    { hour: "now", count: 43 },
+  ];
+
+  const recentDeployments = [
+    { name: "DeFi Trading Bot", time: "2m ago", success: true },
+    { name: "NFT Marketplace", time: "8m ago", success: true },
+    { name: "Web3 Analytics", time: "15m ago", success: true },
+    { name: "Solana dApp Starter", time: "23m ago", success: false },
+    { name: "DAO Governance", time: "31m ago", success: true },
+  ];
 
   const fetchStats = async () => {
     try {
@@ -45,93 +65,185 @@ export function StatsPanel({ theme }: StatsPanelProps) {
         h-[600px] rounded-2xl border p-6
         ${theme === "dark" ? "glass-card" : "glass-card-light bg-white"}
       `}>
-        <div className="animate-pulse">
-          <div className={`h-8 rounded mb-4 ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
-          <div className={`h-32 rounded mb-4 ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
+        <div className="animate-pulse space-y-4">
+          <div className={`h-8 rounded ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
+          <div className={`h-32 rounded ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
           <div className={`h-32 rounded ${theme === "dark" ? "bg-white/10" : "bg-black/10"}`} />
         </div>
       </div>
     );
   }
 
+  const maxActivity = Math.max(...hourlyActivity.map(h => h.count));
+
   return (
     <div className={`
       h-[600px] rounded-2xl border p-6 overflow-y-auto custom-scrollbar
       ${theme === "dark" ? "glass-card" : "glass-card-light bg-white"}
     `}>
-      {/* Top Stats */}
-      <div className="space-y-4 mb-6">
-        {/* Total Builders */}
-        <div className={`
-          p-4 rounded-xl border
-          ${theme === "dark"
-            ? "bg-gradient-to-br from-purple-500/10 to-transparent border-purple-500/30"
-            : "bg-gradient-to-br from-purple-50 to-transparent border-purple-200"
-          }
-        `}>
-          <div className="flex items-center gap-2 mb-2">
-            <Users className={`w-5 h-5 ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`} />
-            <h3 className={`
-              text-xs font-bold uppercase tracking-wide
-              ${theme === "dark" ? "text-purple-400" : "text-purple-600"}
-            `}>
-              Total Builders
-            </h3>
-          </div>
-          <div className={`text-4xl font-black ${theme === "dark" ? "text-white" : "text-black"}`}>
-            <AnimatedCounter value={stats.totalBuilders} />
-          </div>
+      {/* Activity Heatmap */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Clock className={`w-5 h-5 ${theme === "dark" ? "text-lime-400" : "text-lime-600"}`} />
+          <h3 className={`
+            text-sm font-bold uppercase tracking-wide
+            ${theme === "dark" ? "text-white/70" : "text-black/70"}
+          `}>
+            24h Activity
+          </h3>
         </div>
-
-        {/* Active Now */}
-        <div className={`
-          p-4 rounded-xl border animate-pulse-glow
-          ${theme === "dark"
-            ? "bg-gradient-to-br from-lime-500/10 to-transparent border-lime-500/30"
-            : "bg-gradient-to-br from-lime-50 to-transparent border-lime-200"
-          }
-        `}>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 rounded-full bg-lime-500 animate-pulse" />
-            <h3 className={`
-              text-xs font-bold uppercase tracking-wide
-              ${theme === "dark" ? "text-lime-400" : "text-lime-600"}
-            `}>
-              Building Now
-            </h3>
-          </div>
-          <div className={`text-3xl font-black ${theme === "dark" ? "text-lime-400" : "text-lime-600"}`}>
-            <AnimatedCounter value={stats.activeNow} />
-          </div>
-          <p className={`text-xs mt-1 ${theme === "dark" ? "text-lime-400/70" : "text-lime-600/70"}`}>
-            Active in last 5 min
-          </p>
+        <div className="space-y-2">
+          {hourlyActivity.map((item) => (
+            <div key={item.hour} className="flex items-center gap-2">
+              <span className={`
+                text-xs w-12 flex-shrink-0 text-right font-mono
+                ${theme === "dark" ? "text-white/60" : "text-black/60"}
+              `}>
+                {item.hour}
+              </span>
+              <div className="flex-1 h-6 bg-white/5 rounded-md overflow-hidden">
+                <div
+                  className={`h-full rounded-md transition-all ${
+                    item.hour === "now"
+                      ? "bg-gradient-to-r from-lime-500 to-lime-400 animate-pulse-glow"
+                      : "bg-gradient-to-r from-purple-500/50 to-purple-400/50"
+                  }`}
+                  style={{ width: `${(item.count / maxActivity) * 100}%` }}
+                />
+              </div>
+              <span className={`
+                text-xs w-8 flex-shrink-0 font-bold tabular-nums
+                ${item.hour === "now"
+                  ? (theme === "dark" ? "text-lime-400" : "text-lime-600")
+                  : (theme === "dark" ? "text-white/60" : "text-black/60")
+                }
+              `}>
+                {item.count}
+              </span>
+            </div>
+          ))}
         </div>
+      </div>
 
-        {/* Built Today */}
-        <div className={`
-          p-4 rounded-xl border
-          ${theme === "dark"
-            ? "bg-gradient-to-br from-yellow-500/10 to-transparent border-yellow-500/30"
-            : "bg-gradient-to-br from-yellow-50 to-transparent border-yellow-200"
-          }
-        `}>
-          <div className="flex items-center gap-2 mb-2">
-            <Package className={`w-5 h-5 ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`} />
-            <h3 className={`
-              text-xs font-bold uppercase tracking-wide
-              ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}
-            `}>
-              Built Today
-            </h3>
+      {/* Recent Deployments */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Rocket className={`w-5 h-5 ${theme === "dark" ? "text-blue-400" : "text-blue-600"}`} />
+          <h3 className={`
+            text-sm font-bold uppercase tracking-wide
+            ${theme === "dark" ? "text-white/70" : "text-black/70"}
+          `}>
+            Recent Deployments
+          </h3>
+        </div>
+        <div className="space-y-2">
+          {recentDeployments.map((deployment, index) => (
+            <div
+              key={index}
+              className={`
+                flex items-center justify-between p-3 rounded-lg border
+                transition-all hover-scale
+                ${theme === "dark"
+                  ? "bg-white/5 border-white/10 hover:bg-white/10"
+                  : "bg-white border-black/10 hover:bg-gray-50"
+                }
+              `}
+            >
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <div className={`
+                  w-2 h-2 rounded-full flex-shrink-0
+                  ${deployment.success
+                    ? "bg-lime-500"
+                    : "bg-red-500"
+                  }
+                `} />
+                <span className={`
+                  text-sm font-medium truncate
+                  ${theme === "dark" ? "text-white" : "text-black"}
+                `}>
+                  {deployment.name}
+                </span>
+              </div>
+              <span className={`text-xs flex-shrink-0 ml-2 ${theme === "dark" ? "text-white/60" : "text-black/60"}`}>
+                {deployment.time}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick Stats Grid */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Target className={`w-5 h-5 ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`} />
+          <h3 className={`
+            text-sm font-bold uppercase tracking-wide
+            ${theme === "dark" ? "text-white/70" : "text-black/70"}
+          `}>
+            Quick Stats
+          </h3>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className={`
+            p-3 rounded-lg border
+            ${theme === "dark"
+              ? "bg-white/5 border-white/10"
+              : "bg-white border-black/10"
+            }
+          `}>
+            <div className={`text-xs mb-1 ${theme === "dark" ? "text-white/60" : "text-black/60"}`}>
+              Avg. Stack Size
+            </div>
+            <div className={`text-2xl font-black ${theme === "dark" ? "text-white" : "text-black"}`}>
+              7.2
+            </div>
           </div>
-          <div className={`text-3xl font-black ${theme === "dark" ? "text-white" : "text-black"}`}>
-            <AnimatedCounter value={stats.builtToday} />
+          <div className={`
+            p-3 rounded-lg border
+            ${theme === "dark"
+              ? "bg-white/5 border-white/10"
+              : "bg-white border-black/10"
+            }
+          `}>
+            <div className={`text-xs mb-1 ${theme === "dark" ? "text-white/60" : "text-black/60"}`}>
+              Success Rate
+            </div>
+            <div className={`text-2xl font-black ${theme === "dark" ? "text-lime-400" : "text-lime-600"}`}>
+              94%
+            </div>
+          </div>
+          <div className={`
+            p-3 rounded-lg border
+            ${theme === "dark"
+              ? "bg-white/5 border-white/10"
+              : "bg-white border-black/10"
+            }
+          `}>
+            <div className={`text-xs mb-1 ${theme === "dark" ? "text-white/60" : "text-black/60"}`}>
+              Fastest Build
+            </div>
+            <div className={`text-2xl font-black ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`}>
+              4:23
+            </div>
+          </div>
+          <div className={`
+            p-3 rounded-lg border
+            ${theme === "dark"
+              ? "bg-white/5 border-white/10"
+              : "bg-white border-black/10"
+            }
+          `}>
+            <div className={`text-xs mb-1 ${theme === "dark" ? "text-white/60" : "text-black/60"}`}>
+              Top Category
+            </div>
+            <div className={`text-lg font-black ${theme === "dark" ? "text-purple-400" : "text-purple-600"}`}>
+              DeFi
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Trending */}
+      {/* Trending - Expanded to 10 items */}
       {stats.trending.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
@@ -140,11 +252,11 @@ export function StatsPanel({ theme }: StatsPanelProps) {
               text-sm font-bold uppercase tracking-wide
               ${theme === "dark" ? "text-white/70" : "text-black/70"}
             `}>
-              Trending
+              Trending Items
             </h3>
           </div>
-          <div className="space-y-3">
-            {stats.trending.slice(0, 5).map((item, index) => (
+          <div className="space-y-2">
+            {stats.trending.slice(0, 10).map((item, index) => (
               <div
                 key={item.name}
                 className={`
@@ -154,17 +266,22 @@ export function StatsPanel({ theme }: StatsPanelProps) {
                     ? "bg-white/5 border-white/10 hover:bg-white/10"
                     : "bg-white border-black/10 hover:bg-gray-50"
                   }
+                  ${index === 0 && "animate-pulse-glow border-yellow-500/50"}
                 `}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div className={`
                     w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold flex-shrink-0
                     ${index === 0
-                      ? (theme === "dark" ? "bg-yellow-500/20 text-yellow-400" : "bg-yellow-100 text-yellow-600")
+                      ? "bg-gradient-to-br from-yellow-400 to-yellow-600 text-black"
+                      : index === 1
+                      ? (theme === "dark" ? "bg-gray-400/20 text-gray-400" : "bg-gray-100 text-gray-600")
+                      : index === 2
+                      ? (theme === "dark" ? "bg-orange-500/20 text-orange-400" : "bg-orange-100 text-orange-600")
                       : (theme === "dark" ? "bg-white/10 text-white/60" : "bg-black/5 text-black/60")
                     }
                   `}>
-                    {index + 1}
+                    {index === 0 ? "🔥" : index + 1}
                   </div>
                   <span className={`
                     text-sm font-medium truncate
@@ -173,12 +290,17 @@ export function StatsPanel({ theme }: StatsPanelProps) {
                     {item.name}
                   </span>
                 </div>
-                <span className={`
-                  text-sm font-bold tabular-nums flex-shrink-0
-                  ${theme === "dark" ? "text-lime-400" : "text-lime-600"}
-                `}>
-                  {item.count}
-                </span>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className={`
+                    text-sm font-bold tabular-nums
+                    ${theme === "dark" ? "text-lime-400" : "text-lime-600"}
+                  `}>
+                    {item.count}
+                  </span>
+                  {index < 3 && (
+                    <Zap className={`w-4 h-4 ${theme === "dark" ? "text-yellow-400" : "text-yellow-600"}`} />
+                  )}
+                </div>
               </div>
             ))}
           </div>
