@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "@/styles/dashboard-animations.css";
 import { StackBuilderWidget } from "@/components/StackBuilderWidget";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "sonner";

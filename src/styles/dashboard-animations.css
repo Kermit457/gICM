@@ -1,0 +1,444 @@
+/* ============================================
+   gICM Dashboard v2 - Hardware-Accelerated Animations
+   ============================================ */
+
+/* === KEYFRAME ANIMATIONS === */
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(132, 204, 22, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(132, 204, 22, 0.6);
+  }
+}
+
+@keyframes pulseScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 5px rgba(142, 50, 233, 0.3),
+      0 0 10px rgba(142, 50, 233, 0.2),
+      0 0 15px rgba(142, 50, 233, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 10px rgba(142, 50, 233, 0.5),
+      0 0 20px rgba(142, 50, 233, 0.4),
+      0 0 30px rgba(142, 50, 233, 0.3);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes livePulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+/* === UTILITY ANIMATION CLASSES === */
+
+.animate-slide-in-left {
+  animation: slideInFromLeft 0.4s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInFromRight 0.4s ease-out;
+}
+
+.animate-slide-in-top {
+  animation: slideInFromTop 0.4s ease-out;
+}
+
+.animate-slide-in-bottom {
+  animation: slideInFromBottom 0.4s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-pulse-scale {
+  animation: pulseScale 1s ease-in-out infinite;
+}
+
+.animate-neon-pulse {
+  animation: neonPulse 2.5s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.animate-live-pulse {
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+/* === STAGGER DELAYS === */
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* === GPU ACCELERATION HINTS === */
+
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* === GLASSMORPHISM === */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* === GLOW EFFECTS === */
+
+.glow-purple {
+  box-shadow:
+    0 0 10px rgba(142, 50, 233, 0.3),
+    0 0 20px rgba(142, 50, 233, 0.2);
+}
+
+.glow-lime {
+  box-shadow:
+    0 0 10px rgba(132, 204, 22, 0.3),
+    0 0 20px rgba(132, 204, 22, 0.2);
+}
+
+.glow-yellow {
+  box-shadow:
+    0 0 10px rgba(255, 222, 115, 0.3),
+    0 0 20px rgba(255, 222, 115, 0.2);
+}
+
+/* === HOVER EFFECTS === */
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow:
+    0 0 20px rgba(132, 204, 22, 0.4),
+    0 0 40px rgba(132, 204, 22, 0.2);
+}
+
+.hover-scale {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* === SCROLL ANIMATIONS === */
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+.scroll-snap-item {
+  scroll-snap-align: start;
+}
+
+/* === CUSTOM SCROLLBAR === */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(132, 204, 22, 0.5);
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(132, 204, 22, 0.7);
+}
+
+/* Dark mode scrollbar */
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(132, 204, 22, 0.4);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(132, 204, 22, 0.6);
+}
+
+/* === GRADIENT BACKGROUNDS === */
+
+.gradient-purple-lime {
+  background: linear-gradient(135deg, #8e32e9 0%, #84cc16 100%);
+}
+
+.gradient-dark-radial {
+  background: radial-gradient(
+    circle at top right,
+    rgba(142, 50, 233, 0.15) 0%,
+    rgba(15, 15, 30, 1) 50%,
+    rgba(15, 15, 30, 1) 100%
+  );
+}
+
+/* === TEXT EFFECTS === */
+
+.text-glow-purple {
+  text-shadow: 0 0 20px rgba(142, 50, 233, 0.6);
+}
+
+.text-glow-lime {
+  text-shadow: 0 0 20px rgba(132, 204, 22, 0.6);
+}
+
+.text-gradient-purple-lime {
+  background: linear-gradient(135deg, #8e32e9 0%, #84cc16 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* === LOADING STATES === */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-light {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.05) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* === BADGE ANIMATIONS === */
+
+.badge-new {
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+}
+
+.badge-just-now {
+  animation: livePulse 1.5s ease-in-out infinite;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* === PERFORMANCE OPTIMIZATIONS === */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Force GPU acceleration for better performance */
+.force-gpu {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Optimize for 60fps */
+.optimize-60fps {
+  will-change: transform, opacity;
+  contain: layout style paint;
+}
