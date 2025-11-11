@@ -4,7 +4,7 @@ import { useMemo, useState, Suspense, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Search, Plus, Check, Info, PackageOpen, ChevronDown, Copy, Download, GitFork, BadgeCheck, X, TrendingUp, Layers, ExternalLink, Bot, Zap, Terminal, Plug, Settings, Wand2, ArrowRight, Loader2 } from "lucide-react";
+import { Search, Plus, Check, Info, PackageOpen, ChevronDown, Copy, Download, GitFork, BadgeCheck, X, TrendingUp, Layers, ExternalLink, Bot, Zap, Terminal, Plug, Settings, Wand2, ArrowRight, Loader2, Workflow } from "lucide-react";
 import Fuse from "fuse.js";
 import { REGISTRY, resolveDependencies, getItemById } from "@/lib/registry";
 import { HeroBanner } from "@/components/molecules/hero-banner";
@@ -40,6 +40,8 @@ const getKindIcon = (kind: string) => {
       return Plug;
     case "setting":
       return Settings;
+    case "workflow":
+      return Workflow;
     default:
       return null;
   }
@@ -219,6 +221,7 @@ function CatalogPageContent() {
         "commands": "command",
         "mcp": "mcp",
         "settings": "setting",
+        "workflows": "workflow",
       };
 
       if (menuCategory in kindMap) {
@@ -456,7 +459,7 @@ function CatalogPageContent() {
                 <input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search agents, skills, commands, MCPs... (⌘K)"
+                  placeholder="Search agents, skills, commands, workflows, MCPs... (⌘K)"
                   className="search-input w-full pl-9 pr-9 py-1.5 rounded-lg border border-black/40 dark:border-white/12 bg-white/90 dark:bg-zinc-950/60 backdrop-blur dark:backdrop-blur-xl outline-none text-sm text-black dark:text-white placeholder:text-zinc-500 dark:placeholder:text-white/50 focus:border-black/80 dark:focus:border-white/20 focus:bg-white dark:focus:bg-zinc-900"
                 />
                 {query && (

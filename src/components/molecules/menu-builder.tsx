@@ -4,9 +4,10 @@ import { useState } from "react";
 import { Bot, Zap, Terminal, Plug, Settings, Workflow } from "lucide-react";
 import { AGENTS, SKILLS, COMMANDS, MCPS } from "@/lib/registry";
 import { SETTINGS } from "@/lib/settings-registry";
+import { WORKFLOWS } from "@/lib/workflows";
 import { ScrambleText } from "@/components/ui/scramble-text";
 
-export type MenuCategory = "all" | "agents" | "skills" | "commands" | "settings" | "mcp";
+export type MenuCategory = "all" | "agents" | "skills" | "commands" | "settings" | "mcp" | "workflows";
 
 interface MenuBuilderProps {
   selected: MenuCategory;
@@ -18,7 +19,7 @@ const MENU_ITEMS = [
     id: "all" as MenuCategory,
     label: "All",
     icon: null,
-    count: AGENTS.length + SKILLS.length + COMMANDS.length + MCPS.length + SETTINGS.length,
+    count: AGENTS.length + SKILLS.length + COMMANDS.length + MCPS.length + SETTINGS.length + WORKFLOWS.length,
   },
   {
     id: "agents" as MenuCategory,
@@ -49,6 +50,12 @@ const MENU_ITEMS = [
     label: "MCP",
     icon: Plug,
     count: MCPS.length,
+  },
+  {
+    id: "workflows" as MenuCategory,
+    label: "Workflows",
+    icon: Workflow,
+    count: WORKFLOWS.length,
   },
 ];
 
