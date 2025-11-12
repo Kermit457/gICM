@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { ScrambleText } from "@/components/ui/scramble-text";
 import { InfiniteScramble } from "@/components/ui/infinite-scramble";
@@ -95,9 +96,11 @@ export function Web3HeroSection() {
             <button className="px-6 py-3 bg-lime-300 text-black font-bold rounded-lg hover:bg-lime-400 transition-colors">
               Start Remixing
             </button>
-            <button className="px-6 py-3 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
-              Try AI Stack Builder
-            </button>
+            <Link href="/workflow">
+              <button className="px-6 py-3 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
+                Try AI Stack Builder
+              </button>
+            </Link>
           </div>
 
           {/* AWS Activate Partner Section */}
