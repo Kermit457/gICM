@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useState, Suspense, useEffect } from "react";
+import { useMemo, useState, Suspense, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Search, Plus, Check, Info, PackageOpen, ChevronDown, Copy, Download, GitFork, BadgeCheck, X, TrendingUp, Layers, ExternalLink, Bot, Zap, Terminal, Plug, Settings, Wand2, ArrowRight, Loader2, Workflow } from "lucide-react";
 import Fuse from "fuse.js";
 import { REGISTRY, resolveDependencies, getItemById } from "@/lib/registry";
+import type { RegistryItem } from "@/types/registry";
 import { HeroBanner } from "@/components/molecules/hero-banner";
 import { Web3HeroSection } from "@/components/molecules/web3-hero-section";
 import { SolanaShowcase } from "@/components/molecules/solana-showcase";
@@ -58,7 +59,7 @@ function Badge({ children, tone = "gray" }: { children: React.ReactNode; tone?: 
 }
 
 // --- Card Component ----------------------------------------------------------
-function Card({ item, onPick, active }: { item: any; onPick: (id: string) => void; active: boolean }) {
+const Card = memo(function Card({ item, onPick, active }: { item: RegistryItem; onPick: (id: string) => void; active: boolean }) {
   const [isHovered, setIsHovered] = useState(false);
   const [copied, setCopied] = useState(false);
   const IconComponent = getKindIcon(item.kind);
@@ -110,7 +111,7 @@ function Card({ item, onPick, active }: { item: any; onPick: (id: string) => voi
             <div className="text-xs text-zinc-600 dark:text-white/70 uppercase tracking-wide">{item.kind}</div>
           </div>
         </div>
-        <Badge tone="green">{formatNumber(item.installs)}</Badge>
+        <Badge tone="green">{formatNumber(item.installs || 0)}</Badge>
       </div>
 
       {/* Description */}
@@ -171,7 +172,7 @@ function Card({ item, onPick, active }: { item: any; onPick: (id: string) => voi
       </div>
     </motion.div>
   );
-}
+});
 
 
 // --- Main Page ---------------------------------------------------------------
@@ -448,7 +449,7 @@ function CatalogPageContent() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 pb-8">
+      <div id="marketplace-section" className="max-w-7xl mx-auto px-6 md:px-10 py-4 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Main Column */}
           <div className="lg:col-span-8 xl:col-span-9">

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { ScrambleText } from "@/components/ui/scramble-text";
 import { InfiniteScramble } from "@/components/ui/infinite-scramble";
+import { WaitlistModal } from "@/components/WaitlistModal";
+import { REGISTRY } from "@/lib/registry";
+import { WORKFLOWS } from "@/lib/workflows";
 import {
   Zap,
   Code2,
@@ -16,6 +19,30 @@ import {
 export function Web3HeroSection() {
   const [hoverSolana, setHoverSolana] = useState(false);
   const [hoverCA, setHoverCA] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const [waitlistCount, setWaitlistCount] = useState(289); // Default fallback
+
+  // Calculate real stats from registry
+  const stats = useMemo(() => ({
+    agents: REGISTRY.filter(item => item.kind === 'agent').length,
+    skills: REGISTRY.filter(item => item.kind === 'skill').length,
+    workflows: WORKFLOWS.length,
+    mcps: REGISTRY.filter(item => item.kind === 'mcp').length,
+  }), []);
+
+  // Fetch real waitlist count
+  useEffect(() => {
+    fetch('/api/waitlist')
+      .then(res => res.json())
+      .then(data => {
+        if (data.count) {
+          setWaitlistCount(data.count);
+        }
+      })
+      .catch(() => {
+        // Keep default on error
+      });
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-6 md:px-10 py-8">
@@ -78,7 +105,7 @@ export function Web3HeroSection() {
 
           {/* Contract Address Teaser */}
           <div
-            className="flex items-center justify-center gap-2 text-xs mb-6 cursor-pointer group"
+            className="flex items-center justify-start gap-2 text-xs mb-6 cursor-pointer group"
             onMouseEnter={() => setHoverCA(true)}
             onMouseLeave={() => setHoverCA(false)}
           >
@@ -93,8 +120,14 @@ export function Web3HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 mb-6">
-            <button className="px-6 py-3 bg-lime-300 text-black font-bold rounded-lg hover:bg-lime-400 transition-colors">
-              Start Remixing
+            <button
+              className="px-6 py-3 bg-lime-300 text-black font-bold rounded-lg hover:bg-lime-400 transition-colors"
+              onClick={() => {
+                const marketplace = document.getElementById('marketplace-section');
+                marketplace?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+            >
+              Start Building
             </button>
             <Link href="/workflow">
               <button className="px-6 py-3 bg-white/10 text-white font-medium rounded-lg border border-white/20 hover:bg-white/20 transition-colors">
@@ -114,20 +147,23 @@ export function Web3HeroSection() {
           {/* Studio Alpha Key Section */}
           <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-6 mb-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <button className="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-zinc-100 transition-colors">
-                Request Studio Alpha Key
+              <button
+                className="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-zinc-100 transition-colors"
+                onClick={() => setWaitlistOpen(true)}
+              >
+                Join Waitlist
               </button>
 
               <div className="flex items-center gap-4">
                 <div className="flex-1 md:w-48">
                   <div className="flex items-center justify-between text-xs text-zinc-400 mb-2">
                     <span>Alpha keys</span>
-                    <span className="font-mono">289/500</span>
+                    <span className="font-mono">{waitlistCount}/500</span>
                   </div>
                   <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-lime-300 to-emerald-400 rounded-full transition-all"
-                      style={{ width: '57.8%' }}
+                      style={{ width: `${(waitlistCount / 500) * 100}%` }}
                     />
                   </div>
                 </div>
@@ -144,28 +180,28 @@ export function Web3HeroSection() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
-                90
+                {stats.agents}
               </div>
               <div className="text-xs text-zinc-400">Agents</div>
             </div>
 
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
-                96
+                {stats.skills}
               </div>
               <div className="text-xs text-zinc-400">Skills</div>
             </div>
 
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
-                33
+                {stats.workflows}
               </div>
               <div className="text-xs text-zinc-400">Workflows</div>
             </div>
 
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
-                82
+                {stats.mcps}
               </div>
               <div className="text-xs text-zinc-400">MCP Integrations</div>
             </div>
@@ -186,6 +222,9 @@ export function Web3HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* Waitlist Modal */}
+      <WaitlistModal open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </div>
   );
 }

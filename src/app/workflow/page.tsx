@@ -17,6 +17,8 @@ interface WorkflowRecommendation {
     skills: number;
     commands: number;
     mcps: number;
+    workflows: number;
+    settings: number;
   };
 }
 
@@ -206,7 +208,7 @@ export default function WorkflowPage() {
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                 <div className="p-3 rounded-lg bg-black/5">
                   <div className="text-2xl font-black text-black">{recommendation.items.length}</div>
                   <div className="text-xs text-black/60">Total Items</div>
@@ -224,6 +226,18 @@ export default function WorkflowPage() {
                   <div className="text-xs text-black/60">Commands</div>
                 </div>
                 <div className="p-3 rounded-lg bg-cyan-500/10">
+                  <div className="text-2xl font-black text-black">{recommendation.breakdown.mcps}</div>
+                  <div className="text-xs text-black/60">MCPs</div>
+                </div>
+                <div className="p-3 rounded-lg bg-purple-500/10">
+                  <div className="text-2xl font-black text-black">{recommendation.breakdown.workflows}</div>
+                  <div className="text-xs text-black/60">Workflows</div>
+                </div>
+                <div className="p-3 rounded-lg bg-blue-500/10">
+                  <div className="text-2xl font-black text-black">{recommendation.breakdown.settings}</div>
+                  <div className="text-xs text-black/60">Settings</div>
+                </div>
+                <div className="p-3 rounded-lg bg-lime-600/10">
                   <div className="text-2xl font-black text-lime-600">{recommendation.totalTokenSavings}%</div>
                   <div className="text-xs text-black/60">Token Savings</div>
                 </div>

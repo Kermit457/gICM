@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { REGISTRY } from '@/lib/registry';
+import type { RegistryItem } from '@/types/registry';
 import {
   calculateCost,
   hashPrompt,
@@ -141,7 +142,7 @@ Only include item IDs that exist in the catalog. Be selective - quality over qua
     // Get the actual items
     const items = itemIds
       .map(id => REGISTRY.find(item => item.id === id))
-      .filter(Boolean);
+      .filter((item): item is RegistryItem => item !== undefined);
 
     if (items.length === 0) {
       throw new Error('No matching items found');
@@ -153,6 +154,8 @@ Only include item IDs that exist in the catalog. Be selective - quality over qua
       skills: items.filter(i => i!.kind === 'skill').length,
       commands: items.filter(i => i!.kind === 'command').length,
       mcps: items.filter(i => i!.kind === 'mcp').length,
+      workflows: items.filter(i => i!.kind === 'workflow').length,
+      settings: items.filter(i => i!.kind === 'setting').length,
     };
 
     const totalTokenSavings = items.reduce((sum, item) => sum + (item!.tokenSavings || 0), 0);
@@ -240,6 +243,8 @@ Only include item IDs that exist in the catalog. Be selective - quality over qua
         skills: items.filter(i => i.kind === 'skill').length,
         commands: items.filter(i => i.kind === 'command').length,
         mcps: items.filter(i => i.kind === 'mcp').length,
+        workflows: items.filter(i => i.kind === 'workflow').length,
+        settings: items.filter(i => i.kind === 'setting').length,
       };
 
       return NextResponse.json({
