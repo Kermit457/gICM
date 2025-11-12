@@ -15,15 +15,6 @@ import {
 export function Web3HeroSection() {
   const [hoverSolana, setHoverSolana] = useState(false);
   const [hoverCA, setHoverCA] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const awsCode = "xxxx-xxxx-xxxx-xxxx";
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(awsCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-6 md:px-10 py-8">
@@ -115,17 +106,6 @@ export function Web3HeroSection() {
               AWS Activate Partner
             </div>
             <span className="text-zinc-400">Up to $100k credits</span>
-            <span className="text-zinc-500">•</span>
-            <div className="flex items-center gap-2">
-              <span className="text-zinc-400">CA:</span>
-              <span className="text-zinc-500 font-mono">{awsCode}</span>
-              <button
-                onClick={handleCopy}
-                className="px-2 py-1 text-xs text-zinc-400 hover:text-lime-300 transition-colors"
-              >
-                {copied ? "Copied!" : "Copy"}
-              </button>
-            </div>
           </div>
 
           {/* Studio Alpha Key Section */}
