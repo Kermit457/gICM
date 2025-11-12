@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrambleText } from "@/components/ui/scramble-text";
+import { formatProductName } from "@/lib/utils";
 import {
   Zap,
   Shield,
@@ -162,7 +163,7 @@ export function SolanaShowcase() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-bold text-black dark:text-white mb-1 group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors">
-                      {item.name}
+                      {formatProductName(item.name)}
                     </h3>
                     <Badge variant="outline" className="text-xs">
                       {item.type}

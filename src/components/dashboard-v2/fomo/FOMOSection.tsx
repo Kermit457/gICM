@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Trophy, TrendingUp, Zap, Star, Target, Rocket } from "lucide-react";
 import type { LiveStatsResponse } from "@/types/live-activity";
+import { formatProductName } from "@/lib/utils";
 
 interface FOMOSectionProps {
   theme: "dark" | "light";
@@ -208,7 +209,7 @@ export function FOMOSection({ theme }: FOMOSectionProps) {
                       text-sm font-medium truncate
                       ${theme === "dark" ? "text-white" : "text-black"}
                     `}>
-                      {item.name}
+                      {formatProductName(item.name)}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">

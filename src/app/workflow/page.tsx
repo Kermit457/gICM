@@ -6,6 +6,7 @@ import { ArrowLeft, Sparkles, Loader2, Check, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useBundleStore } from "@/lib/store/bundle";
 import type { RegistryItem } from "@/types/registry";
+import { formatProductName } from "@/lib/utils";
 
 interface WorkflowRecommendation {
   items: RegistryItem[];
@@ -235,7 +236,7 @@ export default function WorkflowPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <h3 className="font-semibold text-black">{item.name}</h3>
+                          <h3 className="font-semibold text-black">{formatProductName(item.name)}</h3>
                           <span className="px-2 py-0.5 rounded bg-black/10 text-black text-xs font-medium uppercase">
                             {item.kind}
                           </span>

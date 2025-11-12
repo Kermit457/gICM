@@ -23,6 +23,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { OnboardingTour } from "@/components/ui/onboarding-tour";
 import { toast } from "sonner";
 import { getStackPresetById } from "@/lib/remix";
+import { formatProductName } from "@/lib/utils";
 
 // --- Helpers -----------------------------------------------------------------
 const formatNumber = (n: number) => new Intl.NumberFormat("en-US").format(n);
@@ -101,9 +102,9 @@ function Card({ item, onPick, active }: { item: any; onPick: (id: string) => voi
           <div>
             <div className="font-semibold leading-tight text-sm text-black dark:text-white">
               {isHovered ? (
-                <ScrambleText text={item.name} trigger="hover" duration={300} />
+                <ScrambleText text={formatProductName(item.name)} trigger="hover" duration={300} />
               ) : (
-                item.name
+                formatProductName(item.name)
               )}
             </div>
             <div className="text-xs text-zinc-600 dark:text-white/70 uppercase tracking-wide">{item.kind}</div>
@@ -398,7 +399,7 @@ function CatalogPageContent() {
                         href={`/items/${item.slug}`}
                         className="px-3 py-1.5 rounded-lg bg-white dark:bg-[#0f0f0f] border border-black/20 dark:border-white/8 hover:border-lime-500 dark:hover:border-lime-400 text-sm font-medium text-black dark:text-white transition-colors"
                       >
-                        {item.name} <span className="text-lime-600 dark:text-lime-400">↗ {formatNumber(item.remixes || 0)}</span>
+                        {formatProductName(item.name)} <span className="text-lime-600 dark:text-lime-400">↗ {formatNumber(item.remixes || 0)}</span>
                       </Link>
                     ))}
                   </div>

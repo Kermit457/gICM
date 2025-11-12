@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShoppingCart, X, Package } from "lucide-react";
 import { useBundleStore } from "@/lib/store/bundle";
 import { Button } from "./ui/button";
+import { formatProductName } from "@/lib/utils";
 
 export function StackBuilderWidget() {
   const { items, itemCount, openCart, closeCart, isOpen, removeItem } = useBundleStore();
@@ -106,7 +107,7 @@ export function StackBuilderWidget() {
                       g
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-black truncate">{item.name}</h3>
+                      <h3 className="text-sm font-semibold text-black truncate">{formatProductName(item.name)}</h3>
                       <p className="text-xs text-black/60 uppercase tracking-wide">{item.kind}</p>
                       {item.tokenSavings && (
                         <p className="text-xs text-lime-600 font-medium mt-1">

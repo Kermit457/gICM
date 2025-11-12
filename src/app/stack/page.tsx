@@ -10,6 +10,7 @@ import { DependencyGraph } from "@/components/DependencyGraph";
 import { ShareStackModal } from "@/components/ShareStackModal";
 import { resolveDependencies } from "@/lib/registry";
 import type { RegistryItem } from "@/types/registry";
+import { formatProductName } from "@/lib/utils";
 
 export default function StackPage() {
   const { items, clearBundle, itemCount } = useBundleStore();
@@ -231,7 +232,7 @@ export default function StackPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-black">{item.name}</h3>
+                    <h3 className="font-semibold text-black">{formatProductName(item.name)}</h3>
                     <span className="px-2 py-0.5 rounded bg-black/10 text-black text-xs font-medium uppercase">
                       {item.kind}
                     </span>

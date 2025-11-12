@@ -15,6 +15,7 @@ import {
 import { toast } from "sonner";
 import { analytics } from "@/lib/analytics";
 import { ScrambleText } from "@/components/ui/scramble-text";
+import { formatProductName } from "@/lib/utils";
 
 interface StackPreviewProps {
   allItems: RegistryItem[]; // All available items for dependency resolution
@@ -288,7 +289,7 @@ export function StackPreview({ allItems }: StackPreviewProps) {
                   <span className="text-black/70 dark:text-white/70 flex-shrink-0">
                     {getKindIcon()}
                   </span>
-                  <span className="truncate text-black dark:text-white font-medium">{item.name}</span>
+                  <span className="truncate text-black dark:text-white font-medium">{formatProductName(item.name)}</span>
                 </div>
                 <span className="px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-black/20 dark:bg-white/10 text-black/60 dark:text-white/60 uppercase tracking-wide ml-1.5 flex-shrink-0">
                   {item.kind}

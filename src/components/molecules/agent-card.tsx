@@ -9,6 +9,7 @@ import { Zap, Users, GitBranch, Plus, Check, Copy } from "lucide-react";
 import { useBundleStore } from "@/lib/store/bundle";
 import { analytics } from "@/lib/analytics";
 import { toast } from "sonner";
+import { formatProductName } from "@/lib/utils";
 
 interface AgentCardProps {
   item: RegistryItem;
@@ -54,7 +55,7 @@ export function AgentCard({ item, onSelect, selected = false }: AgentCardProps) 
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <CardTitle className="text-lg">{item.name}</CardTitle>
+              <CardTitle className="text-lg">{formatProductName(item.name)}</CardTitle>
               {(item.installs || 0) < 50 && (
                 <Badge className="bg-lime-500 text-black text-xs px-2 py-0.5">NEW</Badge>
               )}

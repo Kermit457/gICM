@@ -7,6 +7,7 @@ import { InstallCard } from "@/components/molecules/install-card";
 import { AgentPromptViewer } from "@/components/molecules/agent-prompt-viewer";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { formatProductName } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -89,7 +90,7 @@ export default async function ItemDetailsPage({ params }: PageProps) {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-2xl md:text-3xl font-black text-black">{item.name}</h1>
+                  <h1 className="text-2xl md:text-3xl font-black text-black">{formatProductName(item.name)}</h1>
                   <span className="px-2 py-1 rounded-lg bg-black/10 text-black text-xs font-semibold uppercase">
                     {item.kind}
                   </span>
@@ -199,7 +200,7 @@ export default async function ItemDetailsPage({ params }: PageProps) {
                       g
                     </div>
                     <div className="min-w-0">
-                      <div className="text-sm font-semibold text-black truncate">{dep.name}</div>
+                      <div className="text-sm font-semibold text-black truncate">{formatProductName(dep.name)}</div>
                       <div className="text-xs text-zinc-600">{dep.kind}</div>
                     </div>
                   </div>
@@ -225,7 +226,7 @@ export default async function ItemDetailsPage({ params }: PageProps) {
                       g
                     </div>
                     <div className="min-w-0">
-                      <div className="text-sm font-semibold text-black truncate">{related.name}</div>
+                      <div className="text-sm font-semibold text-black truncate">{formatProductName(related.name)}</div>
                       <div className="text-xs text-zinc-600 truncate">{related.description}</div>
                     </div>
                   </div>

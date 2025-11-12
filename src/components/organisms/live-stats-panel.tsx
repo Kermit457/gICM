@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { LiveStatsResponse } from "@/types/live-activity";
 import { LIVE_CONFIG } from "@/config/live";
 import { Flame, Zap, Package, TrendingUp } from "lucide-react";
+import { formatProductName } from "@/lib/utils";
 
 function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
   const [displayValue, setDisplayValue] = useState(value);
@@ -160,7 +161,7 @@ export function LiveStatsPanel() {
                 className="flex items-center justify-between text-sm"
               >
                 <span className="text-white/90 truncate flex-1 mr-2">
-                  {item.name}
+                  {formatProductName(item.name)}
                 </span>
                 <span className="text-lime-400 font-bold tabular-nums">
                   {item.count}

@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import type { RegistryItem } from "@/types/registry";
 import type { StackConfig } from "@/lib/remix";
 import { forkStack, saveStackPreset, trackRemix } from "@/lib/remix";
+import { formatProductName } from "@/lib/utils";
 
 interface ForkStackModalProps {
   open: boolean;
@@ -210,7 +211,7 @@ export function ForkStackModal({
                   key={item.id}
                   className="flex items-center justify-between text-xs py-1 px-2 hover:bg-zinc-50 rounded"
                 >
-                  <span className="font-medium text-black">{item.name}</span>
+                  <span className="font-medium text-black">{formatProductName(item.name)}</span>
                   <Badge variant="outline" className="text-[10px]">
                     {item.kind}
                   </Badge>

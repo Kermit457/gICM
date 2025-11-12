@@ -10,6 +10,7 @@ import { useBundleStore } from "@/lib/store/bundle";
 import { getItemById } from "@/lib/registry";
 import type { RegistryItem } from "@/types/registry";
 import { toast } from "sonner";
+import { formatProductName } from "@/lib/utils";
 
 export function CompareContent() {
   const searchParams = useSearchParams();
@@ -182,7 +183,7 @@ export function CompareContent() {
                             if (Array.isArray(value)) {
                               return (
                                 <div key={item.id} className="space-y-1">
-                                  <div className="font-semibold text-xs text-black/60">{item.name}:</div>
+                                  <div className="font-semibold text-xs text-black/60">{formatProductName(item.name)}:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {value.map((v: any, i: number) => (
                                       <span
@@ -205,14 +206,14 @@ export function CompareContent() {
                                   ) : (
                                     <X size={14} className="text-red-600" />
                                   )}
-                                  <span className="text-xs">{item.name}</span>
+                                  <span className="text-xs">{formatProductName(item.name)}</span>
                                 </div>
                               );
                             }
 
                             return (
                               <div key={item.id} className="space-y-1">
-                                <div className="font-semibold text-xs text-black/60">{item.name}:</div>
+                                <div className="font-semibold text-xs text-black/60">{formatProductName(item.name)}:</div>
                                 <div>{String(value)}</div>
                               </div>
                             );
@@ -247,7 +248,7 @@ export function CompareContent() {
                     <Package size={16} className="text-black/60 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
                       <div className="font-semibold text-sm text-black truncate">
-                        {item.name}
+                        {formatProductName(item.name)}
                       </div>
                       <div className="text-xs text-black/60">{item.kind}</div>
                     </div>

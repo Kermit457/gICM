@@ -13,6 +13,7 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import type { RegistryItem } from '@/types/registry';
+import { formatProductName } from '@/lib/utils';
 
 interface DependencyGraphProps {
   items: RegistryItem[];
@@ -43,7 +44,7 @@ export function DependencyGraph({ items, selectedIds }: DependencyGraphProps) {
           label: (
             <div className="text-center">
               <div className={`font-bold text-sm ${isSelected ? 'text-lime-600' : 'text-black'}`}>
-                {item.name}
+                {formatProductName(item.name)}
               </div>
               <div className="text-xs text-gray-500 uppercase">{item.kind}</div>
             </div>
