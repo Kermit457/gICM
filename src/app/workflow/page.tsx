@@ -43,17 +43,31 @@ export default function WorkflowPage() {
     setRecommendation(null);
 
     try {
+      // Get or create session ID
+      let sessionId = sessionStorage.getItem('gicm-session-id');
+      if (!sessionId) {
+        sessionId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        sessionStorage.setItem('gicm-session-id', sessionId);
+      }
+
       const res = await fetch('/api/workflow/build', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt, sessionId }),
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to generate workflow');
+      const data = await res.json();
+
+      // Handle rate limit
+      if (res.status === 429) {
+        setError(data.message || 'Rate limit exceeded. Please try again later.');
+        return;
       }
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to generate workflow');
+      }
+
       setRecommendation(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');

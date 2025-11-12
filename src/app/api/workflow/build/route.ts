@@ -1,20 +1,73 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { REGISTRY } from '@/lib/registry';
+import {
+  calculateCost,
+  hashPrompt,
+  trackAPIUsage,
+  checkRateLimit,
+  cacheWorkflowResponse,
+  getCachedWorkflowResponse,
+} from '@/lib/api-usage';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY || '',
 });
 
 export async function POST(request: Request) {
+  const startTime = Date.now();
+  let sessionId = 'anonymous';
+
   try {
-    const { prompt } = await request.json();
+    const { prompt, sessionId: clientSessionId } = await request.json();
 
     if (!prompt || typeof prompt !== 'string') {
       return NextResponse.json(
         { error: 'Prompt is required' },
         { status: 400 }
       );
+    }
+
+    sessionId = clientSessionId || 'anonymous';
+
+    // Check rate limit
+    const rateLimit = checkRateLimit(sessionId);
+    if (!rateLimit.allowed) {
+      const waitMinutes = Math.ceil((rateLimit.resetTime - Date.now()) / 1000 / 60);
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          message: `Please wait ${waitMinutes} minute(s) before making another request`,
+          resetTime: rateLimit.resetTime,
+          remainingRequests: 0,
+        },
+        { status: 429 }
+      );
+    }
+
+    // Check cache
+    const promptHash = hashPrompt(prompt);
+    const cachedResponse = getCachedWorkflowResponse(promptHash);
+    if (cachedResponse) {
+      // Track cache hit (no tokens used, no cost)
+      trackAPIUsage({
+        timestamp: new Date().toISOString(),
+        sessionId,
+        endpoint: 'workflow/build',
+        inputTokens: 0,
+        outputTokens: 0,
+        totalTokens: 0,
+        estimatedCost: 0,
+        responseTime: Date.now() - startTime,
+        success: true,
+        promptHash,
+      });
+
+      return NextResponse.json({
+        ...cachedResponse,
+        cached: true,
+        remainingRequests: rateLimit.remainingRequests - 1,
+      });
     }
 
     // Build a catalog description for Claude
@@ -97,15 +150,54 @@ Only include item IDs that exist in the catalog. Be selective - quality over qua
 
     const totalTokenSavings = items.reduce((sum, item) => sum + (item!.tokenSavings || 0), 0);
 
-    return NextResponse.json({
+    const response = {
       items,
       reasoning,
       totalTokenSavings,
       breakdown,
+      cached: false,
+      remainingRequests: rateLimit.remainingRequests - 1,
+    };
+
+    // Track API usage
+    const inputTokens = message.usage.input_tokens;
+    const outputTokens = message.usage.output_tokens;
+    const estimatedCost = calculateCost(inputTokens, outputTokens);
+
+    trackAPIUsage({
+      timestamp: new Date().toISOString(),
+      sessionId,
+      endpoint: 'workflow/build',
+      inputTokens,
+      outputTokens,
+      totalTokens: inputTokens + outputTokens,
+      estimatedCost,
+      responseTime: Date.now() - startTime,
+      success: true,
+      promptHash,
     });
+
+    // Cache the response
+    cacheWorkflowResponse(promptHash, response);
+
+    return NextResponse.json(response);
 
   } catch (error) {
     console.error('Workflow build error:', error);
+
+    // Track failed request
+    trackAPIUsage({
+      timestamp: new Date().toISOString(),
+      sessionId,
+      endpoint: 'workflow/build',
+      inputTokens: 0,
+      outputTokens: 0,
+      totalTokens: 0,
+      estimatedCost: 0,
+      responseTime: Date.now() - startTime,
+      success: false,
+      errorMessage: error instanceof Error ? error.message : 'Unknown error',
+    });
 
     // Fallback response if API key is not configured
     if (!process.env.ANTHROPIC_API_KEY) {

@@ -55,7 +55,12 @@ function getRelativeTime(timestamp: Date): string {
  * Convert analytics event to live activity
  */
 function convertToLiveActivity(event: AnalyticsEvent): LiveActivity | null {
-  const template = ACTIVITY_TEMPLATES[event.type];
+  // Skip events that are not meant for live feed (e.g., workflow_ai_request)
+  if (!Object.keys(ACTIVITY_TEMPLATES).includes(event.type)) {
+    return null;
+  }
+
+  const template = ACTIVITY_TEMPLATES[event.type as keyof typeof ACTIVITY_TEMPLATES];
   if (!template) return null;
 
   const user = getRandomUser();

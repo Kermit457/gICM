@@ -5,7 +5,8 @@ export type AnalyticsEventType =
   | 'bundle_created'
   | 'bundle_copied'
   | 'search_query'
-  | 'filter_applied';
+  | 'filter_applied'
+  | 'workflow_ai_request';
 
 export interface AnalyticsEvent {
   id: string;
@@ -58,4 +59,34 @@ export interface BundleCombination {
   items: string[];
   count: number;
   avgBundleSize: number;
+}
+
+// API Usage Tracking
+export interface APIUsageEvent {
+  id: string;
+  timestamp: string;
+  sessionId: string;
+  endpoint: string; // e.g., 'workflow/build'
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+  estimatedCost: number; // in USD
+  responseTime: number; // in milliseconds
+  success: boolean;
+  errorMessage?: string;
+  promptHash?: string; // hash of the prompt for caching
+}
+
+export interface APIUsageStats {
+  totalRequests: number;
+  successfulRequests: number;
+  failedRequests: number;
+  totalInputTokens: number;
+  totalOutputTokens: number;
+  totalTokens: number;
+  totalCost: number; // in USD
+  averageResponseTime: number; // in milliseconds
+  costByDay: Array<{ date: string; cost: number; requests: number }>;
+  topPrompts: Array<{ prompt: string; count: number; avgCost: number }>;
+  requestsByHour: Array<{ hour: number; count: number }>;
 }
