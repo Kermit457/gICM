@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import { formatProductName } from "@/lib/utils";
 
 export function StackBuilderWidget() {
-  const { items, itemCount, openCart, closeCart, isOpen, removeItem } = useBundleStore();
+  const { getActiveStack, itemCount, openCart, closeCart, isOpen, removeItem } = useBundleStore();
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch by only showing after mount
@@ -20,7 +20,10 @@ export function StackBuilderWidget() {
     return null;
   }
 
-  const count = itemCount();
+  // Get items from active stack
+  const activeStack = getActiveStack();
+  const items = activeStack?.items || [];
+  const count = items.length;
 
   if (count === 0) {
     return null; // Don't show widget if stack is empty

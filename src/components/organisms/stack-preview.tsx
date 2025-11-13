@@ -155,7 +155,7 @@ export function StackPreview({ allItems }: StackPreviewProps) {
                 )}
               </div>
               <div className="text-[10px] text-zinc-600 dark:text-white/70 mt-0.5">
-                {stats.totalItems} items • {stats.tokenSavings}% avg savings
+                {selectedItems.length} item{selectedItems.length !== 1 ? 's' : ''}{dependencies.length > 0 && ` (+${dependencies.length} dep${dependencies.length !== 1 ? 's' : ''})`} • {stats.tokenSavings}% avg savings
               </div>
             </div>
             <button

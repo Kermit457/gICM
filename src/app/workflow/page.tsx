@@ -208,35 +208,57 @@ export default function WorkflowPage() {
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {/* Always show Total Items */}
                 <div className="p-3 rounded-lg bg-black/5">
                   <div className="text-2xl font-black text-black">{recommendation.items.length}</div>
                   <div className="text-xs text-black/60">Total Items</div>
                 </div>
-                <div className="p-3 rounded-lg bg-lime-500/10">
-                  <div className="text-2xl font-black text-black">{recommendation.breakdown.agents}</div>
-                  <div className="text-xs text-black/60">Agents</div>
-                </div>
-                <div className="p-3 rounded-lg bg-emerald-500/10">
-                  <div className="text-2xl font-black text-black">{recommendation.breakdown.skills}</div>
-                  <div className="text-xs text-black/60">Skills</div>
-                </div>
-                <div className="p-3 rounded-lg bg-teal-500/10">
-                  <div className="text-2xl font-black text-black">{recommendation.breakdown.commands}</div>
-                  <div className="text-xs text-black/60">Commands</div>
-                </div>
-                <div className="p-3 rounded-lg bg-cyan-500/10">
-                  <div className="text-2xl font-black text-black">{recommendation.breakdown.mcps}</div>
-                  <div className="text-xs text-black/60">MCPs</div>
-                </div>
-                <div className="p-3 rounded-lg bg-purple-500/10">
-                  <div className="text-2xl font-black text-black">{recommendation.breakdown.workflows}</div>
-                  <div className="text-xs text-black/60">Workflows</div>
-                </div>
-                <div className="p-3 rounded-lg bg-blue-500/10">
-                  <div className="text-2xl font-black text-black">{recommendation.breakdown.settings}</div>
-                  <div className="text-xs text-black/60">Settings</div>
-                </div>
+
+                {/* Only show categories with items */}
+                {recommendation.breakdown.agents > 0 && (
+                  <div className="p-3 rounded-lg bg-lime-500/10">
+                    <div className="text-2xl font-black text-black">{recommendation.breakdown.agents}</div>
+                    <div className="text-xs text-black/60">Agents</div>
+                  </div>
+                )}
+
+                {recommendation.breakdown.skills > 0 && (
+                  <div className="p-3 rounded-lg bg-emerald-500/10">
+                    <div className="text-2xl font-black text-black">{recommendation.breakdown.skills}</div>
+                    <div className="text-xs text-black/60">Skills</div>
+                  </div>
+                )}
+
+                {recommendation.breakdown.commands > 0 && (
+                  <div className="p-3 rounded-lg bg-teal-500/10">
+                    <div className="text-2xl font-black text-black">{recommendation.breakdown.commands}</div>
+                    <div className="text-xs text-black/60">Commands</div>
+                  </div>
+                )}
+
+                {recommendation.breakdown.mcps > 0 && (
+                  <div className="p-3 rounded-lg bg-cyan-500/10">
+                    <div className="text-2xl font-black text-black">{recommendation.breakdown.mcps}</div>
+                    <div className="text-xs text-black/60">MCPs</div>
+                  </div>
+                )}
+
+                {recommendation.breakdown.workflows > 0 && (
+                  <div className="p-3 rounded-lg bg-purple-500/10">
+                    <div className="text-2xl font-black text-black">{recommendation.breakdown.workflows}</div>
+                    <div className="text-xs text-black/60">Workflows</div>
+                  </div>
+                )}
+
+                {recommendation.breakdown.settings > 0 && (
+                  <div className="p-3 rounded-lg bg-blue-500/10">
+                    <div className="text-2xl font-black text-black">{recommendation.breakdown.settings}</div>
+                    <div className="text-xs text-black/60">Settings</div>
+                  </div>
+                )}
+
+                {/* Always show Token Savings */}
                 <div className="p-3 rounded-lg bg-lime-600/10">
                   <div className="text-2xl font-black text-lime-600">{recommendation.totalTokenSavings}%</div>
                   <div className="text-xs text-black/60">Token Savings</div>

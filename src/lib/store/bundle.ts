@@ -18,8 +18,6 @@ export interface Stack {
 }
 
 interface BundleStore {
-  // Legacy support - deprecated but kept for backwards compatibility
-  items: BundleItem[];
   isOpen: boolean;
 
   // New multi-stack state
@@ -56,11 +54,9 @@ const DEFAULT_STACK_NAME = 'My Stack';
 export const useBundleStore = create<BundleStore>()(
   persist(
     (set, get) => ({
-      // Legacy state
-      items: [],
       isOpen: false,
 
-      // New multi-stack state
+      // Multi-stack state
       stacks: {},
       activeStackId: null,
 
@@ -329,7 +325,6 @@ export const useBundleStore = create<BundleStore>()(
       partialize: (state) => ({
         stacks: state.stacks,
         activeStackId: state.activeStackId,
-        items: state.items // Legacy support
       }),
       version: 1,
       migrate: (persistedState: any, version: number) => {
