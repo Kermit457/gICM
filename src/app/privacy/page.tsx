@@ -128,7 +128,7 @@ export default function PrivacyPage() {
               </p>
               <div className="bg-black/5 rounded-lg p-4 text-black/80">
                 <p><strong>Email:</strong> privacy@gicm.dev</p>
-                <p><strong>GitHub:</strong> github.com/gicm</p>
+                <p><strong>GitHub:</strong> github.com/Kermit457/gICM</p>
               </div>
             </section>
 

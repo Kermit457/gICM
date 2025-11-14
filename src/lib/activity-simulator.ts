@@ -95,7 +95,7 @@ function generateSimulatedActivity(type: ActivityType): LiveActivity {
   timestamp.setSeconds(timestamp.getSeconds() - Math.floor(Math.random() * 300));
 
   let message = "";
-  let metadata: any = {};
+  let metadata: Record<string, string | number> = {};
 
   switch (type) {
     case "item_add_to_stack":

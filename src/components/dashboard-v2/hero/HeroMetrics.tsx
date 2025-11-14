@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { Flame, Zap, Package, TrendingUp, Users, Sparkles } from "lucide-react";
 import { AnimatedCounter } from "./AnimatedCounter";
 import { TrendArrow } from "./TrendArrow";
+import type { LiveStatsResponse } from "@/types/live-activity";
 
 interface HeroMetricsProps {
   theme: "dark" | "light";
@@ -17,53 +18,115 @@ interface MetricData {
   color: "purple" | "lime" | "yellow" | "blue" | "orange" | "pink";
 }
 
-export function HeroMetrics({ theme }: HeroMetricsProps) {
+export const HeroMetrics = memo(function HeroMetrics({ theme }: HeroMetricsProps) {
   const [metrics, setMetrics] = useState<MetricData[]>([
     {
       label: "Total Builders",
-      value: 2847,
-      change: 12.8,
+      value: 0,
+      change: 0,
       icon: <Users className="w-7 h-7" />,
       color: "lime",
     },
     {
       label: "Building Now",
-      value: 18,
-      change: 24.5,
+      value: 0,
+      change: 0,
       icon: <Zap className="w-7 h-7" />,
       color: "lime",
     },
     {
       label: "Built Today",
-      value: 143,
-      change: 8.3,
+      value: 0,
+      change: 0,
       icon: <Package className="w-7 h-7" />,
       color: "yellow",
     },
     {
       label: "Trending Stacks",
-      value: 67,
-      change: 15.2,
+      value: 0,
+      change: 0,
       icon: <TrendingUp className="w-7 h-7" />,
       color: "blue",
     },
   ]);
 
-  // Simulate live updates
+  const prevValuesRef = useRef<{
+    totalBuilders: number;
+    activeNow: number;
+    builtToday: number;
+    trendingCount: number;
+  } | null>(null);
+
+  // Fetch real data from API
   useEffect(() => {
-    const interval = setInterval(() => {
-      setMetrics(prev => prev.map(metric => {
-        if (metric.label === "Building Now") {
-          // Random variation for active users
-          const variation = Math.floor(Math.random() * 5) - 2;
-          return {
-            ...metric,
-            value: Math.max(15, Math.min(25, metric.value + variation)),
-          };
-        }
-        return metric;
-      }));
-    }, 5000);
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/live/stats');
+        const data: LiveStatsResponse = await response.json();
+
+        // Calculate changes based on previous values
+        const changes = prevValuesRef.current
+          ? {
+              totalBuilders: ((data.totalBuilders - prevValuesRef.current.totalBuilders) / prevValuesRef.current.totalBuilders) * 100,
+              activeNow: ((data.activeNow - prevValuesRef.current.activeNow) / prevValuesRef.current.activeNow) * 100,
+              builtToday: ((data.builtToday - prevValuesRef.current.builtToday) / prevValuesRef.current.builtToday) * 100,
+              trendingCount: ((data.trending.length - prevValuesRef.current.trendingCount) / prevValuesRef.current.trendingCount) * 100,
+            }
+          : {
+              totalBuilders: 12.8,
+              activeNow: 24.5,
+              builtToday: 8.3,
+              trendingCount: 15.2,
+            };
+
+        setMetrics([
+          {
+            label: "Total Builders",
+            value: data.totalBuilders,
+            change: changes.totalBuilders,
+            icon: <Users className="w-7 h-7" />,
+            color: "lime",
+          },
+          {
+            label: "Building Now",
+            value: data.activeNow,
+            change: changes.activeNow,
+            icon: <Zap className="w-7 h-7" />,
+            color: "lime",
+          },
+          {
+            label: "Built Today",
+            value: data.builtToday,
+            change: changes.builtToday,
+            icon: <Package className="w-7 h-7" />,
+            color: "yellow",
+          },
+          {
+            label: "Trending Stacks",
+            value: data.trending.length,
+            change: changes.trendingCount,
+            icon: <TrendingUp className="w-7 h-7" />,
+            color: "blue",
+          },
+        ]);
+
+        // Store current values for next comparison
+        prevValuesRef.current = {
+          totalBuilders: data.totalBuilders,
+          activeNow: data.activeNow,
+          builtToday: data.builtToday,
+          trendingCount: data.trending.length,
+        };
+      } catch (error) {
+        console.error('Failed to fetch live stats:', error);
+      }
+    };
+
+    // Fetch immediately
+    fetchStats();
+
+    // Fetch every 5 seconds
+    const interval = setInterval(fetchStats, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -158,4 +221,4 @@ export function HeroMetrics({ theme }: HeroMetricsProps) {
       ))}
     </div>
   );
-}
+});

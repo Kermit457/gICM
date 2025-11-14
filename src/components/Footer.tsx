@@ -66,7 +66,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="https://github.com/gicm" target="_blank" rel="noopener noreferrer" className="text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
+                <a href="https://github.com/Kermit457/gICM" target="_blank" rel="noopener noreferrer" className="text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors">
                   GitHub
                 </a>
               </li>
@@ -105,7 +105,7 @@ export function Footer() {
           {/* Social Links */}
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/gicm"
+              href="https://github.com/Kermit457/gICM"
               target="_blank"
               rel="noopener noreferrer"
               className="text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"

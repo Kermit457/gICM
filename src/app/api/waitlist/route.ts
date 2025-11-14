@@ -10,7 +10,6 @@ async function sendConfirmationEmail(email: string, position: number) {
 
   // Skip if Resend is not configured
   if (!resendApiKey) {
-    console.log(`Email confirmation skipped (Resend not configured): ${email}`);
     return { success: false, reason: "not_configured" };
   }
 
@@ -94,7 +93,6 @@ async function sendConfirmationEmail(email: string, position: number) {
     }
 
     const data = await response.json();
-    console.log(`Confirmation email sent to ${email}:`, data.id);
     return { success: true, emailId: data.id };
 
   } catch (error) {

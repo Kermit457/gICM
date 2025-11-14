@@ -1,7 +1,22 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import type { APIUsageEvent, APIUsageStats } from '@/types/analytics';
+import type { RegistryItem } from '@/types/registry';
 import crypto from 'crypto';
+
+interface WorkflowResponse {
+  items: RegistryItem[];
+  reasoning: string;
+  totalTokenSavings: number;
+  breakdown: {
+    agents: number;
+    skills: number;
+    commands: number;
+    mcps: number;
+  };
+  cached: boolean;
+  remainingRequests: number;
+}
 
 // Anthropic pricing (as of 2025) with prompt caching
 const PRICING = {
@@ -110,11 +125,11 @@ export function checkRateLimit(sessionId: string): { allowed: boolean; remaining
 }
 
 // Cache workflow response
-export function cacheWorkflowResponse(promptHash: string, response: any): void {
+export function cacheWorkflowResponse(promptHash: string, response: WorkflowResponse): void {
   try {
     ensureDirs();
 
-    const cache: Record<string, { response: any; timestamp: number; expiresAt: number }> = existsSync(WORKFLOW_CACHE_FILE)
+    const cache: Record<string, { response: WorkflowResponse; timestamp: number; expiresAt: number }> = existsSync(WORKFLOW_CACHE_FILE)
       ? JSON.parse(readFileSync(WORKFLOW_CACHE_FILE, 'utf-8'))
       : {};
 
@@ -139,7 +154,7 @@ export function cacheWorkflowResponse(promptHash: string, response: any): void {
 }
 
 // Get cached workflow response
-export function getCachedWorkflowResponse(promptHash: string): any | null {
+export function getCachedWorkflowResponse(promptHash: string): WorkflowResponse | null {
   try {
     ensureDirs();
 
@@ -147,7 +162,7 @@ export function getCachedWorkflowResponse(promptHash: string): any | null {
       return null;
     }
 
-    const cache: Record<string, { response: any; timestamp: number; expiresAt: number }> = JSON.parse(
+    const cache: Record<string, { response: WorkflowResponse; timestamp: number; expiresAt: number }> = JSON.parse(
       readFileSync(WORKFLOW_CACHE_FILE, 'utf-8')
     );
 

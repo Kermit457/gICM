@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export interface APIError {
   message: string;
   code?: string;
-  details?: any;
+  details?: Record<string, unknown>;
 }
 
 export function useApiError() {
@@ -18,17 +18,17 @@ export function useApiError() {
 
     let errorMessage = "An unexpected error occurred";
     let errorCode: string | undefined;
-    let errorDetails: any;
+    let errorDetails: Record<string, unknown> | undefined;
 
     if (error instanceof Error) {
       errorMessage = error.message;
     } else if (typeof error === "string") {
       errorMessage = error;
     } else if (error && typeof error === "object") {
-      const err = error as any;
-      errorMessage = err.message || err.error || errorMessage;
-      errorCode = err.code;
-      errorDetails = err.details;
+      const err = error as Record<string, unknown>;
+      errorMessage = (err.message as string) || (err.error as string) || errorMessage;
+      errorCode = err.code as string | undefined;
+      errorDetails = err.details as Record<string, unknown> | undefined;
     }
 
     const apiError: APIError = {
@@ -102,7 +102,7 @@ export function useApiError() {
 }
 
 // Helper function for fetch with error handling
-export async function fetchWithError<T = any>(
+export async function fetchWithError<T = unknown>(
   url: string,
   options?: RequestInit
 ): Promise<T> {
@@ -137,12 +137,12 @@ export async function retryAsync<T>(
   options: {
     maxRetries?: number;
     retryDelay?: number;
-    onRetry?: (attempt: number, error: any) => void;
+    onRetry?: (attempt: number, error: unknown) => void;
   } = {}
 ): Promise<T> {
   const { maxRetries = 3, retryDelay = 1000, onRetry } = options;
 
-  let lastError: any;
+  let lastError: unknown;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {

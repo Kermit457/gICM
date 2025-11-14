@@ -14,6 +14,8 @@ import {
   Rocket,
   Upload,
   Eye,
+  Github,
+  ExternalLink,
 } from "lucide-react";
 
 export function Web3HeroSection() {
@@ -22,12 +24,14 @@ export function Web3HeroSection() {
   const [waitlistOpen, setWaitlistOpen] = useState(false);
   const [waitlistCount, setWaitlistCount] = useState(289); // Default fallback
 
-  // Calculate real stats from registry
+  // Calculate real stats from registry (all production-ready)
   const stats = useMemo(() => ({
     agents: REGISTRY.filter(item => item.kind === 'agent').length,
     skills: REGISTRY.filter(item => item.kind === 'skill').length,
+    commands: REGISTRY.filter(item => item.kind === 'command').length,
     workflows: WORKFLOWS.length,
     mcps: REGISTRY.filter(item => item.kind === 'mcp').length,
+    settings: REGISTRY.filter(item => item.kind === 'setting').length,
   }), []);
 
   // Fetch real waitlist count
@@ -59,7 +63,21 @@ export function Web3HeroSection() {
 
         <div className="relative z-10">
           {/* Badges */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            {/* GitHub Badge - Prominent */}
+            <a
+              href="https://github.com/Kermit457/gICM"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <Badge className="bg-black/80 text-white border-white/30 hover:border-lime-300/50 hover:bg-black transition-all px-3 py-1 cursor-pointer">
+                <Github className="w-3 h-3 mr-1.5" />
+                <span className="font-bold">View on GitHub</span>
+                <ExternalLink className="w-2.5 h-2.5 ml-1.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+              </Badge>
+            </a>
+
             <div
               onMouseEnter={() => setHoverSolana(true)}
               onMouseLeave={() => setHoverSolana(false)}
@@ -91,6 +109,16 @@ export function Web3HeroSection() {
             The AI Dev Stack for Web3.
           </h1>
 
+          {/* Production Ready Badge */}
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-lime-300/20 border border-lime-300/50 rounded-lg">
+            <span className="text-lime-300 font-bold text-sm">
+              {stats.agents + stats.skills + stats.commands + stats.mcps + stats.settings} PRODUCTION-READY PLUGINS
+            </span>
+            <Badge className="bg-lime-300 text-black border-none px-2 py-0 text-xs font-bold">
+              VERIFIED
+            </Badge>
+          </div>
+
           {/* Subheadline */}
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-black mb-6 leading-tight">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-emerald-300 to-lime-400">
@@ -99,9 +127,17 @@ export function Web3HeroSection() {
           </h2>
 
           {/* Description */}
-          <p className="text-lg md:text-xl text-zinc-300 max-w-3xl mb-4">
+          <p className="text-lg md:text-xl text-zinc-300 max-w-3xl mb-2">
             Remix agents, skills, and Web3 stacks. Ship today. <span className="font-semibold">Studio</span> (prompt→code→product) is in private alpha.
           </p>
+
+          {/* Quick Install */}
+          <div className="flex items-center gap-2 text-sm mb-4">
+            <code className="bg-black/60 border border-lime-300/30 text-lime-300 px-3 py-1.5 rounded-md font-mono">
+              /plugin marketplace add Kermit457/gICM
+            </code>
+            <span className="text-zinc-400">← Install in Claude Code</span>
+          </div>
 
           {/* Contract Address Teaser */}
           <div
@@ -176,8 +212,8 @@ export function Web3HeroSection() {
             </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {/* Stats Grid - Now with 8 stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
                 {stats.agents}
@@ -194,6 +230,13 @@ export function Web3HeroSection() {
 
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
+                {stats.commands}
+              </div>
+              <div className="text-xs text-zinc-400">Commands</div>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
+              <div className="text-2xl md:text-3xl font-black text-white mb-1">
                 {stats.workflows}
               </div>
               <div className="text-xs text-zinc-400">Workflows</div>
@@ -203,7 +246,14 @@ export function Web3HeroSection() {
               <div className="text-2xl md:text-3xl font-black text-white mb-1">
                 {stats.mcps}
               </div>
-              <div className="text-xs text-zinc-400">MCP Integrations</div>
+              <div className="text-xs text-zinc-400">MCPs</div>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">
+              <div className="text-2xl md:text-3xl font-black text-white mb-1">
+                {stats.settings}
+              </div>
+              <div className="text-xs text-zinc-400">Settings</div>
             </div>
 
             <div className="bg-white/5 backdrop-blur border border-white/10 rounded-lg p-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import type { LiveActivity } from "@/types/live-activity";
 import {
@@ -43,7 +44,7 @@ const COLOR_MAP = {
   pink: "bg-pink-500/20 text-pink-400 border-pink-500/40",
 };
 
-export function ActivityItem({ activity }: ActivityItemProps) {
+export const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps) {
   const IconComponent = ICON_MAP[activity.icon];
   const colorClass = COLOR_MAP[activity.color];
 
@@ -74,4 +75,4 @@ export function ActivityItem({ activity }: ActivityItemProps) {
       </div>
     </motion.div>
   );
-}
+});

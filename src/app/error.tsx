@@ -74,7 +74,7 @@ export default function Error({
             </p>
             <div className="flex items-center justify-center gap-4 text-sm">
               <a
-                href="https://github.com/gicm/issues"
+                href="https://github.com/Kermit457/gICM/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-black/60 hover:text-black font-medium transition-colors"
