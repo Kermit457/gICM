@@ -1,0 +1,116 @@
+{
+  "mcpServers": {
+    "telegram": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\telegram-server.js"
+      ],
+      "env": {
+        "TELEGRAM_BOT_TOKEN": "${TELEGRAM_BOT_TOKEN}",
+        "TELEGRAM_API_ID": "${TELEGRAM_API_ID}",
+        "TELEGRAM_API_HASH": "${TELEGRAM_API_HASH}"
+      },
+      "metadata": {
+        "name": "Telegram API",
+        "description": "Monitor crypto Telegram groups and channels for ICM alpha, community sentiment, and early launch signals. Track group activity, member count, and message sentiment.",
+        "category": "ICM & Crypto",
+        "tags": ["Social", "Sentiment", "Telegram", "ICM", "Community"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://core.telegram.org/bots/api",
+        "requiredEnvKeys": [
+          "TELEGRAM_BOT_TOKEN",
+          "TELEGRAM_API_ID",
+          "TELEGRAM_API_HASH"
+        ],
+        "tools": [
+          {
+            "name": "monitorGroup",
+            "description": "Monitor messages in a Telegram group or channel"
+          },
+          {
+            "name": "searchMessages",
+            "description": "Search for token mentions or contract addresses"
+          },
+          {
+            "name": "getGroupStats",
+            "description": "Get member count, message frequency, growth rate"
+          },
+          {
+            "name": "analyzeSentiment",
+            "description": "Analyze sentiment of group messages"
+          },
+          {
+            "name": "detectCalls",
+            "description": "Detect token 'call' messages with contract addresses"
+          },
+          {
+            "name": "trackActivity",
+            "description": "Track message volume and active users"
+          },
+          {
+            "name": "getMemberInfo",
+            "description": "Get member join dates, activity levels"
+          },
+          {
+            "name": "detectBots",
+            "description": "Identify bot accounts in groups"
+          },
+          {
+            "name": "sendAlert",
+            "description": "Send real-time alerts to your personal Telegram"
+          },
+          {
+            "name": "getGroupMedia",
+            "description": "Extract charts, screenshots, and media from messages"
+          }
+        ],
+        "pricing": {
+          "free_tier": "Completely free for bot API",
+          "paid_tier": "N/A (Telegram API is free)",
+          "note": "Rate limits: 30 messages/second, 20 calls/minute"
+        },
+        "setup": {
+          "steps": [
+            "Create Telegram bot: Message @BotFather, send /newbot",
+            "Copy bot token from BotFather",
+            "Get API ID and Hash from https://my.telegram.org/apps",
+            "Add all 3 values to .env file",
+            "Add bot to groups you want to monitor (must be admin)",
+            "Run: gicm add mcp/telegram"
+          ]
+        },
+        "features": [
+          "Group and channel monitoring",
+          "Real-time message streaming",
+          "Sentiment analysis",
+          "Call detection",
+          "Member analytics",
+          "Bot detection",
+          "Alert sending",
+          "Media extraction",
+          "Historical message search",
+          "Group statistics"
+        ],
+        "rateLimit": {
+          "messages": "30 per second",
+          "api_calls": "20 per minute",
+          "note": "Limits are per bot token"
+        },
+        "useCases": [
+          "Monitor alpha groups for new launches",
+          "Track community sentiment in official channels",
+          "Detect coordinated pump campaigns",
+          "Find early ICM opportunities",
+          "Track member growth (bullish indicator)",
+          "Identify exit signals from community panic",
+          "Monitor dev announcements",
+          "Alert on specific token mentions"
+        ],
+        "privacy": {
+          "note": "Bot can only access messages in groups where it's added as member. Cannot access private messages of users."
+        }
+      }
+    }
+  }
+}

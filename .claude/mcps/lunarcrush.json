@@ -1,0 +1,135 @@
+{
+  "mcpServers": {
+    "lunarcrush": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\lunarcrush-server.js"
+      ],
+      "env": {
+        "LUNARCRUSH_API_KEY": "${LUNARCRUSH_API_KEY}"
+      },
+      "metadata": {
+        "name": "LunarCrush",
+        "description": "Comprehensive social analytics for crypto. Aggregates data from Twitter, Reddit, YouTube, Medium, and more. Provides social volume, sentiment, and influencer impact scores.",
+        "category": "ICM & Crypto",
+        "tags": ["Social", "Analytics", "Sentiment", "ICM", "Multi-Platform"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://lunarcrush.com/developers/docs",
+        "requiredEnvKeys": ["LUNARCRUSH_API_KEY"],
+        "tools": [
+          {
+            "name": "getAssetMetrics",
+            "description": "Get comprehensive social metrics for a token"
+          },
+          {
+            "name": "getSocialVolume",
+            "description": "Track mentions across all platforms"
+          },
+          {
+            "name": "getSocialSentiment",
+            "description": "Aggregated sentiment score (0-100)"
+          },
+          {
+            "name": "getInfluencerActivity",
+            "description": "Track posts from top crypto influencers"
+          },
+          {
+            "name": "getTrendingTokens",
+            "description": "Get tokens trending on social media"
+          },
+          {
+            "name": "getGalaxyScore",
+            "description": "LunarCrush's proprietary health score (0-100)"
+          },
+          {
+            "name": "getAltRank",
+            "description": "Get token's ranking among all altcoins"
+          },
+          {
+            "name": "getSocialDominance",
+            "description": "Calculate token's share of total crypto discussion"
+          },
+          {
+            "name": "getEngagement",
+            "description": "Track likes, shares, comments across platforms"
+          },
+          {
+            "name": "getCorrelations",
+            "description": "Find correlation between social metrics and price"
+          }
+        ],
+        "pricing": {
+          "free_tier": "50 API calls/day",
+          "paid_tier": "Starting at $99/month for 10,000 calls/day",
+          "pro_tier": "$499/month for 100,000 calls/day + advanced metrics",
+          "note": "Free tier has 1-hour data delay, paid has real-time"
+        },
+        "setup": {
+          "steps": [
+            "Sign up at https://lunarcrush.com",
+            "Navigate to API section in dashboard",
+            "Generate API key (free tier available)",
+            "Add LUNARCRUSH_API_KEY to .env file",
+            "Run: gicm add mcp/lunarcrush"
+          ]
+        },
+        "features": [
+          "Multi-platform aggregation (Twitter, Reddit, YouTube, etc.)",
+          "Social volume tracking",
+          "Sentiment analysis",
+          "Influencer monitoring",
+          "Galaxy Score (proprietary metric)",
+          "AltRank (token ranking)",
+          "Social dominance",
+          "Engagement metrics",
+          "Price correlation analysis",
+          "Historical social data"
+        ],
+        "platforms": [
+          "Twitter/X",
+          "Reddit",
+          "YouTube",
+          "Medium",
+          "Telegram",
+          "BitcoinTalk",
+          "News sites",
+          "Blogs"
+        ],
+        "metrics": {
+          "galaxyScore": {
+            "description": "Overall token health score (0-100)",
+            "factors": [
+              "Social volume",
+              "Social engagement",
+              "Social contributors",
+              "Price performance"
+            ]
+          },
+          "altRank": {
+            "description": "Token ranking among all altcoins",
+            "range": "1 (best) to 4000+ (worst)"
+          },
+          "socialVolume": {
+            "description": "Total mentions across all platforms",
+            "useCase": "Early spike detection for ICM launches"
+          },
+          "sentiment": {
+            "description": "Aggregated sentiment score",
+            "range": "0 (very bearish) to 100 (very bullish)"
+          }
+        },
+        "useCases": [
+          "Detect early social momentum for ICM launches",
+          "Track sentiment shifts before price moves",
+          "Identify influencer-driven pumps",
+          "Monitor multi-platform buzz",
+          "Correlate social metrics with price action",
+          "Find trending tokens before they moon",
+          "Detect coordinated shill campaigns",
+          "Track long-term community health"
+        ]
+      }
+    }
+  }
+}

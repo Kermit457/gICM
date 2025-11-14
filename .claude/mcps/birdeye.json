@@ -1,0 +1,90 @@
+{
+  "mcpServers": {
+    "birdeye": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\birdeye-server.js"
+      ],
+      "env": {
+        "BIRDEYE_API_KEY": "${BIRDEYE_API_KEY}"
+      },
+      "metadata": {
+        "name": "Birdeye",
+        "description": "Comprehensive Solana token analytics with price data, OHLCV charts, wallet tracking, and trader profiles. Premium data source for Solana ICM analysis.",
+        "category": "ICM & Crypto",
+        "tags": ["Solana", "Analytics", "Price", "Trading", "ICM", "OHLCV"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://docs.birdeye.so",
+        "requiredEnvKeys": ["BIRDEYE_API_KEY"],
+        "tools": [
+          {
+            "name": "getTokenPrice",
+            "description": "Get current token price with 24h change and volume"
+          },
+          {
+            "name": "getTokenOHLCV",
+            "description": "Get OHLCV candles for chart analysis (1m to 1M intervals)"
+          },
+          {
+            "name": "getTokenTrades",
+            "description": "Get recent trades with buyer/seller addresses"
+          },
+          {
+            "name": "getTokenHolders",
+            "description": "Get top token holders with balances and percentages"
+          },
+          {
+            "name": "getWalletPortfolio",
+            "description": "Analyze wallet holdings and PnL for whale tracking"
+          },
+          {
+            "name": "getTraderProfile",
+            "description": "Get trader stats: win rate, total PnL, trade count"
+          },
+          {
+            "name": "getTokenSecurity",
+            "description": "Security audit data: mint authority, freeze authority, LP burned"
+          },
+          {
+            "name": "getMarketOverview",
+            "description": "Get Solana market overview and trending tokens"
+          },
+          {
+            "name": "getNewTokens",
+            "description": "Track newly created tokens for ICM opportunities"
+          },
+          {
+            "name": "getTokenMetadata",
+            "description": "Get token name, symbol, decimals, logo, socials"
+          }
+        ],
+        "pricing": {
+          "free_tier": "Limited (100 requests/day)",
+          "paid_tier": "Starting at $99/month for 10,000 requests/day",
+          "enterprise": "$499/month for unlimited + advanced features",
+          "note": "Pro tier includes historical data and WebSocket feeds"
+        },
+        "setup": {
+          "steps": [
+            "Sign up at https://birdeye.so",
+            "Navigate to API section in dashboard",
+            "Generate API key",
+            "Add BIRDEYE_API_KEY to .env file",
+            "Run: gicm add mcp/birdeye"
+          ]
+        },
+        "features": [
+          "Real-time price feeds",
+          "Historical OHLCV data",
+          "Wallet portfolio tracking",
+          "Trader performance analytics",
+          "Token security checks",
+          "Holder distribution analysis",
+          "Trade history with addresses",
+          "Market trending tokens"
+        ]
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@ gICM consists of **2 separate repositories**:
 
 ### 1. **gICM** (This Repo - Web Application)
 **Purpose:** Marketplace website and web app
-**URL:** https://github.com/gicm/gICM
+**URL:** https://github.com/Kermit457/gICM
 
 **Contains:**
 - Next.js 15.5 web application
@@ -27,7 +27,7 @@ gICM consists of **2 separate repositories**:
 
 ### 2. **gICM-library** (Content Repository)
 **Purpose:** Standalone library of all agents, skills, commands, MCPs, and settings
-**URL:** https://github.com/gicm/gICM-library
+**URL:** https://github.com/Kermit457/gICM (integrated in main repo)
 
 **Contains:**
 - 74 Agents (`.md` files)

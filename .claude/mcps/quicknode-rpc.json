@@ -1,0 +1,89 @@
+{
+  "mcpServers": {
+    "quicknode-rpc": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\quicknode-server.js"
+      ],
+      "env": {
+        "QUICKNODE_ENDPOINT": "${QUICKNODE_ENDPOINT}",
+        "QUICKNODE_API_KEY": "${QUICKNODE_API_KEY}"
+      },
+      "metadata": {
+        "name": "QuickNode RPC",
+        "description": "Multi-chain RPC provider supporting Ethereum, Solana, Polygon, BSC, and 15+ chains. High-performance infrastructure for cross-chain ICM trading.",
+        "category": "ICM & Crypto",
+        "tags": ["Multi-Chain", "RPC", "Ethereum", "Solana", "Blockchain", "ICM"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://www.quicknode.com/docs",
+        "requiredEnvKeys": ["QUICKNODE_ENDPOINT", "QUICKNODE_API_KEY"],
+        "tools": [
+          {
+            "name": "getBlockData",
+            "description": "Fetch block data across multiple chains"
+          },
+          {
+            "name": "getTokenBalance",
+            "description": "Get token balances for any address on supported chains"
+          },
+          {
+            "name": "getTransactionReceipt",
+            "description": "Retrieve transaction receipt with detailed logs"
+          },
+          {
+            "name": "traceTransaction",
+            "description": "Debug and trace transaction execution (EVM chains)"
+          },
+          {
+            "name": "getContractEvents",
+            "description": "Query smart contract event logs"
+          },
+          {
+            "name": "estimateGas",
+            "description": "Estimate gas costs for transactions"
+          },
+          {
+            "name": "getChainStats",
+            "description": "Get real-time chain statistics and health metrics"
+          },
+          {
+            "name": "streamBlocks",
+            "description": "WebSocket subscription for new blocks"
+          }
+        ],
+        "pricing": {
+          "free_tier": "10M API credits/month",
+          "paid_tier": "Starting at $49/month",
+          "note": "Includes add-ons for NFT API, Token API, Traces"
+        },
+        "setup": {
+          "steps": [
+            "Sign up at https://www.quicknode.com",
+            "Create endpoint for desired chain(s)",
+            "Copy HTTP endpoint URL and API key",
+            "Add QUICKNODE_ENDPOINT and QUICKNODE_API_KEY to .env",
+            "Run: gicm add mcp/quicknode-rpc"
+          ]
+        },
+        "supportedChains": [
+          "Ethereum",
+          "Solana",
+          "Polygon",
+          "BSC",
+          "Avalanche",
+          "Arbitrum",
+          "Optimism",
+          "Base",
+          "Fantom",
+          "Gnosis",
+          "Celo",
+          "Harmony",
+          "Moonbeam",
+          "zkSync",
+          "Linea"
+        ]
+      }
+    }
+  }
+}

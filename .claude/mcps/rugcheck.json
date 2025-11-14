@@ -1,0 +1,97 @@
+{
+  "mcpServers": {
+    "rugcheck": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\rugcheck-server.js"
+      ],
+      "env": {
+        "RUGCHECK_API_KEY": "${RUGCHECK_API_KEY}"
+      },
+      "metadata": {
+        "name": "RugCheck",
+        "description": "Automated smart contract security scanner for Solana tokens. Detects rug pull risks, mint authority, freeze authority, and liquidity locks. Critical for ICM safety.",
+        "category": "ICM & Crypto",
+        "tags": ["Security", "Rug Detection", "Solana", "ICM", "Contract Audit"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://rugcheck.xyz/docs",
+        "requiredEnvKeys": ["RUGCHECK_API_KEY"],
+        "tools": [
+          {
+            "name": "scanToken",
+            "description": "Comprehensive security scan with risk score (0-100)"
+          },
+          {
+            "name": "checkMintAuthority",
+            "description": "Verify if mint authority is revoked (prevents unlimited minting)"
+          },
+          {
+            "name": "checkFreezeAuthority",
+            "description": "Verify if freeze authority is revoked (prevents wallet freezing)"
+          },
+          {
+            "name": "checkLiquidityLock",
+            "description": "Check if liquidity is locked and for how long"
+          },
+          {
+            "name": "getTopHolders",
+            "description": "Analyze holder distribution for concentration risk"
+          },
+          {
+            "name": "checkMetadata",
+            "description": "Verify token metadata and social links"
+          },
+          {
+            "name": "getRugScore",
+            "description": "Calculate overall rug risk score with detailed breakdown"
+          },
+          {
+            "name": "checkCreatorHistory",
+            "description": "Analyze token creator's previous launches (rug history)"
+          },
+          {
+            "name": "monitorContract",
+            "description": "Set up continuous monitoring for contract changes"
+          },
+          {
+            "name": "getAuditReport",
+            "description": "Generate detailed PDF audit report"
+          }
+        ],
+        "pricing": {
+          "free_tier": "50 scans/day",
+          "paid_tier": "Starting at $49/month for 1,000 scans/day",
+          "enterprise": "$199/month for unlimited + API priority",
+          "note": "Free tier has 5-second rate limit between requests"
+        },
+        "setup": {
+          "steps": [
+            "Visit https://rugcheck.xyz",
+            "Create account and verify email",
+            "Generate API key from settings",
+            "Add RUGCHECK_API_KEY to .env file",
+            "Run: gicm add mcp/rugcheck"
+          ]
+        },
+        "riskFactors": [
+          "Mint Authority Active (High Risk)",
+          "Freeze Authority Active (High Risk)",
+          "No Liquidity Lock (Critical)",
+          "High Creator Holdings (Medium)",
+          "Suspicious Metadata (Low)",
+          "Creator Rug History (Critical)",
+          "Low Holder Count (Medium)",
+          "Short Contract Age (Low)"
+        ],
+        "scoreInterpretation": {
+          "0-20": "Very Safe - Multiple audits, locked liquidity, revoked authorities",
+          "21-40": "Safe - Good fundamentals, minor concerns",
+          "41-60": "Moderate Risk - Some red flags, proceed with caution",
+          "61-80": "High Risk - Multiple concerning signals",
+          "81-100": "Extreme Risk - Clear rug indicators, avoid"
+        }
+      }
+    }
+  }
+}

@@ -1,14 +1,49 @@
-# gICM://SEND - Vibecoding Marketplace
+# gICM - The ICM-Native Claude Code Marketplace
 
-> **Status:** Foundation Complete ✅ | Dev Server Running at http://localhost:3000
+> **Status:** Production Ready ✅ | **444 Production Plugins** | **The ONLY ICM/Crypto-Focused Marketplace**
 
-A marketplace where builders select agents, skills, commands, and MCP servers to build custom AI development stacks. Built with Next.js 15.5, TypeScript, Tailwind CSS, and shadcn/ui.
+The first and only Claude Code marketplace built specifically for ICM launches, crypto trading, rug detection, whale tracking, and Web3 development.
 
-**388 curated items** | **409 static pages** | **All duplicates resolved** ✅
-
-![ICM Brand](https://img.shields.io/badge/ICM-Motion-D1FD0A?style=for-the-badge)
+[![GitHub](https://img.shields.io/badge/GitHub-Kermit457%2FgICM-black?style=for-the-badge&logo=github)](https://github.com/Kermit457/gICM)
+[![NPM](https://img.shields.io/badge/NPM-%40gicm%2Fcli-CB3837?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/@gicm/cli)
+![ICM Brand](https://img.shields.io/badge/ICM-First-D1FD0A?style=for-the-badge)
 ![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript)
+
+## 🎯 What Makes gICM Different
+
+**87 Agents** | **90 Skills** | **94 Commands** | **34 Workflows** | **82 MCPs** | **48 Settings** = **444 Production-Ready Plugins**
+
+❌ **Competitors:** Generic software development focus
+✅ **gICM:** ICM-native agents for rug detection, whale tracking, pump.fun integration, social sentiment analysis
+
+## 🚀 30-Second Install
+
+```bash
+# Via Claude Code
+/plugin marketplace add Kermit457/gICM
+
+# Via Standalone CLI
+npx @gicm/cli add stack/icm-trader
+
+# Browse Online
+https://gicm-marketplace.vercel.app
+```
+
+## 📄 New Features & Pages
+
+### 🌐 Web Pages
+- **[Homepage](https://gicm-marketplace.vercel.app)** - Enhanced hero with verified stats
+- **[/icm](https://gicm-marketplace.vercel.app/icm)** - Dedicated ICM landing page with 6 use cases
+- **[/compare](https://gicm-marketplace.vercel.app/compare)** - Competitive comparison vs wshobson, anthropics, davila7
+- **[.well-known/claude-marketplace.json](https://gicm-marketplace.vercel.app/.well-known/claude-marketplace.json)** - Claude Code integration endpoint
+
+### 📚 Documentation
+- **[INSTALLATION.md](./INSTALLATION.md)** - 3 installation methods, CLI reference, troubleshooting
+- **[CRYPTO.md](./CRYPTO.md)** - 400+ lines of ICM use cases, tutorials, case studies
+- **[COMPETITIVE_RESPONSE.md](./COMPETITIVE_RESPONSE.md)** - Evidence-based competitive analysis
+- **[LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md)** - Complete launch strategy & metrics
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Repository structure & data flow
 
 ---
 
@@ -30,7 +65,7 @@ npm run dev
 
 All agents, skills, commands, MCP servers, and settings are stored in a separate repository for easy access:
 
-**[gICM-library](https://github.com/gicm/gICM-library)** - 388 curated items
+**[gICM-library](https://github.com/Kermit457/gICM)** - 388 curated items (included in main repo)
 
 Users can:
 - Clone the library directly

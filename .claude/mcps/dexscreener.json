@@ -1,0 +1,93 @@
+{
+  "mcpServers": {
+    "dexscreener": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\dexscreener-server.js"
+      ],
+      "env": {
+        "DEXSCREENER_API_KEY": "${DEXSCREENER_API_KEY}"
+      },
+      "metadata": {
+        "name": "DexScreener",
+        "description": "Real-time DEX analytics across 90+ chains and 500+ DEXs. Track token prices, liquidity, volume, and new pair listings. Essential for ICM launch monitoring.",
+        "category": "ICM & Crypto",
+        "tags": ["DEX", "Analytics", "Price", "Liquidity", "ICM", "Trading"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://docs.dexscreener.com",
+        "requiredEnvKeys": ["DEXSCREENER_API_KEY"],
+        "tools": [
+          {
+            "name": "getTokenPairs",
+            "description": "Get all trading pairs for a token across all DEXs"
+          },
+          {
+            "name": "searchPairs",
+            "description": "Search pairs by token address, symbol, or name"
+          },
+          {
+            "name": "getLatestPairs",
+            "description": "Get newest token pairs (perfect for ICM launch detection)"
+          },
+          {
+            "name": "getTokenProfile",
+            "description": "Get token metadata, socials, and description"
+          },
+          {
+            "name": "getPairMetrics",
+            "description": "Get detailed metrics: price, volume, liquidity, price changes"
+          },
+          {
+            "name": "getTopGainers",
+            "description": "Track trending tokens and top gainers"
+          },
+          {
+            "name": "getNewListings",
+            "description": "Monitor new token launches in real-time"
+          },
+          {
+            "name": "trackLiquidity",
+            "description": "Monitor liquidity changes for rug detection"
+          }
+        ],
+        "pricing": {
+          "free_tier": "300 requests/minute",
+          "paid_tier": "Starting at $99/month for 1000 req/min",
+          "note": "Pro tier includes historical data and advanced filters"
+        },
+        "setup": {
+          "steps": [
+            "Visit https://dexscreener.com/",
+            "No API key needed for basic tier (300 req/min)",
+            "For Pro: Sign up and get API key from dashboard",
+            "Add DEXSCREENER_API_KEY to .env (optional for free tier)",
+            "Run: gicm add mcp/dexscreener"
+          ]
+        },
+        "supportedChains": [
+          "Ethereum",
+          "Solana",
+          "BSC",
+          "Polygon",
+          "Arbitrum",
+          "Optimism",
+          "Base",
+          "Avalanche",
+          "Fantom",
+          "Cronos",
+          "90+ more chains"
+        ],
+        "supportedDEXs": [
+          "Uniswap",
+          "Raydium",
+          "PancakeSwap",
+          "Orca",
+          "Jupiter",
+          "SushiSwap",
+          "500+ total DEXs"
+        ]
+      }
+    }
+  }
+}

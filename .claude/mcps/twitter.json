@@ -1,0 +1,110 @@
+{
+  "mcpServers": {
+    "twitter": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\twitter-server.js"
+      ],
+      "env": {
+        "TWITTER_API_KEY": "${TWITTER_API_KEY}",
+        "TWITTER_API_SECRET": "${TWITTER_API_SECRET}",
+        "TWITTER_BEARER_TOKEN": "${TWITTER_BEARER_TOKEN}"
+      },
+      "metadata": {
+        "name": "Twitter (X) API",
+        "description": "Social sentiment monitoring for crypto tokens. Track mentions, influencer activity, trending hashtags, and bot detection. Essential for ICM sentiment analysis.",
+        "category": "ICM & Crypto",
+        "tags": ["Social", "Sentiment", "Twitter", "ICM", "Monitoring"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://developer.twitter.com/en/docs",
+        "requiredEnvKeys": [
+          "TWITTER_API_KEY",
+          "TWITTER_API_SECRET",
+          "TWITTER_BEARER_TOKEN"
+        ],
+        "tools": [
+          {
+            "name": "searchTweets",
+            "description": "Search tweets by keyword, hashtag, or cashtag"
+          },
+          {
+            "name": "getTokenMentions",
+            "description": "Track all mentions of a token symbol or contract address"
+          },
+          {
+            "name": "getInfluencerActivity",
+            "description": "Monitor specific crypto influencer accounts"
+          },
+          {
+            "name": "analyzeSentiment",
+            "description": "AI-powered sentiment analysis on tweet text"
+          },
+          {
+            "name": "detectBots",
+            "description": "Identify bot accounts and artificial engagement"
+          },
+          {
+            "name": "getTrendingHashtags",
+            "description": "Get trending crypto hashtags and topics"
+          },
+          {
+            "name": "getEngagementMetrics",
+            "description": "Calculate likes, retweets, replies, impressions"
+          },
+          {
+            "name": "trackCalls",
+            "description": "Monitor token 'calls' from known callers"
+          },
+          {
+            "name": "streamMentions",
+            "description": "Real-time stream of token mentions"
+          },
+          {
+            "name": "getUserProfile",
+            "description": "Get user follower count, verification status, join date"
+          }
+        ],
+        "pricing": {
+          "free_tier": "1,500 tweets/month (Basic tier)",
+          "paid_tier": "$100/month for 10,000 tweets/month (Pro tier)",
+          "enterprise": "$42,000/month for unlimited (Enterprise tier)",
+          "note": "Free tier has limited filtering and no streaming"
+        },
+        "setup": {
+          "steps": [
+            "Create Twitter Developer account at https://developer.twitter.com",
+            "Create new project and app",
+            "Generate API Key, API Secret, and Bearer Token",
+            "Add all 3 tokens to .env file",
+            "Ensure app has OAuth 2.0 enabled",
+            "Run: gicm add mcp/twitter"
+          ]
+        },
+        "features": [
+          "Keyword and hashtag monitoring",
+          "Influencer tracking",
+          "Sentiment analysis",
+          "Bot detection",
+          "Engagement metrics",
+          "Real-time streaming",
+          "Historical search (7 days free, 30+ days paid)",
+          "User profile analysis"
+        ],
+        "rateLimit": {
+          "free": "1,500 tweets/month",
+          "pro": "10,000 tweets/month",
+          "enterprise": "Unlimited"
+        },
+        "useCases": [
+          "Track token launch announcements",
+          "Monitor influencer calls",
+          "Detect coordinated pump campaigns",
+          "Identify FUD campaigns",
+          "Track community sentiment shifts",
+          "Find early alpha on new launches"
+        ]
+      }
+    }
+  }
+}

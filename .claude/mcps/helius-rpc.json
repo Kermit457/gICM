@@ -1,0 +1,66 @@
+{
+  "mcpServers": {
+    "helius-rpc": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM\\.claude\\mcps\\servers\\helius-server.js"
+      ],
+      "env": {
+        "HELIUS_API_KEY": "${HELIUS_API_KEY}"
+      },
+      "metadata": {
+        "name": "Helius RPC",
+        "description": "Premium Solana RPC provider with enhanced APIs for token data, NFTs, transactions, and webhooks. Essential for ICM trading on Solana.",
+        "category": "ICM & Crypto",
+        "tags": ["Solana", "RPC", "Blockchain", "ICM", "Trading"],
+        "version": "1.0.0",
+        "author": "gICM",
+        "documentation": "https://docs.helius.dev",
+        "requiredEnvKeys": ["HELIUS_API_KEY"],
+        "tools": [
+          {
+            "name": "getTokenMetadata",
+            "description": "Get comprehensive token metadata including supply, holders, price"
+          },
+          {
+            "name": "getTokenAccounts",
+            "description": "Fetch all token accounts for a given mint address"
+          },
+          {
+            "name": "getTransactionHistory",
+            "description": "Retrieve detailed transaction history for an address"
+          },
+          {
+            "name": "getAssetsByOwner",
+            "description": "Get all assets (tokens + NFTs) owned by a wallet"
+          },
+          {
+            "name": "parseTransaction",
+            "description": "Parse and decode Solana transaction data"
+          },
+          {
+            "name": "getWhaleTransactions",
+            "description": "Track large token transfers for whale monitoring"
+          },
+          {
+            "name": "subscribeToAddress",
+            "description": "Set up webhook for real-time address activity monitoring"
+          }
+        ],
+        "pricing": {
+          "free_tier": "250,000 credits/month",
+          "paid_tier": "Starting at $99/month",
+          "note": "Credits vary by method complexity"
+        },
+        "setup": {
+          "steps": [
+            "Sign up at https://helius.dev",
+            "Create API key in dashboard",
+            "Add HELIUS_API_KEY to .env file",
+            "Run: gicm add mcp/helius-rpc"
+          ]
+        }
+      }
+    }
+  }
+}
