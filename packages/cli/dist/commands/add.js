@@ -11,6 +11,7 @@ const chalk_1 = __importDefault(require("chalk"));
 const ora_1 = __importDefault(require("ora"));
 const api_1 = require("../lib/api");
 const files_1 = require("../lib/files");
+const bridge_1 = require("../lib/bridge");
 /**
  * Parse item string like "agent/slug" into { kind, slug }
  */
@@ -33,10 +34,12 @@ function parseItemString(itemStr) {
  */
 async function addCommand(items, options = {}) {
     const apiClient = new api_1.GICMAPIClient(options.apiUrl);
-    const fileWriter = new files_1.FileWriter();
-    // Ensure .claude directory exists and is writable
+    // Initialize FileWriter with platform awareness
+    const platform = options.platform || "claude";
+    const fileWriter = new files_1.FileWriter(undefined, platform);
+    // Ensure config directory exists and is writable
     try {
-        await fileWriter.ensureClaudeDir();
+        await fileWriter.ensureConfigDir();
     }
     catch (error) {
         process.exit(1);
@@ -50,8 +53,13 @@ async function addCommand(items, options = {}) {
         console.error(chalk_1.default.red(`\n✗ ${error.message}\n`));
         process.exit(1);
     }
+    const platformNames = {
+        claude: 'Claude',
+        gemini: 'Gemini',
+        openai: 'OpenAI'
+    };
     const spinner = (0, ora_1.default)({
-        text: 'Fetching items from marketplace...',
+        text: `Fetching items from gICM marketplace for ${platformNames[platform]}...`,
         color: 'cyan',
     }).start();
     try {
@@ -70,7 +78,7 @@ async function addCommand(items, options = {}) {
                 ? chalk_1.default.gray(` (including ${bundle.stats.dependencyCount} dependencies)`)
                 : ''));
         // Show what will be installed
-        console.log(chalk_1.default.cyan('\nItems to install:'));
+        console.log(chalk_1.default.cyan(`\nItems to install for ${chalk_1.default.bold(platform)}:`));
         const byKind = {
             agent: bundle.items.filter(i => i.kind === 'agent'),
             skill: bundle.items.filter(i => i.kind === 'skill'),
@@ -111,8 +119,25 @@ async function addCommand(items, options = {}) {
             try {
                 // Download files
                 const files = await apiClient.getFiles(item.slug);
+                // Apply Universal Bridge Logic
+                // If targeting a different platform, wrap prompt files with compatibility shim
+                const bridgedFiles = files.map(file => {
+                    // Only transform markdown files (prompts) and only if not using default Claude
+                    if (file.path.endsWith('.md') && platform !== 'claude') {
+                        // Check if file content already has specific headers to avoid double wrapping
+                        if (!file.content.includes('AETHER BRIDGE: ADAPTER ACTIVE')) {
+                            const bridgedContent = bridge_1.UniversalBridge.bridgePrompt(file.content, {
+                                sourcePlatform: 'claude', // Assuming source is Claude-native by default
+                                targetPlatform: platform, // gemini or openai
+                                agentName: item.name
+                            });
+                            return { ...file, content: bridgedContent };
+                        }
+                    }
+                    return file;
+                });
                 // Write files
-                await fileWriter.writeItem(item, files);
+                await fileWriter.writeItem(item, bridgedFiles);
                 installedCount++;
                 installSpinner.text = `Installing... (${installedCount}/${bundle.stats.totalCount})`;
                 if (options.verbose) {
@@ -137,19 +162,24 @@ async function addCommand(items, options = {}) {
         if (bundle.stats.byKind.setting) {
             console.log(`  ${chalk_1.default.bold('Settings:')} ${bundle.stats.byKind.setting}`);
         }
-        // Show next steps for MCPs if any were installed
+        // Show next steps for MCPs if any were installed (Claude-only feature)
         const mcps = bundle.items.filter(i => i.kind === 'mcp');
         if (mcps.length > 0) {
-            console.log(chalk_1.default.yellow('\n⚠️  MCP servers require configuration:'));
-            mcps.forEach(mcp => {
-                if (mcp.envKeys && mcp.envKeys.length > 0) {
-                    console.log(chalk_1.default.gray(`\n  ${mcp.name}:`));
-                    console.log(chalk_1.default.gray(`    Configure: .claude/mcp/${mcp.slug}.json`));
-                    console.log(chalk_1.default.gray(`    Required: ${mcp.envKeys.join(', ')}`));
-                }
-            });
+            if (platform === 'claude') {
+                console.log(chalk_1.default.yellow('\n⚠️  MCP servers require configuration:'));
+                mcps.forEach(mcp => {
+                    if (mcp.envKeys && mcp.envKeys.length > 0) {
+                        console.log(chalk_1.default.gray(`\n  ${mcp.name}:`));
+                        console.log(chalk_1.default.gray(`    Configure: .claude/mcp/${mcp.slug}.json`));
+                        console.log(chalk_1.default.gray(`    Required: ${mcp.envKeys.join(', ')}`));
+                    }
+                });
+            }
+            else {
+                console.log(chalk_1.default.yellow('\n⚠️  Note: MCPs are Claude-only. Skipped MCP installation for ' + platformNames[platform]));
+            }
         }
-        console.log(chalk_1.default.gray('\n💡 Tip: Reload your Claude editor to see the new items.\n'));
+        console.log(chalk_1.default.gray(`\n💡 Tip: Reload your ${platformNames[platform]} editor to see the new items.\n`));
     }
     catch (error) {
         spinner.fail(chalk_1.default.red('Installation failed'));

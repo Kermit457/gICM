@@ -4,7 +4,12 @@
 import type { RegistryItem, FileContent } from './types';
 export declare class FileWriter {
     private basePath;
-    constructor(basePath?: string);
+    private platform;
+    constructor(basePath?: string, platform?: "claude" | "gemini" | "openai");
+    /**
+     * Get the root configuration directory name (.claude or .gemini)
+     */
+    private get configDirName();
     /**
      * Write files for a marketplace item
      */
@@ -14,9 +19,9 @@ export declare class FileWriter {
      */
     private writeFile;
     /**
-     * Check if .claude directory exists and is writable
+     * Check if config directory exists and is writable
      */
-    ensureClaudeDir(): Promise<void>;
+    ensureConfigDir(): Promise<void>;
     /**
      * Get installation paths for different item types
      */

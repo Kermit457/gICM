@@ -48,9 +48,11 @@ export interface ParsedItem {
     slug: string;
     original: string;
 }
+export type Platform = "claude" | "gemini" | "openai";
 export interface CLIOptions {
     apiUrl?: string;
     verbose?: boolean;
     skipConfirm?: boolean;
+    platform?: Platform;
 }
 //# sourceMappingURL=types.d.ts.map

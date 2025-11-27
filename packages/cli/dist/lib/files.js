@@ -44,8 +44,15 @@ const fs = __importStar(require("fs-extra"));
 const path = __importStar(require("path"));
 const chalk_1 = __importDefault(require("chalk"));
 class FileWriter {
-    constructor(basePath) {
+    constructor(basePath, platform = "claude") {
         this.basePath = basePath || process.cwd();
+        this.platform = platform;
+    }
+    /**
+     * Get the root configuration directory name (.claude or .gemini)
+     */
+    get configDirName() {
+        return `.${this.platform}`;
     }
     /**
      * Write files for a marketplace item
@@ -65,27 +72,27 @@ class FileWriter {
      * Write a single file
      */
     async writeFile(relativePath, content) {
-        const fullPath = path.join(this.basePath, '.claude', relativePath);
+        const fullPath = path.join(this.basePath, this.configDirName, relativePath);
         // Ensure directory exists
         await fs.ensureDir(path.dirname(fullPath));
         // Write file
         await fs.writeFile(fullPath, content, 'utf-8');
     }
     /**
-     * Check if .claude directory exists and is writable
+     * Check if config directory exists and is writable
      */
-    async ensureClaudeDir() {
-        const claudeDir = path.join(this.basePath, '.claude');
+    async ensureConfigDir() {
+        const configDir = path.join(this.basePath, this.configDirName);
         try {
-            // Create .claude directory if it doesn't exist
-            await fs.ensureDir(claudeDir);
+            // Create directory if it doesn't exist
+            await fs.ensureDir(configDir);
             // Test write permissions
-            const testFile = path.join(claudeDir, '.gicm-test');
+            const testFile = path.join(configDir, '.aether-test');
             await fs.writeFile(testFile, 'test', 'utf-8');
             await fs.remove(testFile);
         }
         catch (error) {
-            console.error(chalk_1.default.red('\n✗ Cannot write to .claude directory'));
+            console.error(chalk_1.default.red(`\n✗ Cannot write to ${this.configDirName} directory`));
             console.error(chalk_1.default.yellow('  Please check folder permissions.\n'));
             throw error;
         }
@@ -94,7 +101,7 @@ class FileWriter {
      * Get installation paths for different item types
      */
     getInstallPath(item) {
-        const basePath = path.join(this.basePath, '.claude');
+        const basePath = path.join(this.basePath, this.configDirName);
         switch (item.kind) {
             case 'agent':
                 return path.join(basePath, 'agents', `${item.slug}.md`);
@@ -124,7 +131,7 @@ class FileWriter {
      * Get list of installed items by kind
      */
     async getInstalledItems(kind) {
-        const basePath = path.join(this.basePath, '.claude');
+        const basePath = path.join(this.basePath, this.configDirName);
         const installed = [];
         try {
             if (!kind || kind === 'agent') {

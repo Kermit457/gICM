@@ -1,7 +1,7 @@
 {
   "name": "@gicm/cli",
-  "version": "1.0.0",
-  "description": "Official CLI for gICM marketplace - Install agents, skills, commands, MCPs, and settings instantly",
+  "version": "1.1.0",
+  "description": "Official CLI for gICM marketplace - Install agents, skills, commands, MCPs for Claude, Gemini & OpenAI",
   "main": "dist/index.js",
   "bin": {
     "gicm": "dist/index.js"

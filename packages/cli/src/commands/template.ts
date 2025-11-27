@@ -14,6 +14,42 @@ interface TemplateOptions {
   verbose?: boolean;
 }
 
+interface Template {
+  name: string;
+  slug: string;
+  description: string;
+  category: string;
+  framework: string;
+  platforms: string[];
+  installs: number;
+  implementations?: {
+    bolt?: {
+      projectStructure?: {
+        files: Record<string, unknown>;
+        dependencies?: Record<string, string>;
+        scripts?: Record<string, string>;
+      };
+    };
+  };
+}
+
+interface TemplateResponse {
+  template: Template;
+}
+
+interface TemplatesResponse {
+  templates: Template[];
+}
+
+interface DeployResponse {
+  success: boolean;
+  error?: string;
+  project: {
+    url: string;
+    editorUrl?: string;
+  };
+}
+
 /**
  * Template Add - Install a template locally
  */
@@ -30,7 +66,7 @@ export async function templateAddCommand(slug: string, options: TemplateOptions 
       throw new Error(`Template not found: ${slug}`);
     }
 
-    const { template } = await response.json();
+    const { template } = await response.json() as TemplateResponse;
     spinner.succeed(`Found template: ${chalk.cyan(template.name)}`);
 
     // Display template info
@@ -264,7 +300,7 @@ export async function templateDeployCommand(
       }),
     });
 
-    const result = await response.json();
+    const result = await response.json() as DeployResponse;
 
     if (!result.success) {
       throw new Error(result.error || 'Deployment failed');
@@ -301,7 +337,7 @@ export async function templateListCommand(options: TemplateOptions & { category?
     }
 
     const response = await fetch(url);
-    const { templates } = await response.json();
+    const { templates } = await response.json() as TemplatesResponse;
 
     spinner.succeed(`Found ${templates.length} templates`);
 
@@ -335,7 +371,7 @@ export async function templateSearchCommand(query: string, options: TemplateOpti
 
   try {
     const response = await fetch(`${apiUrl}/templates?q=${encodeURIComponent(query)}`);
-    const { templates } = await response.json();
+    const { templates } = await response.json() as TemplatesResponse;
 
     spinner.succeed(`Found ${templates.length} matching templates`);
 
