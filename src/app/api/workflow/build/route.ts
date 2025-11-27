@@ -106,7 +106,7 @@ Only include item IDs that exist in the catalog. Be selective - quality over qua
     // Call Claude API with prompt caching
     // Cache the system prompt (catalog) for 5 minutes - saves 90% on repeated requests
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: 'claude-opus-4-5-20251101',
       max_tokens: 2000,
       messages: [
         {

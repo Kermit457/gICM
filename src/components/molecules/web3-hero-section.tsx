@@ -96,6 +96,12 @@ export function Web3HeroSection() {
 
           {/* Action Bar */}
           <div className="flex flex-wrap items-center gap-4 mt-10">
+            <Link href="/guides/vibe-coding">
+              <button className="px-8 py-4 bg-gradient-to-r from-[#D97757] via-[#4E82EE] to-[#10A37F] text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-[0_0_20px_-5px_rgba(0,240,255,0.3)]">
+                Start Vibe Coding
+              </button>
+            </Link>
+
             <button
               className="px-8 py-4 bg-white text-black font-bold rounded-xl hover:bg-zinc-200 transition-all shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]"
               onClick={() => {
@@ -105,10 +111,10 @@ export function Web3HeroSection() {
             >
               Explore Catalog
             </button>
-            
-            <Link href="/workflow">
+
+            <Link href="/projects">
               <button className="px-8 py-4 bg-white/5 text-white font-medium rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-sm">
-                Launch Studio
+                View Projects
               </button>
             </Link>
           </div>
@@ -146,7 +152,27 @@ export function Web3HeroSection() {
 
       {/* Studio Access Bar */}
       <div className="mt-6 flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border border-white/[0.05] bg-gradient-to-r from-zinc-900/50 to-[#0F0F11]/50 backdrop-blur-md">
-        <div className="flex items-center gap-4 mb-4 md:mb-0">
+        {/* LEFT: CA Scramble */}
+        <div
+          className="flex items-center gap-4 cursor-pointer group mb-4 md:mb-0"
+          onMouseEnter={() => setHoverCA(true)}
+          onMouseLeave={() => setHoverCA(false)}
+        >
+          <div className="h-10 w-10 rounded-full bg-[#00F0FF]/10 border border-[#00F0FF]/20 flex items-center justify-center">
+            <Eye className="w-5 h-5 text-[#00F0FF]" />
+          </div>
+          <div>
+            <h3 className="text-white font-bold">CA:</h3>
+            <InfiniteScramble
+              length={32}
+              active={hoverCA}
+              className={`font-mono text-[#00F0FF] text-sm tracking-wider transition-all ${hoverCA ? '' : 'blur-sm'}`}
+            />
+          </div>
+        </div>
+
+        {/* RIGHT: Private Alpha Access */}
+        <div className="flex items-center gap-4">
           <div className="h-10 w-10 rounded-full bg-[#00F0FF]/10 border border-[#00F0FF]/20 flex items-center justify-center">
             <Zap className="w-5 h-5 text-[#00F0FF]" />
           </div>
@@ -156,16 +182,13 @@ export function Web3HeroSection() {
               <span className="font-mono text-[#00F0FF]">{waitlistCount}/500</span> keys claimed
             </p>
           </div>
-        </div>
-
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="h-1.5 flex-1 md:w-48 bg-white/5 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-[#00F0FF] rounded-full" 
-              style={{ width: `${(waitlistCount / 500) * 100}%` }} 
+          <div className="h-1.5 w-32 bg-white/5 rounded-full overflow-hidden hidden md:block">
+            <div
+              className="h-full bg-[#00F0FF] rounded-full"
+              style={{ width: `${(waitlistCount / 500) * 100}%` }}
             />
           </div>
-          <button 
+          <button
             onClick={() => setWaitlistOpen(true)}
             className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-white transition-colors whitespace-nowrap"
           >

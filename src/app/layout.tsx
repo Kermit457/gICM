@@ -7,7 +7,6 @@ import { Footer } from "@/components/Footer";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
-import { KeyboardShortcuts } from "@/components/ui/keyboard-shortcuts";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
@@ -76,7 +75,6 @@ export default function RootLayout({
             </main>
             <Footer />
             <StackBuilderWidget />
-            <KeyboardShortcuts />
             <Toaster position="bottom-right" richColors closeButton />
           </ThemeProvider>
         </ErrorBoundary>

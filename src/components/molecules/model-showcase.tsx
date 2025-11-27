@@ -10,32 +10,32 @@ import { useState } from "react";
 const models = [
     {
         id: "claude",
-        name: "Claude 3.5 Sonnet",
+        name: "Claude Opus 4.5",
         provider: "Anthropic",
         icon: ClaudeIcon,
         color: "#D97757",
-        badge: "Constitutional AI",
+        badge: "Most Capable",
         badgeIcon: Zap,
-        description: "Optimized for complex reasoning, coding tasks, and nuanced content generation with high reliability.",
+        description: "The most capable Claude model for complex reasoning, extended thinking, and nuanced code generation.",
         code: `const agent = new ClaudeAgent({
-  model: "claude-3-5-sonnet",
+  model: "claude-opus-4-5-20251101",
   tools: [fileSystem, git],
-  max_tokens: 4096
+  max_tokens: 8192
 });`
     },
     {
         id: "gemini",
-        name: "Gemini 1.5 Pro",
+        name: "Gemini 2.0 Flash",
         provider: "Google",
         icon: GeminiIcon,
         color: "#4E82EE",
         badge: "Multimodal Native",
         badgeIcon: Sparkles,
-        description: "Seamlessly process text, images, and code with massive context windows up to 2 million tokens.",
+        description: "Ultra-fast multimodal AI with agentic capabilities, native tool use, and 1M token context window.",
         code: `const agent = new GeminiAgent({
-  model: "gemini-1.5-pro",
+  model: "gemini-2.0-flash",
   multimodal: true,
-  safety_settings: "BLOCK_NONE"
+  tools: ["code_execution"]
 });`
     },
     {

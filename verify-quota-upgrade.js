@@ -1,6 +1,11 @@
 // Verify Gemini API quota after account activation
-const API_KEY = 'AIzaSyAXwLp0cwVXlgf2Pk3E4DZcsAAmh_9WsDA';
-const MODEL = 'gemini-3-pro-preview';
+const API_KEY = process.env.GEMINI_API_KEY;
+if (!API_KEY) {
+    console.error('Error: GEMINI_API_KEY environment variable not set');
+    console.error('Set it with: export GEMINI_API_KEY=your_api_key_here');
+    process.exit(1);
+}
+const MODEL = 'gemini-2.0-flash';
 
 async function verifyQuotaUpgrade() {
     console.log('🔍 Checking your Gemini API quota status...\n');

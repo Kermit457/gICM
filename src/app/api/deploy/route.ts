@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { REGISTRY } from '@/lib/registry';
-import type { RegistryItem } from '@/lib/types';
+import type { RegistryItem } from '@/types/registry';
 
 /**
  * Deploy gICM item to Bolt.new or Lovable.dev
@@ -152,9 +152,9 @@ async function generateProjectFiles(item: RegistryItem): Promise<Record<string, 
   // Add item's prompt files as the main implementation
   if (item.files) {
     for (const file of item.files) {
-      const content = await readPromptFile(file.path);
+      const content = await readPromptFile(file);
       if (content) {
-        files[`prompts/${file.path.split('/').pop()}`] = content;
+        files[`prompts/${file.split('/').pop()}`] = content;
       }
     }
   }
