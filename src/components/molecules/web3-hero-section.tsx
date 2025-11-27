@@ -161,8 +161,8 @@ export function Web3HeroSection() {
           <div className="h-10 w-10 rounded-full bg-[#00F0FF]/10 border border-[#00F0FF]/20 flex items-center justify-center">
             <Eye className="w-5 h-5 text-[#00F0FF]" />
           </div>
-          <div>
-            <h3 className="text-white font-bold">CA:</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-white font-bold">CA:</span>
             <InfiniteScramble
               length={32}
               active={hoverCA}
