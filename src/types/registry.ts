@@ -237,3 +237,70 @@ export interface StackExport {
   items: RegistryItem[];
   dependencies: RegistryItem[];
 }
+
+// === UI COMPONENT TYPES (React UI with actual code) ===
+
+export interface UIComponentCode {
+  filename: string;           // "aurora-background.tsx"
+  component: string;          // FULL SOURCE CODE as string
+  css?: string;               // Optional CSS/Tailwind config
+  dependencies: string[];     // ["framer-motion", "clsx"]
+  usage: string;              // Example usage code
+}
+
+export interface UIComponentCredit {
+  library: string;            // "Aceternity UI" | "Magic UI" | "gICM"
+  url: string;                // Original source URL
+  license: "MIT";
+}
+
+export interface UIComponentPreview {
+  height: string;             // "400px"
+  darkMode: boolean;
+}
+
+export interface UIComponent {
+  id: string;                 // "design-react-backgrounds-aurora"
+  name: string;               // "Aurora Background"
+  description: string;
+  category: "Design";
+  subcategory: "React UI";
+  tags: string[];
+  credit: UIComponentCredit;
+  code: UIComponentCode;
+  preview: UIComponentPreview;
+  tech_stack: string[];
+}
+
+// Zod schemas for UIComponent
+export const UIComponentCodeSchema = z.object({
+  filename: z.string(),
+  component: z.string(),
+  css: z.string().optional(),
+  dependencies: z.array(z.string()),
+  usage: z.string(),
+});
+
+export const UIComponentCreditSchema = z.object({
+  library: z.string(),
+  url: z.string(),
+  license: z.literal("MIT"),
+});
+
+export const UIComponentPreviewSchema = z.object({
+  height: z.string(),
+  darkMode: z.boolean(),
+});
+
+export const UIComponentSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  category: z.literal("Design"),
+  subcategory: z.literal("React UI"),
+  tags: z.array(z.string()),
+  credit: UIComponentCreditSchema,
+  code: UIComponentCodeSchema,
+  preview: UIComponentPreviewSchema,
+  tech_stack: z.array(z.string()),
+});

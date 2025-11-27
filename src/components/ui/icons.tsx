@@ -70,6 +70,36 @@ export function BoltIcon({ className, ...props }: IconProps) {
   );
 }
 
+export function ReactIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="-11.5 -10.232 23 20.463"
+      className={cn("w-5 h-5 text-[#61DAFB]", className)}
+      {...props}
+    >
+      <circle r="2.05" fill="currentColor" />
+      <g fill="none" stroke="currentColor" strokeWidth="1">
+        <ellipse rx="10" ry="4.5" />
+        <ellipse rx="10" ry="4.5" transform="rotate(60)" />
+        <ellipse rx="10" ry="4.5" transform="rotate(120)" />
+      </g>
+    </svg>
+  );
+}
+
+export function ComfyUIIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 512 512"
+      fill="currentColor"
+      className={cn("w-5 h-5 text-[#f0ff41]", className)}
+      {...props}
+    >
+      <path d="M117.013 506.88c-12.117 0-21.888-4.416-28.266-12.757-6.55-8.576-8.256-20.565-4.694-32.853l14.336-49.387c1.152-3.925.342-8.17-2.133-11.435a13.33 13.33 0 00-10.539-5.184H44.48c-12.117 0-21.888-4.416-28.267-12.757-6.549-8.597-8.256-20.565-4.693-32.853L60.8 180.757l5.44-18.56c7.317-25.173 33.963-45.653 59.435-45.653h49.344c5.888 0 11.072-3.84 12.693-9.43l16.299-56.17c7.317-25.173 33.962-45.632 59.456-45.632l105.493-.17h77.227c12.117 0 21.91 4.394 28.267 12.735 6.549 8.576 8.256 20.566 4.693 32.854l-22.08 76.074c-7.317 25.131-33.984 45.59-59.456 45.59l-105.728.213H242.56c-5.824-.021-11.008 3.819-12.672 9.408l-41.13 140.885a12.892 12.892 0 002.133 11.457 13.31 13.31 0 0010.56 5.184l69.866-.128h77.014c12.117 0 21.888 4.394 28.267 12.757 6.549 8.576 8.256 20.565 4.693 32.853l-22.101 76.054c-7.296 25.152-33.963 45.61-59.435 45.61l-105.75.214h-77.013l.021-.022z" />
+    </svg>
+  );
+}
+
 export const PLATFORM_ICONS = {
     claude: { icon: ClaudeIcon, color: "text-[#D97757]", bg: "bg-[#D97757]/10", border: "border-[#D97757]/20" },
     gemini: { icon: GeminiIcon, color: "text-[#4E82EE]", bg: "bg-[#4E82EE]/10", border: "border-[#4E82EE]/20" },
