@@ -75,3 +75,4 @@ lpt2
 .vercel
 apps/
 .gemini/
+packages/*/node_modules
