@@ -1,0 +1,56 @@
+{
+  "name": "@gicm/react-grab",
+  "version": "1.0.0",
+  "description": "Click any element, copy context for AI coding agents. Works with Claude Code, Cursor, Copilot.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "build:all": "pnpm build && pnpm build:iife",
+    "build:iife": "tsup src/index.ts --format iife --global-name GICMGrab --out-dir dist --minify",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "lint": "eslint src/",
+    "prepublishOnly": "pnpm build:all"
+  },
+  "keywords": [
+    "react",
+    "devtools",
+    "claude",
+    "cursor",
+    "copilot",
+    "ai",
+    "coding",
+    "element-selection"
+  ],
+  "author": "gICM",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm/react-grab"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^9.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.0.0"
+  }
+}
