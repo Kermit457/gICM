@@ -1,0 +1,48 @@
+{
+  "name": "@gicm/mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for gICM marketplace - semantic search for agents, skills, MCPs, and workflows",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "gicm-context": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "cursor",
+    "gicm",
+    "ai",
+    "context",
+    "semantic-search"
+  ],
+  "author": "gICM",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@qdrant/js-client-rest": "^1.7.0",
+    "openai": "^4.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
