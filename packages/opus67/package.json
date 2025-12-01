@@ -1,0 +1,49 @@
+{
+  "name": "@gicm/opus67",
+  "version": "1.0.0",
+  "description": "OPUS 67 - Self-Evolving AI Runtime for gICM",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "ai",
+    "llm",
+    "mcp",
+    "solana",
+    "gicm",
+    "opus67"
+  ],
+  "author": "gICM",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "yaml": "^2.3.4",
+    "eventemitter3": "^5.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0",
+    "eslint": "^8.56.0"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "mcp",
+    "modes",
+    "door",
+    "THE_DOOR.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

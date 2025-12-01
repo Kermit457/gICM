@@ -1,0 +1,640 @@
+# OPUS 67 MCP Connections Registry
+# Version: 1.1.0
+# Total Connections: 15 (MVP) → 50+ (Target)
+
+meta:
+  version: "1.2.0"
+  total_connections: 21
+  target_connections: 50
+  auto_connect_enabled: true
+  connection_timeout_ms: 5000
+  retry_attempts: 3
+
+# =============================================================================
+# BLOCKCHAIN MCPs
+# =============================================================================
+
+blockchain:
+  helius:
+    name: Helius
+    type: custom_mcp
+    category: blockchain
+    priority: 1
+    description: Solana RPC, webhooks, and enhanced APIs
+    base_url: https://api.helius.xyz
+    auth:
+      type: api_key
+      env_var: HELIUS_API_KEY
+    capabilities:
+      - getAssetsByOwner
+      - getAssetsByCreator
+      - searchAssets
+      - getTransaction
+      - getSignaturesForAddress
+      - webhooks
+      - priority_fees
+    rate_limit:
+      requests_per_second: 50
+      requests_per_day: 100000
+    pricing:
+      tier: free
+      free_limit: "100K credits/month"
+      paid_starts: "$49/month"
+    auto_connect_when:
+      keywords: [solana, wallet, nft, transaction, rpc]
+      skills: [solana-anchor-expert, wallet-integration, defi-data-analyst]
+
+  jupiter:
+    name: Jupiter Aggregator
+    type: rest_api
+    category: blockchain
+    priority: 1
+    description: Best DEX aggregator for Solana swaps
+    base_url: https://quote-api.jup.ag/v6
+    auth:
+      type: none
+    capabilities:
+      - quote
+      - swap
+      - tokens
+      - price
+      - route_map
+    rate_limit:
+      requests_per_second: 10
+      requests_per_minute: 600
+    pricing:
+      tier: free
+      free_limit: unlimited
+    auto_connect_when:
+      keywords: [swap, dex, price, trade, jupiter]
+      skills: [bonding-curve-master, lp-automation]
+
+  birdeye:
+    name: Birdeye
+    type: rest_api
+    category: blockchain
+    priority: 2
+    description: Token analytics, charts, and market data
+    base_url: https://public-api.birdeye.so
+    auth:
+      type: api_key
+      env_var: BIRDEYE_API_KEY
+      header: X-API-KEY
+    capabilities:
+      - token_price
+      - token_security
+      - token_overview
+      - ohlcv
+      - trades
+      - wallet_portfolio
+    rate_limit:
+      requests_per_minute: 100
+    pricing:
+      tier: free
+      free_limit: "1000 requests/day"
+      paid_starts: "$99/month"
+    auto_connect_when:
+      keywords: [price, chart, analytics, token, birdeye]
+      skills: [defi-data-analyst, bonding-curve-master]
+
+# =============================================================================
+# SOCIAL INTELLIGENCE MCPs
+# =============================================================================
+
+social:
+  santiment:
+    name: Santiment
+    type: graphql
+    category: social
+    priority: 1
+    description: Crypto social sentiment from Twitter, Reddit, Telegram
+    base_url: https://api.santiment.net/graphql
+    auth:
+      type: api_key
+      env_var: SANTIMENT_API_KEY
+    capabilities:
+      - social_volume
+      - social_dominance
+      - sentiment_balance
+      - trending_words
+      - top_social_gainers
+      - github_activity
+    rate_limit:
+      requests_per_minute: 60
+    pricing:
+      tier: free
+      free_limit: "Limited historical data"
+      paid_starts: "$49/month"
+    auto_connect_when:
+      keywords: [sentiment, social, trending, twitter, reddit]
+      skills: [crypto-twitter-analyst, defi-data-analyst]
+
+  tweetscout:
+    name: TweetScout
+    type: rest_api
+    category: social
+    priority: 1
+    description: Crypto Twitter scoring and influencer analytics
+    base_url: https://api.tweetscout.io/v2
+    auth:
+      type: api_key
+      env_var: TWEETSCOUT_API_KEY
+    capabilities:
+      - score_account
+      - top_followers
+      - fake_follower_detection
+      - engagement_rate
+      - similar_accounts
+      - token_mentions
+    rate_limit:
+      requests_per_minute: 30
+    pricing:
+      tier: free
+      free_limit: "50 lookups/day"
+      paid_starts: "$29/month"
+    auto_connect_when:
+      keywords: [twitter, influencer, kol, score, fake followers]
+      skills: [crypto-twitter-analyst]
+
+  neynar:
+    name: Neynar
+    type: rest_api
+    category: social
+    priority: 2
+    description: Farcaster protocol API
+    base_url: https://api.neynar.com/v2
+    auth:
+      type: api_key
+      env_var: NEYNAR_API_KEY
+      header: api_key
+    capabilities:
+      - user_by_fid
+      - user_search
+      - cast_by_hash
+      - feed
+      - channels
+      - reactions
+      - notifications
+    rate_limit:
+      requests_per_minute: 300
+    pricing:
+      tier: free
+      free_limit: "300 requests/min"
+      paid_starts: "$9/month"
+    auto_connect_when:
+      keywords: [farcaster, cast, frame, warpcast, neynar]
+      skills: [farcaster-expert]
+
+# =============================================================================
+# DATA & DATABASE MCPs
+# =============================================================================
+
+data:
+  postgres:
+    name: PostgreSQL
+    type: mcp_server
+    category: data
+    priority: 1
+    description: Direct database access via MCP
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@modelcontextprotocol/server-postgres"]
+    auth:
+      type: connection_string
+      env_var: DATABASE_URL
+    capabilities:
+      - query
+      - schema_inspect
+      - tables_list
+    auto_connect_when:
+      keywords: [database, postgres, sql, query]
+      skills: [sql-database, prisma-orm, node-backend]
+
+  supabase:
+    name: Supabase
+    type: mcp_server
+    category: data
+    priority: 1
+    description: Supabase database, auth, storage, and real-time
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@supabase/mcp-server"]
+    auth:
+      type: api_key
+      env_var: SUPABASE_SERVICE_ROLE_KEY
+    env_vars:
+      - SUPABASE_URL
+      - SUPABASE_SERVICE_ROLE_KEY
+    capabilities:
+      - query
+      - insert
+      - update
+      - delete
+      - rpc
+      - storage_list
+      - storage_upload
+      - auth_users
+      - realtime_subscribe
+    rate_limit:
+      requests_per_second: 100
+    pricing:
+      tier: free
+      free_limit: "500MB database, 1GB storage"
+      paid_starts: "$25/month"
+    auto_connect_when:
+      keywords: [supabase, rls, realtime, storage, auth]
+      skills: [supabase-expert, sql-database, auth-security, nextjs-14-expert]
+
+  filesystem:
+    name: Filesystem
+    type: mcp_server
+    category: data
+    priority: 1
+    description: Project file access
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@modelcontextprotocol/server-filesystem", "/workspace"]
+    capabilities:
+      - read_file
+      - write_file
+      - list_directory
+      - search_files
+    auto_connect_when:
+      keywords: [file, read, write, project]
+      skills: [all]
+
+# =============================================================================
+# DOCUMENTATION & CONTEXT MCPs
+# =============================================================================
+
+documentation:
+  context7:
+    name: Context7
+    type: mcp_server
+    category: documentation
+    priority: 1
+    description: Up-to-date documentation for libraries and frameworks
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@context7/mcp-server"]
+    auth:
+      type: none
+    capabilities:
+      - resolve_library_id
+      - get_library_docs
+      - search_docs
+      - get_latest_version
+    supported_libraries:
+      - react
+      - nextjs
+      - typescript
+      - tailwindcss
+      - prisma
+      - supabase
+      - express
+      - fastify
+      - zod
+      - trpc
+      - drizzle
+      - lucia-auth
+      - tanstack-query
+      - zustand
+      - jotai
+    pricing:
+      tier: free
+      free_limit: unlimited
+    auto_connect_when:
+      keywords: [docs, documentation, api, reference, library, how to]
+      skills: [react-expert, nextjs-14-expert, typescript-senior, node-backend, api-integration, mcp-builder]
+
+# =============================================================================
+# TESTING & AUTOMATION MCPs
+# =============================================================================
+
+testing:
+  playwright:
+    name: Playwright
+    type: mcp_server
+    category: testing
+    priority: 1
+    description: Browser automation and E2E testing
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@anthropic/mcp-playwright"]
+    auth:
+      type: none
+    capabilities:
+      - navigate
+      - click
+      - fill
+      - screenshot
+      - get_text
+      - wait_for_selector
+      - evaluate
+      - assert_visible
+      - assert_text
+      - network_intercept
+    browser_support:
+      - chromium
+      - firefox
+      - webkit
+    pricing:
+      tier: free
+      free_limit: unlimited
+    auto_connect_when:
+      keywords: [e2e, test, browser, automation, playwright, selenium, puppeteer]
+      skills: [testing-playwright, html-accessibility]
+
+# =============================================================================
+# PRODUCTIVITY MCPs
+# =============================================================================
+
+productivity:
+  github:
+    name: GitHub
+    type: mcp_server
+    category: productivity
+    priority: 1
+    description: Repository management and code access
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@modelcontextprotocol/server-github"]
+    auth:
+      type: token
+      env_var: GITHUB_TOKEN
+    capabilities:
+      - search_repositories
+      - get_file_contents
+      - create_issue
+      - create_pull_request
+      - list_commits
+      - search_code
+      - list_branches
+      - get_diff
+    auto_connect_when:
+      keywords: [github, repo, commit, pr, issue, branch]
+      skills: [git-expert, devops-engineer]
+
+  slack:
+    name: Slack
+    type: mcp_server
+    category: productivity
+    priority: 3
+    description: Team communication
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@modelcontextprotocol/server-slack"]
+    auth:
+      type: token
+      env_var: SLACK_BOT_TOKEN
+    capabilities:
+      - list_channels
+      - post_message
+      - get_channel_history
+      - search_messages
+    auto_connect_when:
+      keywords: [slack, message, channel, notify]
+      skills: []
+
+  notion:
+    name: Notion
+    type: mcp_server
+    category: productivity
+    priority: 2
+    description: Documentation and knowledge base
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@modelcontextprotocol/server-notion"]
+    auth:
+      type: token
+      env_var: NOTION_API_KEY
+    capabilities:
+      - search_pages
+      - get_page
+      - create_page
+      - update_page
+      - query_database
+    auto_connect_when:
+      keywords: [notion, docs, wiki, knowledge]
+      skills: [content-writer]
+
+  vercel:
+    name: Vercel
+    type: rest_api
+    category: productivity
+    priority: 2
+    description: Deployment and hosting
+    base_url: https://api.vercel.com
+    auth:
+      type: bearer
+      env_var: VERCEL_TOKEN
+    capabilities:
+      - list_deployments
+      - get_deployment
+      - create_deployment
+      - list_domains
+      - get_logs
+    auto_connect_when:
+      keywords: [vercel, deploy, hosting, domain]
+      skills: [devops-engineer, nextjs-14-expert]
+
+# =============================================================================
+# CONNECTION GROUPS
+# =============================================================================
+
+groups:
+  blockchain_full:
+    connections: [helius, jupiter, birdeye]
+    description: Full blockchain data access
+
+  social_intelligence:
+    connections: [santiment, tweetscout, neynar]
+    description: Crypto social analytics
+
+  development:
+    connections: [github, postgres, filesystem, context7]
+    description: Development workflow
+
+  token_launch:
+    connections: [helius, jupiter, birdeye, santiment, tweetscout]
+    description: Everything needed for token analysis and launch
+
+  web2_full_stack:
+    connections: [supabase, postgres, github, context7, playwright]
+    description: Complete web2 development stack
+
+  testing_suite:
+    connections: [playwright, github, filesystem]
+    description: Testing and automation
+
+  supabase_stack:
+    connections: [supabase, context7, github, vercel]
+    description: Supabase-based application development
+
+# =============================================================================
+# AI & SEARCH MCPs (NEW)
+# =============================================================================
+
+ai_search:
+  brave_search:
+    name: Brave Search
+    type: mcp_server
+    category: ai_search
+    priority: 1
+    description: Privacy-focused web search with AI summaries
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@anthropic/mcp-brave-search"]
+    auth:
+      type: api_key
+      env_var: BRAVE_API_KEY
+    capabilities:
+      - web_search
+      - local_search
+      - news_search
+      - image_search
+    pricing:
+      tier: free
+      free_limit: "2000 queries/month"
+    auto_connect_when:
+      keywords: [search, find, look up, google, web, news]
+      skills: [content-writer, defi-data-analyst]
+
+  exa:
+    name: Exa AI Search
+    type: rest_api
+    category: ai_search
+    priority: 2
+    description: AI-native semantic search for finding similar content
+    base_url: https://api.exa.ai
+    auth:
+      type: api_key
+      env_var: EXA_API_KEY
+    capabilities:
+      - search
+      - find_similar
+      - get_contents
+      - neural_search
+    pricing:
+      tier: free
+      free_limit: "1000 searches/month"
+    auto_connect_when:
+      keywords: [similar, find like, semantic, neural search]
+      skills: [content-writer, ai-integration]
+
+  firecrawl:
+    name: Firecrawl
+    type: mcp_server
+    category: ai_search
+    priority: 2
+    description: Web scraping and crawling for LLMs
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@anthropic/mcp-firecrawl"]
+    auth:
+      type: api_key
+      env_var: FIRECRAWL_API_KEY
+    capabilities:
+      - scrape
+      - crawl
+      - map
+      - extract
+    pricing:
+      tier: free
+      free_limit: "500 pages/month"
+    auto_connect_when:
+      keywords: [scrape, crawl, extract, website data]
+      skills: [api-integration]
+
+# =============================================================================
+# MEMORY & PERSISTENCE MCPs (NEW)
+# =============================================================================
+
+persistence:
+  memory:
+    name: Memory
+    type: mcp_server
+    category: persistence
+    priority: 1
+    description: Persistent memory across conversations
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@anthropic/mcp-memory"]
+    auth:
+      type: none
+    capabilities:
+      - store_memory
+      - retrieve_memory
+      - search_memories
+      - forget
+      - list_entities
+    auto_connect_when:
+      keywords: [remember, recall, memory, forget, stored]
+      skills: [all]
+
+  sqlite:
+    name: SQLite
+    type: mcp_server
+    category: persistence
+    priority: 2
+    description: Local SQLite database for persistence
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@anthropic/mcp-sqlite", "opus67.db"]
+    capabilities:
+      - query
+      - execute
+      - list_tables
+      - describe_table
+    auto_connect_when:
+      keywords: [local db, sqlite, store, persist]
+      skills: [sql-database]
+
+# =============================================================================
+# REASONING MCPs (NEW)
+# =============================================================================
+
+reasoning:
+  sequential_thinking:
+    name: Sequential Thinking
+    type: mcp_server
+    category: reasoning
+    priority: 1
+    description: Step-by-step reasoning for complex problems
+    connection:
+      type: mcp_stdio
+      command: npx
+      args: ["-y", "@anthropic/mcp-sequential-thinking"]
+    capabilities:
+      - create_thought
+      - chain_thoughts
+      - branch_thinking
+      - revise_thought
+      - summarize_chain
+    auto_connect_when:
+      keywords: [think step by step, reason, complex, analyze deeply]
+      skills: [smart-contract-auditor, design-system-architect]
+
+# =============================================================================
+# UPDATED CONNECTION GROUPS
+# =============================================================================
+
+  research_full:
+    connections: [brave_search, exa, firecrawl, santiment, tweetscout]
+    description: Full research and web intelligence stack
+
+  ai_powered:
+    connections: [context7, sequential_thinking, memory, exa]
+    description: AI-enhanced development with memory

@@ -1,0 +1,809 @@
+# OPUS 67 Operating Modes
+# Version: 1.0.0
+# 10 Specialized Modes + AUTO
+
+meta:
+  version: "1.0.0"
+  total_modes: 10
+  default_mode: auto
+  allow_manual_override: true
+  show_mode_indicator: true
+
+# =============================================================================
+# MODE DEFINITIONS
+# =============================================================================
+
+modes:
+  # ---------------------------------------------------------------------------
+  # 🧠 ULTRA - Maximum Intelligence
+  # ---------------------------------------------------------------------------
+  ultra:
+    name: "ULTRA"
+    icon: "🧠"
+    color: "#FF6B6B"
+    description: "Maximum reasoning power for complex problems"
+    token_budget: 100000
+    thinking_depth: maximum
+    
+    characteristics:
+      - Multi-step reasoning chains
+      - Architecture-level decisions
+      - Complex algorithm design
+      - System-wide refactoring
+      - Critical production decisions
+    
+    auto_trigger_when:
+      keywords: [architecture, design system, refactor entire, complex, critical, production deploy]
+      task_patterns: ["design.*system", "architect.*", "refactor.*codebase", "plan.*migration"]
+      complexity_score: ">= 8"
+    
+    skills_priority:
+      - design-system-architect
+      - solana-anchor-expert
+      - smart-contract-auditor
+      - typescript-senior
+    
+    sub_agents:
+      enabled: true
+      max_agents: 5
+      types: [architect, reviewer, planner]
+    
+    model_routing:
+      primary: claude-opus
+      fallback: claude-sonnet
+      use_extended_thinking: true
+
+  # ---------------------------------------------------------------------------
+  # 💭 THINK - Deep Analysis
+  # ---------------------------------------------------------------------------
+  think:
+    name: "THINK"
+    icon: "💭"
+    color: "#4ECDC4"
+    description: "Deep analysis and careful reasoning"
+    token_budget: 50000
+    thinking_depth: deep
+    
+    characteristics:
+      - Debugging complex issues
+      - Code review with explanations
+      - Security analysis
+      - Performance investigation
+      - Root cause analysis
+    
+    auto_trigger_when:
+      keywords: [debug, analyze, why, investigate, review, explain, understand, trace]
+      task_patterns: ["debug.*", "explain.*", "why.*not working", "analyze.*"]
+      complexity_score: ">= 5"
+    
+    skills_priority:
+      - smart-contract-auditor
+      - testing-playwright
+      - testing-unit
+      - defi-data-analyst
+    
+    sub_agents:
+      enabled: true
+      max_agents: 3
+      types: [analyzer, debugger]
+    
+    model_routing:
+      primary: claude-opus
+      fallback: claude-sonnet
+      use_extended_thinking: true
+
+  # ---------------------------------------------------------------------------
+  # 🔨 BUILD - Production Code Generation
+  # ---------------------------------------------------------------------------
+  build:
+    name: "BUILD"
+    icon: "🔨"
+    color: "#45B7D1"
+    description: "Production-grade code generation"
+    token_budget: 40000
+    thinking_depth: standard
+    
+    characteristics:
+      - Feature implementation
+      - Component creation
+      - API endpoints
+      - Database schemas
+      - Test writing
+    
+    auto_trigger_when:
+      keywords: [build, create, implement, add, make, write code, feature]
+      task_patterns: ["build.*", "create.*component", "implement.*", "add.*feature"]
+      file_types: [.ts, .tsx, .rs, .py]
+      complexity_score: "3-7"
+    
+    skills_priority:
+      - nextjs-14-expert
+      - react-expert
+      - typescript-senior
+      - node-backend
+    
+    sub_agents:
+      enabled: true
+      max_agents: 3
+      types: [coder, tester]
+    
+    model_routing:
+      primary: claude-sonnet
+      fallback: claude-opus
+      use_extended_thinking: false
+
+  # ---------------------------------------------------------------------------
+  # ⚡ VIBE - Rapid Prototyping
+  # ---------------------------------------------------------------------------
+  vibe:
+    name: "VIBE"
+    icon: "⚡"
+    color: "#96CEB4"
+    description: "Ship fast, iterate faster"
+    token_budget: 25000
+    thinking_depth: minimal
+    
+    characteristics:
+      - Quick prototypes
+      - MVP features
+      - Proof of concepts
+      - Experimental code
+      - Just make it work
+    
+    auto_trigger_when:
+      keywords: [quick, fast, prototype, mvp, poc, try, experiment, vibe, ship]
+      task_patterns: ["quick.*", "just.*", "simple.*", "basic.*"]
+      complexity_score: "1-4"
+    
+    skills_priority:
+      - vibe-coder
+      - v0-style-generator
+      - shadcn-ui-master
+      - supabase-expert
+    
+    sub_agents:
+      enabled: false
+      max_agents: 0
+    
+    model_routing:
+      primary: claude-sonnet
+      fallback: local-llm
+      use_extended_thinking: false
+
+  # ---------------------------------------------------------------------------
+  # 💡 LIGHT - Minimal Token Usage
+  # ---------------------------------------------------------------------------
+  light:
+    name: "LIGHT"
+    icon: "💡"
+    color: "#FFEAA7"
+    description: "Quick answers, minimal overhead"
+    token_budget: 5000
+    thinking_depth: none
+    
+    characteristics:
+      - Simple questions
+      - Syntax help
+      - Quick lookups
+      - One-liner fixes
+      - Config snippets
+    
+    auto_trigger_when:
+      keywords: [what is, how to, syntax, quick question, simple, one line]
+      task_patterns: ["what.*", "how do i.*", "syntax for.*"]
+      message_length: "< 50 words"
+      complexity_score: "1-2"
+    
+    skills_priority: []  # No skills loaded, use base knowledge
+    
+    sub_agents:
+      enabled: false
+      max_agents: 0
+    
+    model_routing:
+      primary: local-llm
+      fallback: claude-sonnet
+      use_extended_thinking: false
+
+  # ---------------------------------------------------------------------------
+  # 🎨 CREATIVE - Design & Content
+  # ---------------------------------------------------------------------------
+  creative:
+    name: "CREATIVE"
+    icon: "🎨"
+    color: "#DDA0DD"
+    description: "UI/UX design and content creation"
+    token_budget: 35000
+    thinking_depth: standard
+    
+    characteristics:
+      - UI component design
+      - Animation sequences
+      - Marketing content
+      - Landing pages
+      - Visual experiences
+    
+    auto_trigger_when:
+      keywords: [design, beautiful, stunning, animation, landing, hero, creative, ui, ux]
+      task_patterns: ["design.*", "create.*landing", "make.*beautiful", "animate.*"]
+      complexity_score: "3-6"
+    
+    skills_priority:
+      - framer-motion-wizard
+      - tailwind-ui-designer
+      - shadcn-ui-master
+      - figma-to-code
+      - svg-illustration
+      - threejs-webgl
+    
+    sub_agents:
+      enabled: true
+      max_agents: 2
+      types: [designer, animator]
+    
+    model_routing:
+      primary: claude-sonnet
+      fallback: claude-opus
+      use_extended_thinking: false
+
+  # ---------------------------------------------------------------------------
+  # 📊 DATA - Analytics & Research
+  # ---------------------------------------------------------------------------
+  data:
+    name: "DATA"
+    icon: "📊"
+    color: "#74B9FF"
+    description: "Market analysis and on-chain data"
+    token_budget: 40000
+    thinking_depth: deep
+    
+    characteristics:
+      - Token analysis
+      - Market research
+      - Social sentiment
+      - On-chain metrics
+      - Whale tracking
+    
+    auto_trigger_when:
+      keywords: [analyze, token, market, sentiment, whale, tvl, volume, holders, research]
+      task_patterns: ["analyze.*token", "find.*", "track.*", "research.*"]
+      complexity_score: "4-7"
+    
+    skills_priority:
+      - defi-data-analyst
+      - crypto-twitter-analyst
+      - analytics-tracking
+    
+    mcp_priority:
+      - birdeye
+      - santiment
+      - tweetscout
+      - helius
+    
+    sub_agents:
+      enabled: true
+      max_agents: 4
+      types: [researcher, analyst, scraper]
+    
+    model_routing:
+      primary: claude-sonnet
+      fallback: claude-opus
+      use_extended_thinking: true
+
+  # ---------------------------------------------------------------------------
+  # 🛡️ AUDIT - Security & Quality
+  # ---------------------------------------------------------------------------
+  audit:
+    name: "AUDIT"
+    icon: "🛡️"
+    color: "#E17055"
+    description: "Security review and best practices"
+    token_budget: 50000
+    thinking_depth: deep
+    
+    characteristics:
+      - Security audits
+      - Code quality review
+      - Best practices check
+      - Vulnerability scanning
+      - Compliance review
+    
+    auto_trigger_when:
+      keywords: [audit, security, vulnerability, secure, review, check, compliance, safe]
+      task_patterns: ["audit.*", "review.*security", "check.*", "is.*secure"]
+      complexity_score: "5-9"
+    
+    skills_priority:
+      - smart-contract-auditor
+      - auth-security
+      - testing-playwright
+      - testing-unit
+    
+    sub_agents:
+      enabled: true
+      max_agents: 3
+      types: [security-auditor, code-reviewer]
+    
+    model_routing:
+      primary: claude-opus
+      fallback: claude-sonnet
+      use_extended_thinking: true
+
+  # ---------------------------------------------------------------------------
+  # 🐝 SWARM - Multi-Agent Orchestration
+  # ---------------------------------------------------------------------------
+  swarm:
+    name: "SWARM"
+    icon: "🐝"
+    color: "#FDCB6E"
+    description: "Parallel multi-agent execution"
+    token_budget: 150000
+    thinking_depth: orchestrator
+    
+    characteristics:
+      - Large-scale tasks
+      - Parallel execution
+      - Multi-file changes
+      - Full feature builds
+      - Sprint execution
+    
+    auto_trigger_when:
+      keywords: [sprint, parallel, multiple, entire, full, complete, all, swarm]
+      task_patterns: ["build.*entire", "refactor.*all", "update.*multiple"]
+      file_count: "> 5"
+      complexity_score: ">= 8"
+    
+    skills_priority:
+      - All skills available to sub-agents
+    
+    sub_agents:
+      enabled: true
+      max_agents: 20
+      types: [coder, tester, reviewer, designer, analyst]
+      orchestration: parallel
+    
+    model_routing:
+      orchestrator: claude-opus
+      workers: claude-sonnet
+      simple_tasks: local-llm
+      use_extended_thinking: true
+
+  # ---------------------------------------------------------------------------
+  # 🤖 AUTO - Intelligent Auto-Switching (DEFAULT)
+  # ---------------------------------------------------------------------------
+  auto:
+    name: "AUTO"
+    icon: "🤖"
+    color: "#A29BFE"
+    description: "Intelligent mode selection"
+    token_budget: dynamic
+    thinking_depth: adaptive
+    
+    characteristics:
+      - Analyzes each request
+      - Selects optimal mode
+      - Adjusts mid-conversation
+      - Learns from patterns
+      - Maximum efficiency
+    
+    detection_pipeline:
+      1_keyword_scan: true
+      2_complexity_score: true
+      3_file_context: true
+      4_conversation_history: true
+      5_user_preference_bias: true
+    
+    mode_weights:
+      light: 1.0    # Fastest to trigger
+      vibe: 1.2
+      build: 1.5
+      creative: 1.5
+      data: 1.5
+      think: 2.0
+      audit: 2.0
+      ultra: 2.5
+      swarm: 3.0    # Requires strongest signals
+    
+    fallback_mode: build
+    
+    model_routing:
+      analysis: claude-sonnet
+      execution: dynamic
+
+# =============================================================================
+# COMPLEXITY SCORING
+# =============================================================================
+
+complexity_scoring:
+  factors:
+    keyword_complexity:
+      weight: 0.3
+      high: [architecture, system, refactor, migrate, security, audit]
+      medium: [implement, create, build, analyze, debug]
+      low: [fix, update, add, change, simple]
+    
+    file_scope:
+      weight: 0.2
+      single_file: 2
+      few_files: 4
+      many_files: 7
+      entire_codebase: 10
+    
+    domain_depth:
+      weight: 0.25
+      ui_only: 2
+      frontend: 4
+      fullstack: 6
+      blockchain: 8
+      multi_chain: 10
+    
+    task_type:
+      weight: 0.25
+      question: 1
+      snippet: 2
+      component: 4
+      feature: 6
+      system: 8
+      architecture: 10
+
+# =============================================================================
+# SUB-AGENT DEFINITIONS
+# =============================================================================
+
+sub_agents:
+  architect:
+    role: "System architecture and design decisions"
+    skills: [design-system-architect, typescript-senior]
+    model: claude-opus
+  
+  coder:
+    role: "Write production code"
+    skills: [nextjs-14-expert, react-expert, node-backend]
+    model: claude-sonnet
+  
+  tester:
+    role: "Write and run tests"
+    skills: [testing-playwright, testing-unit]
+    model: claude-sonnet
+  
+  reviewer:
+    role: "Code review and quality check"
+    skills: [smart-contract-auditor, typescript-senior]
+    model: claude-opus
+  
+  designer:
+    role: "UI/UX design and styling"
+    skills: [tailwind-ui-designer, framer-motion-wizard, shadcn-ui-master]
+    model: claude-sonnet
+  
+  animator:
+    role: "Animations and interactions"
+    skills: [framer-motion-wizard, threejs-webgl]
+    model: claude-sonnet
+  
+  analyzer:
+    role: "Deep analysis and investigation"
+    skills: [defi-data-analyst, smart-contract-auditor]
+    model: claude-opus
+  
+  debugger:
+    role: "Debug and fix issues"
+    skills: [typescript-senior, testing-unit]
+    model: claude-sonnet
+  
+  researcher:
+    role: "Market and data research"
+    skills: [defi-data-analyst, crypto-twitter-analyst]
+    model: claude-sonnet
+  
+  scraper:
+    role: "Data collection from MCPs"
+    skills: [api-integration]
+    model: local-llm
+  
+  planner:
+    role: "Task breakdown and planning"
+    skills: []
+    model: claude-opus
+  
+  security-auditor:
+    role: "Security-focused code review"
+    skills: [smart-contract-auditor, auth-security]
+    model: claude-opus
+  
+  code-reviewer:
+    role: "General code quality review"
+    skills: [typescript-senior, testing-unit]
+    model: claude-sonnet
+
+  # =========================================================================
+  # ADDITIONAL SUB-AGENTS (20 more for comprehensive coverage)
+  # =========================================================================
+
+  # --- Development Workflow ---
+  deployer:
+    role: "Deploy to devnet/mainnet/vercel"
+    skills: [devops-engineer, solana-anchor-expert]
+    model: claude-sonnet
+    auto_spawn_for: [deploy, ship, publish, release]
+  
+  optimizer:
+    role: "Performance tuning and optimization"
+    skills: [performance-optimizer, typescript-senior]
+    model: claude-sonnet
+    auto_spawn_for: [optimize, speed up, performance, slow]
+
+  documenter:
+    role: "Write documentation and comments"
+    skills: [content-writer, typescript-senior]
+    model: claude-sonnet
+    auto_spawn_for: [document, readme, jsdoc, comments]
+
+  refactorer:
+    role: "Clean up and refactor code"
+    skills: [typescript-senior, react-expert]
+    model: claude-sonnet
+    auto_spawn_for: [refactor, clean up, improve, reorganize]
+
+  migrator:
+    role: "Handle database and code migrations"
+    skills: [prisma-drizzle-orm, sql-database]
+    model: claude-sonnet
+    auto_spawn_for: [migrate, migration, upgrade, convert]
+
+  formatter:
+    role: "Code formatting and linting"
+    skills: [typescript-senior]
+    model: local-llm
+    auto_spawn_for: [format, lint, prettier, eslint]
+
+  # --- Frontend Specialists ---
+  styler:
+    role: "CSS, Tailwind, and styling"
+    skills: [tailwind-ui-designer, css-tailwind-master]
+    model: claude-sonnet
+    auto_spawn_for: [style, css, tailwind, responsive]
+
+  component-generator:
+    role: "Scaffold new components quickly"
+    skills: [react-expert, shadcn-ui-master]
+    model: claude-sonnet
+    auto_spawn_for: [generate component, scaffold, create component]
+
+  hook-creator:
+    role: "Create custom React hooks"
+    skills: [react-expert, typescript-senior]
+    model: claude-sonnet
+    auto_spawn_for: [hook, useEffect, useState, custom hook]
+
+  animation-director:
+    role: "Choreograph complex animations"
+    skills: [framer-motion-wizard, threejs-webgl]
+    model: claude-sonnet
+    auto_spawn_for: [animate, transition, motion, keyframe]
+
+  # --- Backend Specialists ---
+  api-builder:
+    role: "Create API endpoints and routes"
+    skills: [node-backend, trpc-fullstack]
+    model: claude-sonnet
+    auto_spawn_for: [api, endpoint, route, handler]
+
+  schema-designer:
+    role: "Design database schemas"
+    skills: [sql-database, prisma-drizzle-orm]
+    model: claude-opus
+    auto_spawn_for: [schema, database design, tables, relations]
+
+  query-optimizer:
+    role: "Optimize SQL and database queries"
+    skills: [sql-database]
+    model: claude-sonnet
+    auto_spawn_for: [query, sql, slow query, index]
+
+  auth-handler:
+    role: "Implement authentication flows"
+    skills: [auth-clerk-nextauth, auth-security]
+    model: claude-sonnet
+    auto_spawn_for: [auth, login, signup, session, jwt]
+
+  validator:
+    role: "Input validation and type safety"
+    skills: [react-hook-form-zod, typescript-senior]
+    model: claude-sonnet
+    auto_spawn_for: [validate, validation, zod, schema]
+
+  # --- Web3/Crypto Specialists ---
+  blockchain-reader:
+    role: "Read and parse on-chain data"
+    skills: [solana-anchor-expert, defi-data-analyst]
+    model: claude-sonnet
+    auto_spawn_for: [on-chain, blockchain, transaction, account]
+    mcp_priority: [helius, birdeye]
+
+  token-analyst:
+    role: "Analyze token metrics and performance"
+    skills: [defi-data-analyst, tokenomics-designer]
+    model: claude-sonnet
+    auto_spawn_for: [token, metrics, holders, volume]
+    mcp_priority: [birdeye, santiment]
+
+  whale-tracker:
+    role: "Monitor whale wallets and movements"
+    skills: [defi-data-analyst]
+    model: claude-sonnet
+    auto_spawn_for: [whale, large wallet, big holder, movement]
+    mcp_priority: [helius, birdeye]
+
+  trade-executor:
+    role: "Execute and simulate trades"
+    skills: [bonding-curve-master, lp-automation]
+    model: claude-opus
+    auto_spawn_for: [trade, swap, buy, sell, execute]
+    mcp_priority: [jupiter, helius]
+
+  contract-deployer:
+    role: "Deploy and verify smart contracts"
+    skills: [solana-anchor-expert, devops-engineer]
+    model: claude-opus
+    auto_spawn_for: [deploy contract, deploy program, mainnet, devnet]
+    mcp_priority: [helius]
+
+  pda-calculator:
+    role: "Derive and manage PDAs"
+    skills: [solana-anchor-expert]
+    model: claude-sonnet
+    auto_spawn_for: [pda, seeds, derive, findProgramAddress]
+
+  idl-syncer:
+    role: "Generate and sync IDL files"
+    skills: [solana-anchor-expert, typescript-senior]
+    model: claude-sonnet
+    auto_spawn_for: [idl, types, anchor build, sync]
+
+  # --- Content & Research ---
+  content-creator:
+    role: "Create marketing and social content"
+    skills: [content-writer, crypto-twitter-analyst]
+    model: claude-sonnet
+    auto_spawn_for: [tweet, thread, blog, content, marketing]
+
+  trend-spotter:
+    role: "Identify trends and narratives"
+    skills: [crypto-twitter-analyst, defi-data-analyst]
+    model: claude-sonnet
+    auto_spawn_for: [trend, narrative, alpha, what's hot]
+    mcp_priority: [santiment, tweetscout]
+
+  competitor-analyst:
+    role: "Analyze competitor products and strategies"
+    skills: [defi-data-analyst, content-writer]
+    model: claude-sonnet
+    auto_spawn_for: [competitor, compare, alternative, vs]
+    mcp_priority: [brave_search, exa]
+
+  # --- Quality & Testing ---
+  integration-tester:
+    role: "Write integration tests"
+    skills: [testing-playwright, testing-unit]
+    model: claude-sonnet
+    auto_spawn_for: [integration test, e2e, full test]
+
+  snapshot-tester:
+    role: "Visual regression and snapshot tests"
+    skills: [testing-playwright]
+    model: claude-sonnet
+    auto_spawn_for: [snapshot, visual, regression, screenshot]
+    mcp_priority: [playwright]
+
+  load-tester:
+    role: "Performance and load testing"
+    skills: [testing-unit, node-backend]
+    model: claude-sonnet
+    auto_spawn_for: [load test, stress test, benchmark, performance test]
+
+  # --- AI & Automation ---
+  prompt-engineer:
+    role: "Craft and optimize prompts"
+    skills: [ai-integration, content-writer]
+    model: claude-opus
+    auto_spawn_for: [prompt, system message, instruction, llm]
+
+  rag-builder:
+    role: "Build RAG pipelines and embeddings"
+    skills: [ai-integration, sql-database]
+    model: claude-opus
+    auto_spawn_for: [rag, embedding, vector, retrieval]
+
+  agent-orchestrator:
+    role: "Coordinate multi-agent workflows"
+    skills: [mcp-builder]
+    model: claude-opus
+    auto_spawn_for: [orchestrate, coordinate, pipeline, workflow]
+
+# =============================================================================
+# AUTO-SPAWN RULES
+# =============================================================================
+# These rules determine which sub-agents spawn automatically for each mode
+
+auto_spawn_rules:
+  # Every task gets 1-3 agents by default based on complexity
+  
+  ultra:
+    min_agents: 2
+    max_agents: 5
+    default_spawn: [architect, planner]
+    optional_spawn:
+      code: [coder, reviewer]
+      security: [security-auditor]
+      design: [schema-designer]
+  
+  think:
+    min_agents: 1
+    max_agents: 3
+    default_spawn: [analyzer]
+    optional_spawn:
+      debug: [debugger]
+      security: [security-auditor]
+      performance: [optimizer]
+  
+  build:
+    min_agents: 2
+    max_agents: 3
+    default_spawn: [coder]
+    optional_spawn:
+      test: [tester]
+      frontend: [designer, styler]
+      backend: [api-builder]
+      web3: [blockchain-reader]
+  
+  vibe:
+    min_agents: 1
+    max_agents: 2
+    default_spawn: [coder]
+    optional_spawn:
+      ui: [component-generator]
+  
+  light:
+    min_agents: 0
+    max_agents: 1
+    default_spawn: []
+    optional_spawn: {}
+  
+  creative:
+    min_agents: 2
+    max_agents: 3
+    default_spawn: [designer]
+    optional_spawn:
+      animation: [animator, animation-director]
+      component: [component-generator, styler]
+  
+  data:
+    min_agents: 2
+    max_agents: 4
+    default_spawn: [researcher, analyzer]
+    optional_spawn:
+      web3: [token-analyst, whale-tracker, blockchain-reader]
+      social: [trend-spotter]
+      scrape: [scraper]
+  
+  audit:
+    min_agents: 2
+    max_agents: 4
+    default_spawn: [security-auditor, code-reviewer]
+    optional_spawn:
+      test: [integration-tester, load-tester]
+      smart_contract: [pda-calculator]
+  
+  swarm:
+    min_agents: 5
+    max_agents: 20
+    default_spawn: [planner, architect]
+    parallel_execution: true
+    auto_distribute: true
+    categories:
+      code: [coder, coder, coder]  # Multiple coders
+      test: [tester, integration-tester]
+      review: [reviewer, code-reviewer]
+      deploy: [deployer]
+      docs: [documenter]
