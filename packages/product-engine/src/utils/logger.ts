@@ -4,6 +4,8 @@
 
 import pino from "pino";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export class Logger {
   private pino: pino.Logger;
   private context: string;
@@ -12,14 +14,19 @@ export class Logger {
     this.context = context;
     this.pino = pino({
       level: process.env.LOG_LEVEL || "info",
-      transport: {
-        target: "pino-pretty",
-        options: {
-          colorize: true,
-          ignore: "pid,hostname",
-          translateTime: "SYS:standard",
-        },
-      },
+      // Use pino-pretty only in development
+      ...(isProduction
+        ? {}
+        : {
+            transport: {
+              target: "pino-pretty",
+              options: {
+                colorize: true,
+                ignore: "pid,hostname",
+                translateTime: "SYS:standard",
+              },
+            },
+          }),
     });
   }
 

@@ -5,6 +5,8 @@ export default defineConfig({
     index: "src/index.ts",
     "chains/index": "src/chains/index.ts",
     "llm/index": "src/llm/index.ts",
+    "resilience/index": "src/resilience/index.ts",
+    "security/index": "src/security/index.ts",
   },
   format: ["esm"],
   dts: true,

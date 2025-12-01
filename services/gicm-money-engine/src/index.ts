@@ -13,6 +13,19 @@ import { JupiterClient } from "./blockchain/jupiter.js";
 import { Logger } from "./utils/logger.js";
 import type { MoneyEngineConfig, FinancialReport } from "./core/types.js";
 
+// Optional integration hub (may not be installed)
+let hub: {
+  engineStarted(name: string): void;
+  heartbeat(name: string): void;
+  publish(source: string, type: string, payload: Record<string, unknown>): void;
+} | null = null;
+try {
+  const { getHub } = await import("@gicm/integration-hub");
+  hub = getHub();
+} catch {
+  // Integration hub not available
+}
+
 export class MoneyEngine {
   private config: MoneyEngineConfig;
   private connection: Connection;
@@ -67,6 +80,13 @@ export class MoneyEngine {
       await this.startTradingBots();
     }
 
+    // Emit engine started event to hub
+    if (hub) {
+      hub.engineStarted("money-engine");
+      // Heartbeat every 30 seconds
+      setInterval(() => hub?.heartbeat("money-engine"), 30000);
+    }
+
     this.logger.info("Money Engine running");
     await this.printStatus();
   }
@@ -105,6 +125,17 @@ export class MoneyEngine {
       this.logger.info(
         `Trade executed: ${trade.side} ${trade.size} ${trade.symbol} @ ${trade.price}`
       );
+
+      // Emit trade event to hub
+      if (hub) {
+        hub.publish("money-engine", "trade.executed", {
+          asset: trade.symbol,
+          amount: trade.size.toString(),
+          price: trade.price.toString(),
+          side: trade.side,
+          timestamp: Date.now(),
+        });
+      }
     });
 
     dcaBot.on("error", (error) => {

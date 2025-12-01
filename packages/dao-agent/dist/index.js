@@ -952,15 +952,44 @@ When analyzing proposals, consider:
     if (!platform) return [];
     return platform.getVotes(proposalId, limit);
   }
-  async analyzeVotingPower(_daoId, platformName = "snapshot") {
+  async analyzeVotingPower(daoId, platformName = "snapshot") {
     const platform = this.platforms.get(platformName);
     if (!platform) return null;
-    return {
-      totalPower: 0,
-      topHolders: [],
-      concentrationScore: 0,
-      giniCoefficient: 0
-    };
+    const proposals = await platform.getProposals(daoId);
+    if (proposals.length === 0) {
+      return {
+        totalPower: 0,
+        topHolders: [],
+        concentrationScore: 0,
+        giniCoefficient: 0
+      };
+    }
+    const recentProposals = proposals.slice(0, 10);
+    const voterPowerMap = /* @__PURE__ */ new Map();
+    for (const proposal of recentProposals) {
+      const votes = await platform.getVotes(proposal.id, 500);
+      for (const vote of votes) {
+        const existing = voterPowerMap.get(vote.voter);
+        if (existing) {
+          existing.power = Math.max(existing.power, vote.votingPower);
+          existing.voteCount++;
+        } else {
+          voterPowerMap.set(vote.voter, {
+            power: vote.votingPower,
+            voteCount: 1
+          });
+        }
+      }
+    }
+    const holders = Array.from(
+      voterPowerMap.entries()
+    ).map(([address, data]) => ({
+      address,
+      power: data.power,
+      percentage: 0
+      // Will be calculated by analyzer
+    }));
+    return this.votingPowerAnalyzer.analyzeDistribution(holders);
   }
   async getActiveProposals(daoId, platformName = "snapshot") {
     return this.getProposals(daoId, platformName, "active");

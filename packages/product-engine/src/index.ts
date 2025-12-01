@@ -10,7 +10,17 @@ import type { ProductEngineConfig, ProductMetrics, Opportunity, BuildTask } from
 import { DiscoveryManager } from "./discovery/index.js";
 import { AgentBuilder } from "./builder/agents/agent-builder.js";
 import { QualityGate } from "./quality/index.js";
+import { GrowthConnector } from "./integration/index.js";
 import { Logger } from "./utils/logger.js";
+
+// Optional integration hub (may not be installed)
+let hub: any = null;
+try {
+  const { getHub } = await import("@gicm/integration-hub");
+  hub = getHub();
+} catch {
+  // Integration hub not available
+}
 
 export interface EngineStatus {
   running: boolean;
@@ -28,6 +38,7 @@ export class ProductEngine {
   private discovery: DiscoveryManager;
   private agentBuilder: AgentBuilder;
   private qualityGate: QualityGate;
+  private growthConnector: GrowthConnector;
 
   private discoveryCron?: CronJob;
   private buildCron?: CronJob;
@@ -89,6 +100,9 @@ export class ProductEngine {
       minTestScore: this.config.quality.minTestScore,
       minReviewScore: this.config.quality.minReviewScore,
     });
+    this.growthConnector = new GrowthConnector({
+      enabled: this.config.deployment.notifications,
+    });
   }
 
   /**
@@ -119,6 +133,13 @@ export class ProductEngine {
 
       this.status.running = true;
       this.status.startedAt = Date.now();
+
+      // Emit engine started event
+      if (hub) {
+        hub.engineStarted("product-engine");
+        // Heartbeat every 30 seconds
+        setInterval(() => hub.heartbeat("product-engine"), 30000);
+      }
 
       this.logger.info("Product Engine started successfully!");
       this.logger.info(`- Discovery: every ${this.config.discovery.intervalHours}h`);
@@ -241,6 +262,9 @@ export class ProductEngine {
 
           // Update opportunity status
           opportunity.status = "building";
+
+          // Notify Growth Engine for promotion
+          await this.growthConnector.notifyBuildComplete(task, opportunity);
         } else {
           this.logger.warn("Build failed quality gate");
           task.status = "failed";
@@ -317,5 +341,7 @@ export { CompetitorDiscovery } from "./discovery/sources/competitors.js";
 export { GitHubDiscovery } from "./discovery/sources/github.js";
 export { HackerNewsDiscovery } from "./discovery/sources/hackernews.js";
 export { AgentBuilder } from "./builder/agents/agent-builder.js";
+export { ComponentBuilder, getComponentTemplate, listComponentTemplates, COMPONENT_TEMPLATES } from "./builder/components/index.js";
 export { QualityGate, TestRunner, CodeReviewer } from "./quality/index.js";
+export { GrowthConnector } from "./integration/index.js";
 export * from "./core/types.js";

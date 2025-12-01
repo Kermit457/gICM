@@ -7,7 +7,7 @@ from typing import Any, Literal
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 PORTFOLIO_MANAGER_CONFIG = AgentConfig(
@@ -136,7 +136,7 @@ AGENT SIGNALS:
 {risk_text}
 
 PORTFOLIO CONTEXT:
-{context or 'No specific constraints'}
+{sanitize_context(context)}
 
 As Portfolio Manager, synthesize these signals and make a final decision.
 Provide specific execution instructions.
@@ -181,7 +181,7 @@ MARKET DATA:
 - 24h Change: {market_data.get('change_24h', 'N/A')}%
 
 CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 What's your portfolio-level view?
 """

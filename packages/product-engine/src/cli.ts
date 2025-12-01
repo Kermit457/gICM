@@ -5,7 +5,14 @@
  * Command-line interface for the Product Engine.
  */
 
-import { ProductEngine } from "./index.js";
+// Prevent MaxListenersExceededWarning from pino-pretty
+process.setMaxListeners(20);
+
+// Load environment variables
+import dotenv from "dotenv";
+dotenv.config();
+
+import { ProductEngine, ComponentBuilder, listComponentTemplates } from "./index.js";
 import { Logger } from "./utils/logger.js";
 
 const logger = new Logger("CLI");
@@ -111,6 +118,48 @@ async function main(): Promise<void> {
       console.log(`Recent Builds: ${status.recentBuilds.length}`);
       break;
 
+    case "component":
+      const componentCmd = args[1];
+      const componentBuilder = new ComponentBuilder();
+      switch (componentCmd) {
+        case "templates":
+          const templates = listComponentTemplates();
+          console.log("\n=== Component Templates ===\n");
+          templates.forEach((t) => {
+            console.log(`  ${t.name}: ${t.description}`);
+          });
+          break;
+        case "build":
+          const componentName = args[2];
+          if (!componentName) {
+            logger.error("Usage: product component build <ComponentName>");
+            process.exit(1);
+          }
+          const spec = {
+            name: componentName,
+            description: `${componentName} component`,
+            props: [
+              { name: "className", type: "string", required: false, description: "Custom CSS class" },
+            ],
+            features: ["Responsive", "Accessible"],
+            dependencies: ["react"],
+            testCases: [{ name: "renders", description: "Renders without errors" }],
+          };
+          const buildTask = await componentBuilder.buildComponent(spec);
+          console.log(`\nComponent ${buildTask.status}:`);
+          console.log(`  Name: ${spec.name}`);
+          console.log(`  Output: ${buildTask.outputPath || "N/A"}`);
+          buildTask.logs.forEach((log) => console.log(`  - ${log}`));
+          break;
+        default:
+          console.log(`
+Component Commands:
+  product component templates      List available templates
+  product component build <Name>   Build a component
+          `);
+      }
+      break;
+
     case "help":
     default:
       console.log(`
@@ -123,6 +172,7 @@ Usage:
   product approve <id>       Approve an opportunity for building
   product reject <id> [why]  Reject an opportunity
   product build              Build next approved opportunity
+  product component <cmd>    Component commands (templates, build)
   product status             Show engine status
   product help               Show this help
 
@@ -131,6 +181,8 @@ Examples:
   product discover
   product approve opp-gh-123456789
   product build
+  product component templates
+  product component build TokenBalance
       `);
       break;
   }

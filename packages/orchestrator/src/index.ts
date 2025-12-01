@@ -26,3 +26,24 @@ export { SharedMemory } from "./coordination/memory.js";
 export { tradingWorkflows } from "./workflows/trading.js";
 export { researchWorkflows } from "./workflows/research.js";
 export { portfolioWorkflows } from "./workflows/portfolio.js";
+
+// Brain - Autonomous control center
+export {
+  GoalSystemManager,
+  goalSystem,
+  DailyCycleManager,
+  dailyCycle,
+  GicmBrain,
+  createGicmBrain,
+  type GoalSystem,
+  type CoreValue,
+  type MetricTarget,
+  type Competitor,
+  type PhaseType,
+  type PhaseResult,
+  type ActionLog,
+  type DailyCycleConfig,
+  type EngineConnections,
+  type GicmBrainConfig,
+  type BrainStatus,
+} from "./brain/index.js";

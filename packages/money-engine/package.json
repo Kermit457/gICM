@@ -1,0 +1,58 @@
+{
+  "name": "@gicm/money-engine",
+  "version": "1.0.0",
+  "description": "Self-funding engine for gICM platform",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "gicm-money": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format esm --dts --clean",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "trade": "node dist/cli.js trade",
+    "status": "node dist/cli.js status",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@solana/spl-token": "^0.4.0",
+    "@solana/web3.js": "^1.95.0",
+    "bs58": "^6.0.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "cron": "^3.1.0",
+    "decimal.js": "^10.4.0",
+    "dotenv": "^16.4.0",
+    "eventemitter3": "^5.0.0",
+    "ora": "^8.0.0",
+    "pino": "^9.0.0",
+    "pino-pretty": "^11.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.10.0",
+    "typescript": "^5.4.0"
+  },
+  "files": ["dist", "README.md"],
+  "keywords": [
+    "gicm",
+    "treasury",
+    "trading",
+    "solana",
+    "defi"
+  ],
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/money-engine"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/money-engine#readme",
+  "bugs": { "url": "https://github.com/gicm-dev/gicm/issues" },
+  "publishConfig": { "access": "public" }
+}

@@ -44,6 +44,35 @@ async def list_tools():
             },
         ),
         Tool(
+            name="search_tools",
+            description="[Tool Search Tool] Discover and load tools from gICM's 513+ agents, integrations, and MCP servers. Returns Claude-compatible tool definitions for dynamic tool loading. Use this to find relevant tools based on user intent WITHOUT loading all tool definitions upfront (85% context reduction).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Natural language description of the capability needed (e.g., 'Solana token analysis', 'security audit', 'Twitter automation')",
+                    },
+                    "kind": {
+                        "type": "string",
+                        "description": "Filter by kind: agent, tool, integration, skill, block, template",
+                        "enum": ["agent", "tool", "integration", "skill", "block", "template"],
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "Target platform: claude, gemini, openai",
+                        "enum": ["claude", "gemini", "openai"],
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Number of tools to return (default: 5, max: 10)",
+                        "default": 5,
+                    },
+                },
+                "required": ["query"],
+            },
+        ),
+        Tool(
             name="get_install_command",
             description="Get the install command for a gICM component by name or ID.",
             inputSchema={
@@ -65,6 +94,8 @@ async def call_tool(name: str, arguments: dict):
     """Handle tool calls."""
     if name == "search_gicm":
         return await search_gicm(arguments)
+    elif name == "search_tools":
+        return await search_tools(arguments)
     elif name == "get_install_command":
         return await get_install_command(arguments)
     else:
@@ -119,6 +150,75 @@ async def search_gicm(args: dict):
         return [TextContent(type="text", text="Error: Context Engine not running. Start it with: cd services/context-engine && python -m uvicorn src.main:app --port 8000")]
     except Exception as e:
         return [TextContent(type="text", text=f"Error: {str(e)}")]
+
+
+async def search_tools(args: dict):
+    """[Tool Search Tool] Discover tools from gICM registry.
+
+    Returns Claude-compatible tool definitions for dynamic loading.
+    This enables 85% context reduction by loading only relevant tools.
+    """
+    query = args.get("query", "")
+    kind = args.get("kind")
+    platform = args.get("platform", "claude")
+    limit = min(args.get("limit", 5), 10)
+
+    # Call gICM API for tool search
+    gicm_api = "https://gicm.dev/api/tools/search"
+
+    payload = {
+        "query": query,
+        "limit": limit,
+        "platform": platform,
+    }
+    if kind:
+        payload["kind"] = kind
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(gicm_api, json=payload)
+            response.raise_for_status()
+            data = response.json()
+
+        tools = data.get("tools", [])
+        results = data.get("results", [])
+        meta = data.get("meta", {})
+
+        if not tools:
+            return [TextContent(type="text", text=f"No tools found for: {query}")]
+
+        # Format output with tool definitions
+        output = [
+            f"## Tool Search Results",
+            f"Query: \"{query}\" | Found: {len(tools)} tools | Time: {meta.get('searchTime', 0)}ms\n",
+            "### Available Tools\n",
+        ]
+
+        for i, result in enumerate(results, 1):
+            tool = result.get("tool", {})
+            metadata = result.get("metadata", {})
+            score = result.get("score", 0)
+
+            output.append(f"**{i}. {tool.get('name', 'unknown')}**")
+            output.append(f"- Category: {metadata.get('category', 'Unknown')}")
+            output.append(f"- Kind: {metadata.get('kind', 'tool')}")
+            output.append(f"- Quality: {metadata.get('qualityScore', 0)}/100")
+            output.append(f"- Install: `{metadata.get('install', 'N/A')}`")
+            output.append("")
+
+        # Include raw tool definitions for Claude to use
+        output.append("\n### Tool Definitions (Claude-compatible)\n")
+        output.append("```json")
+        output.append(json.dumps(tools, indent=2))
+        output.append("```")
+
+        return [TextContent(type="text", text="\n".join(output))]
+
+    except httpx.ConnectError:
+        # Fallback to local Context Engine search
+        return await search_gicm({"query": query, "kind": kind, "limit": limit})
+    except Exception as e:
+        return [TextContent(type="text", text=f"Error searching tools: {str(e)}")]
 
 
 async def get_install_command(args: dict):

@@ -2,24 +2,82 @@
 FastAPI Routes for AI Hedge Fund
 """
 
+import os
+import re
 from typing import Literal, Any
-from pydantic import BaseModel, Field
+from datetime import datetime
+from pydantic import BaseModel, Field, constr, field_validator
 
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends, Security
+
+# ============================================================================
+# VALIDATION CONSTANTS
+# ============================================================================
+
+# Valid chains for trading
+VALID_CHAINS = {"solana", "ethereum", "base", "arbitrum", "polygon", "bsc"}
+
+# Regex for token validation (alphanumeric + common address chars)
+TOKEN_PATTERN = r"^[a-zA-Z0-9_\-]{1,100}$"
+ADDRESS_PATTERN = r"^[a-zA-Z0-9]{32,64}$"
+
+# Max lengths for user input
+MAX_TOKEN_LENGTH = 100
+MAX_CONTEXT_VALUE_LENGTH = 1000
+from fastapi.security import APIKeyHeader
 from fastapi.responses import StreamingResponse
 
 from ..workflow import create_trading_graph, analyze_token
 from ..data import get_market_data
+from ..data.repository import (
+    get_position_repo,
+    get_trade_repo,
+    get_signal_repo,
+    get_stats_repo,
+)
+from ..config import get_settings
 
 router = APIRouter(prefix="/api/v1", tags=["trading"])
+
+# ============================================================================
+# API KEY AUTHENTICATION
+# ============================================================================
+
+API_KEY_HEADER = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+
+async def verify_api_key(api_key: str = Security(API_KEY_HEADER)) -> str:
+    """Verify API key for protected endpoints."""
+    expected_key = os.getenv("GICM_API_KEY")
+    if not expected_key:
+        # If no key configured, allow access (dev mode)
+        return "dev-mode"
+    if api_key != expected_key:
+        raise HTTPException(
+            status_code=403,
+            detail="Invalid or missing API key"
+        )
+    return api_key
+
+# ============================================================================
+# DATABASE REPOSITORIES (Supabase with in-memory fallback)
+# ============================================================================
+
+# Repositories are lazy-initialized singletons
+# If Supabase is not configured, they fall back to in-memory storage
+_started_at = datetime.now().isoformat()
 
 
 # Request/Response Models
 
 class AnalyzeRequest(BaseModel):
     """Request to analyze a token"""
-    token: str = Field(..., description="Token symbol or address")
-    chain: str = Field(default="solana", description="Blockchain")
+    token: constr(min_length=1, max_length=MAX_TOKEN_LENGTH, pattern=TOKEN_PATTERN) = Field(
+        ..., description="Token symbol or address"
+    )
+    chain: Literal["solana", "ethereum", "base", "arbitrum", "polygon", "bsc"] = Field(
+        default="solana", description="Blockchain"
+    )
     mode: Literal["full", "fast", "degen"] = Field(
         default="full",
         description="Analysis mode: full (all agents), fast (quick), degen (memecoin focus)"
@@ -33,11 +91,26 @@ class AnalyzeRequest(BaseModel):
         description="Additional context for agents"
     )
 
+    @field_validator("context")
+    @classmethod
+    def validate_context(cls, v: dict | None) -> dict | None:
+        """Validate context dict to prevent oversized/malicious input"""
+        if v is None:
+            return v
+        if len(v) > 20:  # Max 20 keys
+            raise ValueError("Context has too many keys (max 20)")
+        for key, value in v.items():
+            if len(str(key)) > 50:
+                raise ValueError(f"Context key too long: {key[:20]}...")
+            if len(str(value)) > MAX_CONTEXT_VALUE_LENGTH:
+                raise ValueError(f"Context value for '{key}' too long (max {MAX_CONTEXT_VALUE_LENGTH})")
+        return v
+
 
 class QuickSignalRequest(BaseModel):
     """Request for quick signal"""
-    token: str
-    chain: str = "solana"
+    token: constr(min_length=1, max_length=MAX_TOKEN_LENGTH, pattern=TOKEN_PATTERN)
+    chain: Literal["solana", "ethereum", "base", "arbitrum", "polygon", "bsc"] = "solana"
 
 
 class AgentSignalResponse(BaseModel):
@@ -99,12 +172,14 @@ async def health_check():
 
 
 @router.post("/analyze", response_model=AnalyzeResponse)
-async def analyze(request: AnalyzeRequest):
+async def analyze(request: AnalyzeRequest, _api_key: str = Depends(verify_api_key)):
     """
     Run full multi-agent analysis on a token.
 
     This runs all configured agents in parallel and synthesizes
     their signals into a final trading decision.
+
+    Requires X-API-Key header.
     """
     try:
         graph = create_trading_graph(
@@ -256,3 +331,463 @@ async def analyze_batch(tokens: list[str], chain: str = "solana"):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================================================
+# BRAIN INTEGRATION ENDPOINTS
+# ============================================================================
+
+class StatusResponse(BaseModel):
+    """Trading system status for brain integration"""
+    mode: str
+    positions: int
+    pnlToday: float
+    totalPnl: float
+    tradesToday: int
+    startedAt: str
+    limits: dict[str, Any]
+
+
+class PositionResponse(BaseModel):
+    """Position data"""
+    token: str
+    chain: str
+    size: float
+    entryPrice: float
+    currentPrice: float | None
+    pnl: float
+    pnlPercent: float
+    openedAt: str
+
+
+class TreasuryResponse(BaseModel):
+    """Treasury status"""
+    totalUsd: float
+    runway: str
+    allocations: dict[str, float]
+    expenses: list[dict[str, Any]]
+
+
+class SetModeRequest(BaseModel):
+    """Request to change trading mode"""
+    mode: Literal["paper", "micro", "live"]
+    approval_code: str | None = None
+
+
+@router.get("/status", response_model=StatusResponse)
+async def get_status():
+    """
+    Get current trading system status.
+
+    Used by gICM Brain for monitoring and decision making.
+    """
+    settings = get_settings()
+    position_repo = get_position_repo()
+    trade_repo = get_trade_repo()
+    stats_repo = get_stats_repo()
+
+    positions = position_repo.get_open()
+    trades_today = trade_repo.get_today()
+    daily_stats = stats_repo.get_or_create_today()
+    total_pnl = stats_repo.get_total_pnl()
+
+    return StatusResponse(
+        mode=settings.trading_mode,
+        positions=len(positions),
+        pnlToday=float(daily_stats.get("pnl", 0)),
+        totalPnl=total_pnl,
+        tradesToday=len(trades_today),
+        startedAt=_started_at,
+        limits={
+            "maxPositionSize": settings.max_position_size_usd,
+            "dailyLossLimit": settings.daily_loss_limit_usd,
+            "requireApproval": settings.require_approval,
+        }
+    )
+
+
+@router.get("/positions", response_model=list[PositionResponse])
+async def get_positions():
+    """
+    Get current open positions.
+
+    Returns all active trading positions with P&L.
+    """
+    position_repo = get_position_repo()
+    positions = position_repo.get_open()
+
+    return [
+        PositionResponse(
+            token=pos.get("token", ""),
+            chain=pos.get("chain", "solana"),
+            size=float(pos.get("size", 0)),
+            entryPrice=float(pos.get("entry_price", 0)),
+            currentPrice=float(pos.get("current_price", 0)) if pos.get("current_price") else None,
+            pnl=float(pos.get("pnl", 0)),
+            pnlPercent=float(pos.get("pnl_percent", 0)),
+            openedAt=pos.get("opened_at", datetime.now().isoformat()),
+        )
+        for pos in positions
+    ]
+
+
+@router.post("/positions")
+async def add_position(
+    token: str,
+    chain: str = "solana",
+    size: float = 100.0,
+    entry_price: float = 0.0,
+    _api_key: str = Depends(verify_api_key),
+):
+    """
+    Add a new position (paper trading).
+
+    In paper mode, this simulates opening a position.
+    Requires X-API-Key header.
+    """
+    settings = get_settings()
+
+    if settings.trading_mode == "live" and not settings.enable_live_trading:
+        raise HTTPException(
+            status_code=403,
+            detail="Live trading is disabled"
+        )
+
+    if size > settings.max_position_size_usd:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Position size ${size} exceeds limit ${settings.max_position_size_usd}"
+        )
+
+    position_repo = get_position_repo()
+    trade_repo = get_trade_repo()
+    stats_repo = get_stats_repo()
+
+    # Create position in database
+    position = position_repo.create({
+        "token": token,
+        "chain": chain,
+        "size": size,
+        "entry_price": entry_price,
+        "current_price": entry_price,
+    })
+
+    # Record trade
+    trade_repo.create({
+        "position_id": position.get("id"),
+        "type": "open",
+        "token": token,
+        "chain": chain,
+        "size": size,
+        "price": entry_price,
+    })
+
+    # Update daily stats
+    stats_repo.increment_trades()
+
+    return {"success": True, "position": position}
+
+
+@router.delete("/positions/{token}")
+async def close_position(token: str, chain: str = "solana", _api_key: str = Depends(verify_api_key)):
+    """
+    Close a position (paper trading).
+    Requires X-API-Key header.
+    """
+    position_repo = get_position_repo()
+    trade_repo = get_trade_repo()
+    stats_repo = get_stats_repo()
+
+    # Get the position first to capture PnL
+    positions = position_repo.get_open()
+    target_pos = None
+    for pos in positions:
+        if pos.get("token", "").lower() == token.lower() and pos.get("chain") == chain:
+            target_pos = pos
+            break
+
+    if not target_pos:
+        raise HTTPException(status_code=404, detail=f"Position not found: {token}")
+
+    pnl = float(target_pos.get("pnl", 0))
+
+    # Close the position
+    closed = position_repo.close(token, chain, pnl)
+
+    # Record trade
+    trade_repo.create({
+        "position_id": target_pos.get("id"),
+        "type": "close",
+        "token": token,
+        "chain": chain,
+        "size": float(target_pos.get("size", 0)),
+        "price": float(target_pos.get("current_price", 0)),
+        "pnl": pnl,
+    })
+
+    # Update daily stats
+    stats_repo.increment_pnl(pnl)
+    stats_repo.increment_trades()
+
+    return {"success": True, "closed": closed}
+
+
+@router.get("/treasury", response_model=TreasuryResponse)
+async def get_treasury():
+    """
+    Get treasury status.
+
+    Returns current treasury balances, allocations, and runway.
+    Note: In paper mode, this returns mock data.
+    """
+    # Mock treasury data (would connect to actual wallet in production)
+    return TreasuryResponse(
+        totalUsd=0.0,
+        runway="N/A - Connect wallet for real data",
+        allocations={
+            "trading": 0.40,
+            "operations": 0.30,
+            "growth": 0.20,
+            "reserve": 0.10,
+        },
+        expenses=[
+            {"name": "Claude API", "amount": 200, "frequency": "monthly"},
+            {"name": "Helius RPC", "amount": 50, "frequency": "monthly"},
+            {"name": "Vercel", "amount": 20, "frequency": "monthly"},
+        ]
+    )
+
+
+@router.get("/mode")
+async def get_mode():
+    """Get current trading mode"""
+    settings = get_settings()
+    return {
+        "mode": settings.trading_mode,
+        "requireApproval": settings.require_approval,
+        "liveTradingEnabled": settings.enable_live_trading,
+    }
+
+
+@router.post("/mode")
+async def set_mode(request: SetModeRequest, _api_key: str = Depends(verify_api_key)):
+    """
+    Change trading mode.
+
+    Note: This only changes the in-memory setting.
+    For persistent changes, update the TRADING_MODE environment variable.
+    Requires X-API-Key header.
+    """
+    settings = get_settings()
+
+    # Require approval code for micro/live
+    if request.mode in ["micro", "live"] and not request.approval_code:
+        raise HTTPException(
+            status_code=400,
+            detail="Approval code required for micro/live mode"
+        )
+
+    # In a real implementation, this would validate the approval code
+    # and persist the change
+
+    return {
+        "success": True,
+        "previousMode": settings.trading_mode,
+        "newMode": request.mode,
+        "message": f"Mode change to '{request.mode}' requested. Update TRADING_MODE env var to persist."
+    }
+
+
+@router.get("/trades/today")
+async def get_trades_today():
+    """Get all trades executed today"""
+    trade_repo = get_trade_repo()
+    stats_repo = get_stats_repo()
+
+    trades = trade_repo.get_today()
+    daily_stats = stats_repo.get_or_create_today()
+
+    return {
+        "count": len(trades),
+        "trades": trades,
+        "pnl": float(daily_stats.get("pnl", 0)),
+    }
+
+
+# ============================================================================
+# HUNTER SIGNAL INTEGRATION
+# ============================================================================
+
+class HunterSignal(BaseModel):
+    """Signal from hunter agent"""
+    id: constr(min_length=1, max_length=100, pattern=r"^[a-zA-Z0-9_\-]+$")
+    type: constr(min_length=1, max_length=50)
+    source: constr(min_length=1, max_length=100)
+    token: constr(min_length=1, max_length=MAX_TOKEN_LENGTH, pattern=TOKEN_PATTERN) | None = None
+    chain: Literal["solana", "ethereum", "base", "arbitrum", "polygon", "bsc"] | None = None
+    action: Literal["buy", "sell", "hold", "watch"]
+    confidence: float = Field(..., ge=0, le=100)  # 0-100
+    urgency: Literal["immediate", "today", "week", "monitor"]
+    title: constr(min_length=1, max_length=200)
+    description: constr(min_length=1, max_length=2000)
+    reasoning: constr(min_length=1, max_length=2000)
+    risk: Literal["low", "medium", "high", "extreme"]
+    riskFactors: list[constr(max_length=200)] = Field(default_factory=list, max_length=20)
+    tags: list[constr(max_length=50)] = Field(default_factory=list, max_length=20)
+    metrics: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("metrics")
+    @classmethod
+    def validate_metrics(cls, v: dict) -> dict:
+        """Validate metrics dict size"""
+        if len(v) > 50:
+            raise ValueError("Metrics has too many keys (max 50)")
+        return v
+
+
+class SignalBatchRequest(BaseModel):
+    """Batch of signals from hunter"""
+    signals: list[HunterSignal] = Field(..., max_length=100)  # Max 100 signals per batch
+
+
+class SignalProcessResult(BaseModel):
+    """Result of signal processing"""
+    signalId: str
+    status: str  # queued, analyzing, executed, rejected
+    analysis: dict[str, Any] | None = None
+    reason: str | None = None
+
+
+class SignalBatchResponse(BaseModel):
+    """Response for signal batch"""
+    received: int
+    processed: int
+    queued: int
+    rejected: int
+    results: list[SignalProcessResult]
+
+
+@router.post("/signals", response_model=SignalBatchResponse)
+async def receive_signals(
+    request: SignalBatchRequest,
+    background_tasks: BackgroundTasks,
+    _api_key: str = Depends(verify_api_key),
+):
+    """
+    Receive trading signals from the hunter agent.
+
+    High-confidence signals are queued for analysis.
+    Signals can trigger automatic analysis via the trading graph.
+    Requires X-API-Key header.
+    """
+    signal_repo = get_signal_repo()
+    stats_repo = get_stats_repo()
+
+    results: list[SignalProcessResult] = []
+    queued = 0
+    rejected = 0
+
+    for signal in request.signals:
+        result = SignalProcessResult(
+            signalId=signal.id,
+            status="rejected",
+            reason=None
+        )
+
+        # Filter by confidence and action
+        if signal.confidence < 50:
+            result.reason = "Confidence too low"
+            rejected += 1
+        elif signal.action not in ["buy", "watch"]:
+            result.reason = "Not an actionable signal"
+            rejected += 1
+        elif signal.risk == "extreme":
+            result.reason = "Risk too high"
+            rejected += 1
+        else:
+            # Store signal in database
+            signal_data = signal.model_dump()
+            signal_data["status"] = "queued"
+            signal_repo.create(signal_data)
+            result.status = "queued"
+            queued += 1
+
+            # For high-confidence signals with tokens, trigger background analysis
+            if signal.confidence >= 70 and signal.token:
+                background_tasks.add_task(
+                    analyze_signal_token,
+                    signal.token,
+                    signal.chain or "solana",
+                    signal.id
+                )
+                result.status = "analyzing"
+
+        results.append(result)
+
+    # Update daily stats
+    stats_repo.increment_signals(
+        received=len(request.signals),
+        queued=queued,
+        rejected=rejected
+    )
+
+    return SignalBatchResponse(
+        received=len(request.signals),
+        processed=len(results),
+        queued=queued,
+        rejected=rejected,
+        results=results
+    )
+
+
+async def analyze_signal_token(token: str, chain: str, signal_id: str):
+    """Background task to analyze a token from a signal"""
+    signal_repo = get_signal_repo()
+
+    try:
+        graph = create_trading_graph(mode="fast", show_reasoning=False)
+        result = await graph.quick_signal(token, chain)
+
+        # Update signal in database with analysis result
+        signal_repo.update_status(signal_id, "analyzed", analysis=result)
+
+        print(f"[SIGNALS] Analyzed {token}: {result.get('sentiment', 'unknown')}")
+    except Exception as e:
+        # Mark as failed
+        signal_repo.update_status(signal_id, "failed", analysis={"error": str(e)})
+        print(f"[SIGNALS] Analysis failed for {token}: {e}")
+
+
+@router.get("/signals/queue")
+async def get_signal_queue():
+    """Get current signal queue"""
+    signal_repo = get_signal_repo()
+    signals = signal_repo.get_queue(limit=50)
+
+    return {
+        "count": len(signals),
+        "signals": [{"signal": s, "status": s.get("status", "queued")} for s in signals],
+    }
+
+
+@router.get("/signals/{signal_id}")
+async def get_signal_status(signal_id: str):
+    """Get status of a specific signal"""
+    signal_repo = get_signal_repo()
+    signal = signal_repo.get_by_id(signal_id)
+
+    if not signal:
+        raise HTTPException(status_code=404, detail=f"Signal not found: {signal_id}")
+
+    return {
+        "signal": signal,
+        "status": signal.get("status", "unknown"),
+    }
+
+
+@router.delete("/signals/queue")
+async def clear_signal_queue(_api_key: str = Depends(verify_api_key)):
+    """Clear the signal queue. Requires X-API-Key header."""
+    signal_repo = get_signal_repo()
+    count = signal_repo.clear_queue()
+    return {"cleared": count}

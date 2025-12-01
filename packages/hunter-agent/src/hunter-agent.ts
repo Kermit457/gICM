@@ -8,14 +8,40 @@ import {
   type HuntDiscovery,
   type HuntSource,
 } from "./types.js";
+import {
+  TokenScanner,
+  type TokenAnalysis,
+  type ScanOptions,
+  type TokenScannerConfig,
+} from "./scanner/index.js";
+// Social/Tech Sources
 import { GitHubHunter } from "./sources/github-hunter.js";
 import { HackerNewsHunter } from "./sources/hackernews-hunter.js";
 import { TwitterHunter } from "./sources/twitter-hunter.js";
+import { RedditHunter } from "./sources/reddit-hunter.js";
+import { ProductHuntHunter } from "./sources/producthunt-hunter.js";
+import { ArxivHunter } from "./sources/arxiv-hunter.js";
+import { LobstersHunter } from "./sources/lobsters-hunter.js";
+import { DevToHunter } from "./sources/devto-hunter.js";
+import { TikTokHunter } from "./sources/tiktok-hunter.js";
+// DeFi/Crypto Sources
+import { DeFiLlamaHunter } from "./sources/defillama-hunter.js";
+import { GeckoTerminalHunter } from "./sources/geckoterminal-hunter.js";
+import { FearGreedHunter } from "./sources/feargreed-hunter.js";
+import { BinanceHunter } from "./sources/binance-hunter.js";
+// Economic/Financial Sources
+import { FREDHunter } from "./sources/fred-hunter.js";
+import { SECHunter } from "./sources/sec-hunter.js";
+import { FinnhubHunter } from "./sources/finnhub-hunter.js";
+// Alternative Sources
+import { NPMHunter } from "./sources/npm-hunter.js";
 
 export interface HunterAgentConfig extends AgentConfig {
   sources: HunterConfig[];
   deduplicationTTL?: number; // ms
   onDiscovery?: (discoveries: HuntDiscovery[]) => Promise<void>;
+  // Token scanner config
+  scanner?: TokenScannerConfig;
 }
 
 export class HunterAgent extends BaseAgent {
@@ -25,6 +51,7 @@ export class HunterAgent extends BaseAgent {
   private deduplicationTTL: number;
   private onDiscovery?: (discoveries: HuntDiscovery[]) => Promise<void>;
   private isRunning = false;
+  private scanner: TokenScanner;
 
   constructor(config: HunterAgentConfig) {
     super("hunter", config);
@@ -40,22 +67,59 @@ export class HunterAgent extends BaseAgent {
         this.hunters.set(sourceConfig.source, hunter);
       }
     }
+
+    // Initialize token scanner
+    this.scanner = new TokenScanner(config.scanner || {
+      vybeApiKey: process.env.VYBE_API_KEY,
+    });
   }
 
   getSystemPrompt(): string {
-    return `You are a tech discovery agent for gICM.
-Your role is to find valuable opportunities from GitHub, HackerNews, and Twitter
-that are relevant to Web3, AI, and developer tooling.
+    return `You are a tech discovery and alpha-hunting agent for gICM.
+Your role is to find valuable opportunities from multiple sources
+that are relevant to Web3, AI, trading, and developer tooling.
 
-You hunt for:
-- Trending GitHub repos in crypto/AI
-- HackerNews posts about web3 and AI
-- Twitter discussions about emerging tech
+You hunt from:
+SOCIAL/TECH:
+- GitHub: Trending repos in crypto/AI
+- HackerNews: Tech posts and Show HN launches
+- Twitter: Crypto/AI discussions
+- Reddit: r/programming, r/MachineLearning, r/cryptocurrency, r/solana
+- ProductHunt: New product launches
+- ArXiv: AI/ML research papers
+- Lobste.rs: High-signal tech discussions
+- Dev.to: Developer tutorials and tools
+- TikTok: Viral crypto/tech content
+
+DEFI/CRYPTO:
+- DeFiLlama: TVL changes, yield opportunities, protocol metrics
+- GeckoTerminal: New pool launches, trending pairs across chains
+- Fear & Greed Index: Market sentiment for contrarian signals
+- Binance: Price moves, volume anomalies on major pairs
+
+ECONOMIC/FINANCIAL:
+- FRED: Federal Reserve data (rates, inflation, employment)
+- SEC EDGAR: Insider trades, 13-F institutional holdings
+- Finnhub: Congressional trades, earnings surprises
+
+ALTERNATIVE:
+- npm: Package download trends for tech adoption signals
+
+SIX THINKING HATS ANALYSIS:
+When evaluating discoveries, analyze from 6 perspectives:
+🎩 WHITE (Facts): What are the objective metrics and data points?
+🎩 RED (Emotions): What's the gut feeling? Is there hype or fear?
+🎩 BLACK (Risks): What could go wrong? Rug risk? Technical issues?
+🎩 YELLOW (Benefits): What's the upside potential? Alpha opportunity?
+🎩 GREEN (Creativity): What novel approaches or use cases exist?
+🎩 BLUE (Process): What's the action plan? Entry/exit strategy?
 
 You evaluate discoveries based on:
-- Relevance to gICM (Web3/AI focus)
-- Quality signals (stars, engagement)
-- Recency and momentum`;
+- Relevance to gICM (Web3/AI/trading focus)
+- Quality signals (stars, engagement, volume, TVL)
+- Recency and momentum
+- Alpha potential (congressional trades, insider buys, new pools)
+- Six Hats multi-perspective analysis`;
   }
 
   async analyze(context: AgentContext): Promise<AgentResult> {
@@ -205,12 +269,44 @@ You evaluate discoveries based on:
 
   private createHunter(config: HunterConfig): BaseHunterSource | null {
     switch (config.source) {
+      // Social/Tech Sources
       case "github":
         return new GitHubHunter(config);
       case "hackernews":
         return new HackerNewsHunter(config);
       case "twitter":
         return new TwitterHunter(config);
+      case "reddit":
+        return new RedditHunter(config);
+      case "producthunt":
+        return new ProductHuntHunter(config);
+      case "arxiv":
+        return new ArxivHunter(config);
+      case "lobsters":
+        return new LobstersHunter(config);
+      case "devto":
+        return new DevToHunter(config);
+      case "tiktok":
+        return new TikTokHunter(config);
+      // DeFi/Crypto Sources
+      case "defillama":
+        return new DeFiLlamaHunter(config);
+      case "geckoterminal":
+        return new GeckoTerminalHunter(config);
+      case "feargreed":
+        return new FearGreedHunter(config);
+      case "binance":
+        return new BinanceHunter(config);
+      // Economic/Financial Sources
+      case "fred":
+        return new FREDHunter(config);
+      case "sec":
+        return new SECHunter(config);
+      case "finnhub":
+        return new FinnhubHunter(config);
+      // Alternative Sources
+      case "npm":
+        return new NPMHunter(config);
       default:
         this.log(`Unknown source: ${config.source}`);
         return null;
@@ -256,5 +352,44 @@ You evaluate discoveries based on:
         this.seen.delete(fingerprint);
       }
     }
+  }
+
+  // ============================================
+  // TOKEN SCANNER METHODS
+  // ============================================
+
+  /**
+   * Scan a single token by mint address
+   * Combines data from RugCheck, Pump.fun, Vybe, and CoinGecko
+   */
+  async scanToken(mint: string): Promise<TokenAnalysis> {
+    this.log(`Scanning token: ${mint}`);
+    return this.scanner.scanToken(mint);
+  }
+
+  /**
+   * Scan new launches from Pump.fun
+   * Returns analyzed tokens sorted by overall score
+   */
+  async scanNewLaunches(options?: Partial<ScanOptions>): Promise<TokenAnalysis[]> {
+    this.log(`Scanning new launches with options: ${JSON.stringify(options)}`);
+    const results = await this.scanner.scanNewLaunches(options);
+    // Sort by overall score descending
+    return results.sort((a, b) => b.scores.overall - a.scores.overall);
+  }
+
+  /**
+   * Scan multiple tokens in batch
+   */
+  async scanBatch(mints: string[]): Promise<TokenAnalysis[]> {
+    this.log(`Batch scanning ${mints.length} tokens`);
+    return this.scanner.scanBatch(mints);
+  }
+
+  /**
+   * Get the underlying token scanner instance
+   */
+  getScanner(): TokenScanner {
+    return this.scanner;
   }
 }

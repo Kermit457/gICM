@@ -5,7 +5,7 @@ export default defineConfig([
   {
     entry: ["src/index.ts"],
     format: ["esm"],
-    dts: false, // TODO: fix createTradingGraph import
+    dts: false, // TODO: Windows spawn ENOENT issue with dts generation
     clean: true,
     sourcemap: true,
     external: ["react", "react-dom"],

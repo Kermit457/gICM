@@ -5,6 +5,9 @@
  * Manages treasury, trading, expenses, and revenue tracking.
  */
 
+// Main Engine
+export { MoneyEngine, type MoneyEngineEvents } from "./engine.js";
+
 // Core Types
 export * from "./core/types.js";
 

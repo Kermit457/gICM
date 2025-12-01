@@ -54,7 +54,6 @@ export class QdrantVectorStore implements VectorStore {
   async init(): Promise<void> {
     try {
       // Dynamic import to avoid bundling issues
-      // @ts-expect-error - Optional dependency, types may not be available
       const { QdrantClient } = await import("@qdrant/js-client-rest");
 
       this.client = new QdrantClient({

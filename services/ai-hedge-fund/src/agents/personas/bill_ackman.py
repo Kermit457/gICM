@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 ACKMAN_CONFIG = AgentConfig(
@@ -112,7 +112,7 @@ MANAGEMENT:
 - Recent Decisions: {market_data.get('recent_decisions', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 As Bill Ackman:
 1. Is this protocol generating real revenue?

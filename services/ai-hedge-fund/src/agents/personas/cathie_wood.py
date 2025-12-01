@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 WOOD_CONFIG = AgentConfig(
@@ -108,7 +108,7 @@ INNOVATION INDICATORS:
 - Ecosystem Size: {market_data.get('ecosystem_size', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 As Cathie Wood:
 1. What is the disruptive innovation thesis here?

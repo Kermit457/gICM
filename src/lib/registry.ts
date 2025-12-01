@@ -8006,6 +8006,153 @@ export const MCPS: RegistryItem[] = [
   // LunarCrush - Multi-Platform Social Analytics
   { id: "mcp-lunarcrush", kind: "mcp", name: "LunarCrush", slug: "lunarcrush", description: "Comprehensive social analytics for crypto. Aggregates data from Twitter, Reddit, YouTube, Medium, and more. Provides social volume, sentiment, and influencer impact scores.", category: "ICM & Crypto", tags: ["MCP", "Social", "Analytics", "Sentiment", "ICM", "Multi-Platform"], dependencies: [], files: [".claude/mcps/lunarcrush.json"], install: "npx @gicm/cli add mcp/lunarcrush", setup: "Sign up at https://lunarcrush.com and add LUNARCRUSH_API_KEY to .env", envKeys: ["LUNARCRUSH_API_KEY"], installs: 0, remixes: 0 },
 
+  // === PTC + TOOL SEARCH TOOL STACK (5 MCPs) ===
+
+  // PTC Coordinator - Pipeline orchestration
+  {
+    id: "ptc-coordinator",
+    kind: "mcp",
+    name: "PTC Coordinator",
+    slug: "ptc-coordinator",
+    description: "Programmatic Tool Calling coordinator. Orchestrate multi-step pipelines via code instead of individual API calls. 37% token reduction, dependency resolution, conditional execution.",
+    longDescription: "Enterprise-grade pipeline orchestration for AI agents. Features include topological sort for dependency resolution, input reference resolution (${results.step1.data}), conditional execution, parallel step support, and integration with gICM's autonomy engine for risk-aware execution. Pre-built templates for research, trading, content, security audits, and portfolio analysis.",
+    category: "PTC & Orchestration",
+    tags: ["PTC", "Pipeline", "Orchestration", "Automation", "AI Agents", "Tool Calling"],
+    dependencies: ["autonomy-engine"],
+    files: ["packages/ptc-coordinator/src/coordinator.ts", "packages/ptc-coordinator/src/types.ts", "packages/ptc-coordinator/src/templates/index.ts"],
+    install: "npx @gicm/cli add mcp/ptc-coordinator",
+    setup: "Import PTCCoordinator from @gicm/ptc-coordinator and register your tools",
+    envKeys: [],
+    installs: 0,
+    remixes: 0,
+    platforms: ['claude', 'gemini', 'openai'],
+    compatibility: {
+      models: ['opus-4.5', 'sonnet-4.5', 'sonnet', 'gemini-2.0-flash', 'gemini-3.0-pro', 'gpt-4o'],
+      software: ['vscode', 'cursor', 'terminal', 'windsurf']
+    },
+    audit: {
+      lastAudited: "2025-11-30",
+      qualityScore: 92,
+      status: "VERIFIED",
+    },
+  },
+
+  // Tool Search API - Dynamic tool discovery
+  {
+    id: "tool-search-api",
+    kind: "mcp",
+    name: "Tool Search API",
+    slug: "tool-search-api",
+    description: "Dynamic tool discovery from 513+ agents. 85% context reduction via semantic search. Returns Claude-compatible tool definitions on-demand.",
+    longDescription: "Implements Anthropic's Tool Search Tool pattern for gICM's marketplace. Searches 513+ registry items using Gemini embeddings and returns Claude-compatible tool definitions. Supports filtering by kind (agent, tool, block, template), platform (claude, gemini, openai), and quality score. Integrates with Context Engine for semantic search.",
+    category: "PTC & Orchestration",
+    tags: ["Tool Search", "Context Reduction", "Discovery", "Semantic Search", "AI Agents"],
+    dependencies: ["context-engine-mcp"],
+    files: ["src/app/api/tools/search/route.ts"],
+    install: "npx @gicm/cli add mcp/tool-search-api",
+    setup: "Deploy the API endpoint and configure CONTEXT_ENGINE_URL",
+    envKeys: ["CONTEXT_ENGINE_URL"],
+    installs: 0,
+    remixes: 0,
+    platforms: ['claude', 'gemini', 'openai'],
+    compatibility: {
+      models: ['opus-4.5', 'sonnet-4.5', 'sonnet', 'gemini-2.0-flash', 'gemini-3.0-pro', 'gpt-4o'],
+      software: ['vscode', 'cursor', 'terminal', 'windsurf']
+    },
+    audit: {
+      lastAudited: "2025-11-30",
+      qualityScore: 90,
+      status: "VERIFIED",
+    },
+  },
+
+  // Pipeline Risk Classifier - Risk assessment for pipelines
+  {
+    id: "pipeline-risk-classifier",
+    kind: "mcp",
+    name: "Pipeline Risk Classifier",
+    slug: "pipeline-risk-classifier",
+    description: "Risk classification for entire pipelines. Analyzes tool combinations, data flow, and cumulative risk. Integrates with Autonomy Engine.",
+    longDescription: "Extends gICM's risk classification to multi-step pipelines. Calculates weighted risk factors: cumulative tool risk (35%), dangerous combinations (25%), complexity (15%), data flow (15%), and metadata (10%). Detects dangerous tool combinations (wallet+trading, deployer+wallet). Returns recommendation: auto_execute, queue_approval, escalate, or reject.",
+    category: "PTC & Orchestration",
+    tags: ["Risk", "Classification", "Pipeline", "Autonomy", "Security", "Compliance"],
+    dependencies: ["autonomy-engine"],
+    files: ["packages/autonomy/src/decision/pipeline-classifier.ts"],
+    install: "npx @gicm/cli add mcp/pipeline-risk-classifier",
+    setup: "Import PipelineRiskClassifier from @gicm/autonomy",
+    envKeys: [],
+    installs: 0,
+    remixes: 0,
+    platforms: ['claude', 'gemini', 'openai'],
+    compatibility: {
+      models: ['opus-4.5', 'sonnet-4.5', 'sonnet', 'gemini-2.0-flash', 'gemini-3.0-pro', 'gpt-4o'],
+      software: ['vscode', 'cursor', 'terminal', 'windsurf']
+    },
+    audit: {
+      lastAudited: "2025-11-30",
+      qualityScore: 94,
+      status: "VERIFIED",
+    },
+  },
+
+  // Context Engine MCP - Semantic search server
+  {
+    id: "context-engine-mcp",
+    kind: "mcp",
+    name: "Context Engine MCP",
+    slug: "context-engine-mcp",
+    description: "MCP server for codebase understanding. Gemini embeddings, Qdrant vector DB, semantic code search. Powers Tool Search Tool.",
+    longDescription: "Python FastAPI server providing Model Context Protocol (MCP) tools for codebase understanding. Features include search_tools (dynamic tool discovery), search_code (semantic code search), and index_codebase (file indexing). Uses Gemini embeddings (free tier) and Qdrant for vector storage. Essential backend for Tool Search Tool integration.",
+    category: "PTC & Orchestration",
+    tags: ["MCP", "Context", "Embeddings", "Vector Search", "Code Understanding"],
+    dependencies: [],
+    files: ["services/context-engine/src/mcp_server.py", "services/context-engine/src/main.py"],
+    install: "npx @gicm/cli add mcp/context-engine-mcp",
+    setup: "Run: cd services/context-engine && python -m uvicorn src.main:app --port 8000. Configure GEMINI_API_KEY and QDRANT_URL.",
+    envKeys: ["GEMINI_API_KEY", "QDRANT_URL", "QDRANT_API_KEY"],
+    installs: 0,
+    remixes: 0,
+    platforms: ['claude'],
+    compatibility: {
+      models: ['opus-4.5', 'sonnet-4.5', 'sonnet'],
+      software: ['vscode', 'cursor', 'terminal', 'windsurf']
+    },
+    audit: {
+      lastAudited: "2025-11-30",
+      qualityScore: 88,
+      status: "VERIFIED",
+    },
+  },
+
+  // Autonomy Engine - Bounded autonomous execution
+  {
+    id: "autonomy-engine",
+    kind: "mcp",
+    name: "Autonomy Engine",
+    slug: "autonomy-engine",
+    description: "Level 2+ bounded autonomous execution. Risk classification (0-100), approval queues, audit trails. Human oversight for AI agents.",
+    longDescription: "Complete autonomy framework for AI agents with human oversight. Features include: RiskClassifier (weighted factors: financial 35%, reversibility 20%, category 15%, urgency 15%, visibility 15%), BoundaryChecker (daily limits, value thresholds), ApprovalQueue (priority ordering, auto-expiration), AuditLogger (hash-chain integrity), and NotificationManager (Discord, Telegram, Slack). Supports 4 autonomy levels: manual, bounded, supervised, autonomous.",
+    category: "PTC & Orchestration",
+    tags: ["Autonomy", "Risk", "Approval", "Audit", "Compliance", "Security"],
+    dependencies: [],
+    files: ["packages/autonomy/src/index.ts", "packages/autonomy/src/decision/risk-classifier.ts", "packages/autonomy/src/approval/approval-queue.ts"],
+    install: "npx @gicm/cli add mcp/autonomy-engine",
+    setup: "Import AutonomyEngine from @gicm/autonomy. Configure boundaries in autonomy.config.json.",
+    envKeys: ["GICM_AUTONOMY_LEVEL", "TELEGRAM_BOT_TOKEN", "DISCORD_WEBHOOK_URL"],
+    installs: 0,
+    remixes: 0,
+    platforms: ['claude', 'gemini', 'openai'],
+    compatibility: {
+      models: ['opus-4.5', 'sonnet-4.5', 'sonnet', 'gemini-2.0-flash', 'gemini-3.0-pro', 'gpt-4o'],
+      software: ['vscode', 'cursor', 'terminal', 'windsurf']
+    },
+    audit: {
+      lastAudited: "2025-11-30",
+      qualityScore: 96,
+      status: "VERIFIED",
+    },
+  },
+
 ];
 
 // ============================================================================

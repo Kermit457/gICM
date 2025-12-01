@@ -1,22 +1,52 @@
 {
   "name": "@gicm/platform-adapters",
   "version": "1.0.0",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "description": "Platform adapters for Bolt, Lovable, and universal AI code editors",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./bolt": "./src/bolt/index.ts",
-    "./lovable": "./src/lovable/index.ts",
-    "./universal": "./src/universal/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./bolt": {
+      "types": "./dist/bolt/index.d.ts",
+      "import": "./dist/bolt/index.js"
+    },
+    "./lovable": {
+      "types": "./dist/lovable/index.d.ts",
+      "import": "./dist/lovable/index.js"
+    },
+    "./universal": {
+      "types": "./dist/universal/index.d.ts",
+      "import": "./dist/universal/index.js"
+    }
   },
   "scripts": {
-    "type-check": "tsc --noEmit"
+    "build": "tsup src/index.ts src/bolt/index.ts src/lovable/index.ts src/universal/index.ts --format esm --dts --clean",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
+    "axios": "^1.7.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
-    "typescript": "^5.3.3"
-  }
+    "typescript": "^5.3.3",
+    "tsup": "^8.0.0"
+  },
+  "files": ["dist", "README.md"],
+  "keywords": ["gicm", "platform-adapters", "bolt", "lovable", "ai-editors"],
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/platform-adapters"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/platform-adapters#readme",
+  "bugs": { "url": "https://github.com/gicm-dev/gicm/issues" },
+  "publishConfig": { "access": "public" }
 }

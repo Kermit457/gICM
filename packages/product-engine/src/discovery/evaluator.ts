@@ -1,12 +1,24 @@
 /**
  * Opportunity Evaluator
  *
- * Scores and prioritizes opportunities.
+ * Scores and prioritizes opportunities using SCAMPER method.
  */
 
 import type { Opportunity } from "../core/types.js";
 import { generateJSON } from "../utils/llm.js";
 import { Logger } from "../utils/logger.js";
+
+// SCAMPER brainstorming framework for opportunity evaluation
+const SCAMPER_EVALUATION = `
+Apply SCAMPER analysis to identify improvement opportunities:
+- **S**ubstitute: What existing solution could this replace?
+- **C**ombine: What could this be merged with for more value?
+- **A**dapt: What patterns from other domains apply?
+- **M**odify: How could the scope be adjusted for better fit?
+- **P**ut to use: What other use cases exist?
+- **E**liminate: What complexity can be removed?
+- **R**everse: What counterintuitive approach might work?
+`;
 
 export class OpportunityEvaluator {
   private logger: Logger;
@@ -39,6 +51,15 @@ export class OpportunityEvaluator {
           dependencies: string[];
           estimatedEffort: string;
         };
+        scamper: {
+          substitute: string;
+          combine: string;
+          adapt: string;
+          modify: string;
+          putToUse: string;
+          eliminate: string;
+          reverse: string;
+        };
         priority: "critical" | "high" | "medium" | "low";
       }>({
         prompt: `Evaluate this product opportunity for gICM (an AI-powered development platform):
@@ -53,6 +74,8 @@ gICM Context:
 - React component library with 100+ components
 - Solana/Web3 focus
 - Competes with Cursor, Replit, v0, Bolt
+
+${SCAMPER_EVALUATION}
 
 Score each 0-100:
 - userDemand: How many users want this?
@@ -71,6 +94,15 @@ Return JSON:
     "risks": ["<risk1>", "<risk2>"],
     "dependencies": ["<dep1>"],
     "estimatedEffort": "<e.g., '1 week', '2-3 days'>"
+  },
+  "scamper": {
+    "substitute": "<what it replaces>",
+    "combine": "<what to merge with>",
+    "adapt": "<patterns to borrow>",
+    "modify": "<scope adjustments>",
+    "putToUse": "<other use cases>",
+    "eliminate": "<complexity to remove>",
+    "reverse": "<counterintuitive approach>"
   },
   "priority": "<critical|high|medium|low>"
 }`,
@@ -91,7 +123,10 @@ Return JSON:
         overall,
       };
 
-      opportunity.analysis = analysis.analysis;
+      opportunity.analysis = {
+        ...analysis.analysis,
+        scamper: analysis.scamper,
+      };
       opportunity.priority = analysis.priority;
       opportunity.status = "evaluated";
       opportunity.evaluatedAt = Date.now();

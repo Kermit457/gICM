@@ -1,6 +1,6 @@
 {
   "name": "@gicm/decision-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "LLM-powered decision engine for evaluating discoveries in gICM Orchestrator",
   "type": "module",
   "main": "dist/index.js",
@@ -18,8 +18,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@gicm/agent-core": "workspace:*",
-    "@gicm/hunter-agent": "workspace:*",
+    "@gicm/agent-core": "^1.0.0",
+    "@gicm/hunter-agent": "^0.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -32,7 +32,8 @@
     "typescript": "^5.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "keywords": [
     "gicm",
@@ -41,5 +42,18 @@
     "scoring",
     "evaluation"
   ],
-  "license": "MIT"
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/decision-agent"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/decision-agent#readme",
+  "bugs": {
+    "url": "https://github.com/gicm-dev/gicm/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

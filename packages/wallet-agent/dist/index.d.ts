@@ -181,6 +181,9 @@ declare class SolanaWalletProvider {
     private config;
     private address;
     private rpcUrl;
+    private connection;
+    private keypair;
+    private agentKit;
     constructor(config: WalletAgentConfig);
     initialize(): Promise<string>;
     executeCommand(command: WalletCommand, context: AgentContext): Promise<AgentResult>;

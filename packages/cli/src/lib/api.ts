@@ -4,7 +4,7 @@
 
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import chalk from 'chalk';
-import type { RegistryItem, FileContent, BundleResponse } from './types';
+import type { RegistryItem, FileContent, BundleResponse, StackResponse, StackListResponse, ToolSearchResponse } from './types';
 
 export class GICMAPIClient {
   private client: AxiosInstance;
@@ -93,6 +93,133 @@ export class GICMAPIClient {
   }
 
   /**
+   * Fetch a stack by ID
+   */
+  async getStack(stackId: string): Promise<StackResponse> {
+    try {
+      const { data } = await this.client.get<StackResponse>(`/stacks/${stackId}`);
+      return data;
+    } catch (error) {
+      this.handleError(error, `Failed to fetch stack: ${stackId}`);
+      throw error;
+    }
+  }
+
+  /**
+   * List all available stacks
+   */
+  async listStacks(): Promise<StackListResponse> {
+    try {
+      const { data } = await this.client.get<StackListResponse>('/stacks');
+      return data;
+    } catch (error) {
+      this.handleError(error, 'Failed to fetch stacks');
+      throw error;
+    }
+  }
+
+  /**
+   * Search for PTC-compatible tools
+   */
+  async searchTools(query: string, options: {
+    limit?: number;
+    platform?: string;
+    kind?: string;
+    minQuality?: number;
+  } = {}): Promise<ToolSearchResponse> {
+    try {
+      const { data } = await this.client.post<ToolSearchResponse>('/tools/search', {
+        query,
+        limit: options.limit || 10,
+        platform: options.platform,
+        kind: options.kind,
+        minQuality: options.minQuality,
+      });
+      return data;
+    } catch (error) {
+      this.handleError(error, 'Tool search failed');
+      throw error;
+    }
+  }
+
+  /**
+   * Save a context to cloud storage
+   */
+  async saveContext(contextData: {
+    name: string;
+    description?: string;
+    projectType: string;
+    language: string;
+    frameworks: string[];
+    indexingConfig: Record<string, unknown>;
+    mcpConfig: Record<string, unknown>;
+    autonomyLevel: number;
+    capabilities: string[];
+    isPublic: boolean;
+  }): Promise<{ id: string; name: string; isPublic: boolean }> {
+    try {
+      const { data } = await this.client.post('/contexts', contextData);
+      return data;
+    } catch (error) {
+      this.handleError(error, 'Failed to save context');
+      throw error;
+    }
+  }
+
+  /**
+   * Load a context from cloud storage
+   */
+  async loadContext(contextId: string): Promise<{
+    id: string;
+    name: string;
+    description?: string;
+    projectType: string;
+    language: string;
+    frameworks: string[];
+    indexingConfig: Record<string, unknown>;
+    mcpConfig: Record<string, unknown>;
+    autonomyLevel: number;
+    capabilities: string[];
+    isPublic: boolean;
+    createdAt: string;
+  }> {
+    try {
+      const { data } = await this.client.get(`/contexts/${contextId}`);
+      return data;
+    } catch (error) {
+      this.handleError(error, `Failed to load context: ${contextId}`);
+      throw error;
+    }
+  }
+
+  /**
+   * List available contexts
+   */
+  async listContexts(mineOnly?: boolean): Promise<Array<{
+    id: string;
+    name: string;
+    description?: string;
+    projectType: string;
+    language: string;
+    frameworks: string[];
+    indexingConfig: Record<string, unknown>;
+    mcpConfig: Record<string, unknown>;
+    autonomyLevel: number;
+    capabilities: string[];
+    isPublic: boolean;
+    createdAt: string;
+  }>> {
+    try {
+      const params = mineOnly ? '?mine=true' : '';
+      const { data } = await this.client.get(`/contexts${params}`);
+      return data;
+    } catch (error) {
+      this.handleError(error, 'Failed to list contexts');
+      throw error;
+    }
+  }
+
+  /**
    * Handle API errors with user-friendly messages
    */
   private handleError(error: unknown, context: string): void {
@@ -121,3 +248,6 @@ export class GICMAPIClient {
     }
   }
 }
+
+// Alias for backward compatibility
+export { GICMAPIClient as MarketplaceAPI };

@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 MUNGER_CONFIG = AgentConfig(
@@ -105,7 +105,7 @@ GOVERNANCE & TEAM:
 - Token Distribution: {market_data.get('token_distribution', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 As Charlie Munger:
 1. First invert: What would make this a terrible investment?

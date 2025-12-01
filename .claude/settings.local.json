@@ -74,9 +74,67 @@
       "Bash(pnpm:*)",
       "WebFetch(domain:docs.github.com)",
       "WebFetch(domain:github.com)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(VERCEL_PROJECT_ID= VERCEL_ORG_ID= npx vercel:*)",
+      "Bash(export VERCEL_PROJECT_ID=prj_LZvHDQWjhXUIQcPBKhI2xuPqXStx)",
+      "Bash(export VERCEL_ORG_ID=team_NrVhqhXUDEYB9YOWaqkBIQ4w)",
+      "WebFetch(domain:api.apify.com)",
+      "Bash(for d in */)",
+      "Bash(do if [ ! -f \"$d/README.md\" ])",
+      "Bash(then echo \"Missing: $d\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(then echo \"Still missing: $d\")",
+      "Bash(npm org:*)",
+      "Bash(npm search:*)",
+      "Bash(while read f)",
+      "Bash(do mv \"$f\" \"$f.bak\")",
+      "Bash(for f in api-docs/page.tsx.bak marketplace/page.tsx.bak budgets/page.tsx.bak)",
+      "Bash(do if [ -f \"$f\" ])",
+      "Bash(then mv \"$f\" \"$f%.bak\")",
+      "Bash(echo:*)",
+      "Bash(for:*)",
+      "Bash(do mv \"$f\" \"$f%.bak\")",
+      "Bash(gicm:*)",
+      "Bash(npx @gicm/*:*)",
+      "WebFetch(domain:rapidapi.com)",
+      "WebFetch(domain:talent500.com)",
+      "WebFetch(domain:apidog.com)",
+      "Bash(pkill:*)",
+      "WebFetch(domain:coinmarketcap.com)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:www.alchemy.com)",
+      "WebFetch(domain:docs.vybenetwork.com)",
+      "WebFetch(domain:api.rugcheck.xyz)",
+      "WebFetch(domain:gmgn.ai)",
+      "WebFetch(domain:rugcheck.xyz)",
+      "WebFetch(domain:docs.solanatracker.io)",
+      "WebFetch(domain:pumpportal.fun)",
+      "Bash(for dir in */)",
+      "Bash(packages/hyper-brain/src/store/vector/*.ts)",
+      "Bash(packages/hyper-brain/package.json )",
+      "Bash(packages/deployer-agent/src/index.ts )",
+      "Bash(packages/deployer-agent/package.json )",
+      "Bash(packages/wallet-agent/src/solana-wallet.ts )",
+      "Bash(packages/wallet-agent/package.json )",
+      "Bash(apps/dashboard/lib/data/registry.ts )",
+      "Bash(npm version:*)"
     ],
-    "deny": [],
-    "ask": []
+    "deny": []
+  },
+  "mcpServers": {
+    "gicm-dev": {
+      "command": "npx",
+      "args": [
+        "@gicm/mcp-server",
+        "--port",
+        "3100"
+      ],
+      "env": {
+        "GICM_PROJECT_PATH": "C:\\Users\\mirko\\OneDrive\\Desktop\\gICM",
+        "GICM_CONTEXT_ENGINE_URL": "http://localhost:8000",
+        "GICM_AUTONOMY_LEVEL": "2"
+      }
+    }
   }
 }

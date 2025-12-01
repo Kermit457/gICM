@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 BUFFETT_CONFIG = AgentConfig(
@@ -104,7 +104,7 @@ ON-CHAIN METRICS:
 - Developer Activity: {market_data.get('dev_activity', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 As Warren Buffett, provide your investment analysis.
 Remember: "Price is what you pay, value is what you get."

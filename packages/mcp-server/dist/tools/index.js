@@ -6,6 +6,7 @@ import { searchCodebase } from "./search-codebase.js";
 import { getFileContext } from "./get-file-context.js";
 import { indexRepository } from "./index-repository.js";
 import { getMarketData, analyzeToken, tradingTools, } from "./trading/index.js";
+import { getContextBundle, getStatus, runAgent, listAgents, suggestCapabilities, devTools, } from "./dev/index.js";
 // Tool definitions
 export const tools = {
     search_components: {
@@ -98,6 +99,8 @@ export const tools = {
     },
     // Trading tools
     ...tradingTools,
+    // Dev tools (THE DOOR)
+    ...devTools,
 };
 // Tool handler
 export async function handleToolCall(name, args) {
@@ -141,6 +144,25 @@ export async function handleToolCall(name, args) {
                         .filter((c) => c.action === "buy")
                         .map((c) => c.token),
                 };
+                break;
+            // Dev tools (THE DOOR)
+            case "dev.get_context_bundle":
+                result = await getContextBundle(args.task, args.repository, args.max_chunks || 10, args.expand_context !== false);
+                break;
+            case "dev.status":
+                result = await getStatus(args.project_path);
+                break;
+            case "dev.run_agent":
+                result = await runAgent(args.agent_id, args.input || {}, {
+                    timeout: args.timeout,
+                    dryRun: args.dry_run,
+                });
+                break;
+            case "dev.list_agents":
+                result = await listAgents();
+                break;
+            case "dev.suggest_capabilities":
+                result = await suggestCapabilities(args.task, args.auto_install || false, args.max_suggestions || 5);
                 break;
             default:
                 throw new Error(`Unknown tool: ${name}`);

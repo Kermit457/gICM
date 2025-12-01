@@ -99,16 +99,31 @@ interface DeployerAgentConfig extends AgentConfig {
     registryApiUrl?: string;
     npmToken?: string;
     githubToken?: string;
+    githubOwner?: string;
+    packageDir?: string;
 }
 declare class DeployerAgent extends BaseAgent {
     private registryApiUrl;
+    private npmToken?;
+    private githubToken?;
+    private githubOwner;
+    private packageDir?;
     constructor(config: DeployerAgentConfig);
     getSystemPrompt(): string;
     analyze(context: AgentContext): Promise<AgentResult>;
     deploy(request: DeployRequest): Promise<DeployResult>;
     private deployToTarget;
+    /**
+     * Deploy to gICM Registry via API
+     */
     private deployToRegistry;
+    /**
+     * Deploy to npm registry
+     */
     private deployToNpm;
+    /**
+     * Create GitHub release
+     */
     private deployToGitHub;
     private handleDeploy;
 }

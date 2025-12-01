@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 ONCHAIN_CONFIG = AgentConfig(
@@ -122,7 +122,7 @@ DEVELOPER ACTIVITY:
 - Active Contributors: {market_data.get('contributors', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 What does the on-chain data reveal?
 Is this real usage or manufactured activity?

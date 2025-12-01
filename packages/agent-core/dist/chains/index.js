@@ -7,6 +7,7 @@ import {
   TransactionRequestSchema,
   createChainProvider
 } from "../chunk-EYKJT3RB.js";
+import "../chunk-DGUM43GV.js";
 export {
   EVM_NETWORKS,
   EvmChainProvider,

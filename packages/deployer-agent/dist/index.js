@@ -1,6 +1,9 @@
 // src/index.ts
 import { BaseAgent } from "@gicm/agent-core";
 import { z } from "zod";
+import { exec } from "child_process";
+import { promisify } from "util";
+var execAsync = promisify(exec);
 var DeployTargetSchema = z.enum(["gicm_registry", "npm", "github"]);
 var DeployRequestSchema = z.object({
   buildId: z.string(),
@@ -22,9 +25,17 @@ var DeployResultSchema = z.object({
 });
 var DeployerAgent = class extends BaseAgent {
   registryApiUrl;
+  npmToken;
+  githubToken;
+  githubOwner;
+  packageDir;
   constructor(config) {
     super("deployer", config);
     this.registryApiUrl = config.registryApiUrl ?? "https://gicm.dev/api";
+    this.npmToken = config.npmToken ?? process.env.NPM_TOKEN;
+    this.githubToken = config.githubToken ?? process.env.GITHUB_TOKEN;
+    this.githubOwner = config.githubOwner ?? "gicm-dev";
+    this.packageDir = config.packageDir;
   }
   getSystemPrompt() {
     return `You are a deployment agent for gICM.
@@ -81,14 +92,114 @@ Validate builds before deployment and handle rollbacks on failure.`;
         throw new Error(`Unknown target: ${target}`);
     }
   }
+  /**
+   * Deploy to gICM Registry via API
+   */
   async deployToRegistry(request) {
-    return `${this.registryApiUrl}/items/${request.name}`;
+    const endpoint = `${this.registryApiUrl}/v1/packages`;
+    const payload = {
+      name: request.name,
+      version: request.version,
+      buildId: request.buildId,
+      changelog: request.changelog,
+      publishedAt: (/* @__PURE__ */ new Date()).toISOString()
+    };
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...this.githubToken && { Authorization: `Bearer ${this.githubToken}` }
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Registry publish failed: ${response.status} ${error}`);
+    }
+    const result = await response.json();
+    return result.url ?? `${this.registryApiUrl}/items/${request.name}`;
   }
+  /**
+   * Deploy to npm registry
+   */
   async deployToNpm(request) {
-    return `https://npmjs.com/package/@gicm/${request.name}`;
+    if (!this.npmToken) {
+      throw new Error("NPM_TOKEN not configured");
+    }
+    const cwd = this.packageDir ?? process.cwd();
+    const npmrcContent = `//registry.npmjs.org/:_authToken=${this.npmToken}`;
+    const npmrcPath = `${cwd}/.npmrc`;
+    const fs = await import("fs/promises");
+    const existingNpmrc = await fs.readFile(npmrcPath, "utf-8").catch(() => null);
+    await fs.writeFile(npmrcPath, npmrcContent);
+    try {
+      const { stdout, stderr } = await execAsync("npm publish --access public", {
+        cwd,
+        env: {
+          ...process.env,
+          NPM_TOKEN: this.npmToken
+        }
+      });
+      this.log(`npm publish output: ${stdout}`);
+      if (stderr) this.log(`npm publish stderr: ${stderr}`);
+      return `https://npmjs.com/package/@gicm/${request.name}`;
+    } finally {
+      if (existingNpmrc) {
+        await fs.writeFile(npmrcPath, existingNpmrc);
+      } else {
+        await fs.unlink(npmrcPath).catch(() => {
+        });
+      }
+    }
   }
+  /**
+   * Create GitHub release
+   */
   async deployToGitHub(request) {
-    return `https://github.com/gicm/${request.name}/releases/tag/v${request.version}`;
+    if (!this.githubToken) {
+      throw new Error("GITHUB_TOKEN not configured");
+    }
+    const repo = request.name;
+    const tag = `v${request.version}`;
+    const endpoint = `https://api.github.com/repos/${this.githubOwner}/${repo}/releases`;
+    const existingResponse = await fetch(
+      `${endpoint}/tags/${tag}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.githubToken}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        }
+      }
+    );
+    if (existingResponse.ok) {
+      const existing = await existingResponse.json();
+      this.log(`Release ${tag} already exists`);
+      return existing.html_url;
+    }
+    const payload = {
+      tag_name: tag,
+      name: `${request.name} ${tag}`,
+      body: request.changelog ?? `Release ${request.version}`,
+      draft: false,
+      prerelease: request.version.includes("-")
+    };
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.githubToken}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`GitHub release failed: ${response.status} ${error}`);
+    }
+    const result = await response.json();
+    return result.html_url;
   }
   async handleDeploy(request) {
     if (!request) {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {
   MoneyEngine
-} from "./chunk-ZTSQOB4D.js";
+} from "./chunk-QBPOC57N.js";
 
 // src/cli.ts
 import { Command } from "commander";

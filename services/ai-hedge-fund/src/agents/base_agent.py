@@ -38,6 +38,72 @@ class AgentConfig(BaseModel):
     focus_areas: list[str]
 
 
+# ============================================================================
+# CONTEXT SANITIZATION (Prompt Injection Prevention)
+# ============================================================================
+
+# Allowed keys for context passed to LLM prompts
+ALLOWED_CONTEXT_KEYS = {
+    'market_sentiment', 'news_summary', 'price_action', 'volume_analysis',
+    'aggregate_sentiment', 'avg_confidence', 'portfolio', 'notes',
+}
+
+# Patterns that might indicate injection attempts
+INJECTION_PATTERNS = [
+    r'ignore\s+(all\s+)?(previous\s+)?instructions?',
+    r'disregard\s+(all\s+)?(previous\s+)?',
+    r'forget\s+(all\s+)?(previous\s+)?',
+    r'new\s+instructions?:',
+    r'system\s*:',
+    r'assistant\s*:',
+    r'human\s*:',
+]
+
+
+def sanitize_context(context: dict[str, Any] | None, max_length: int = 500) -> str:
+    """
+    Sanitize user-provided context for LLM prompts.
+
+    Prevents prompt injection attacks by:
+    1. Whitelisting allowed keys
+    2. Limiting value length
+    3. Removing dangerous patterns
+    4. Escaping special characters
+
+    Args:
+        context: User-provided context dictionary
+        max_length: Maximum length per value
+
+    Returns:
+        Safe string representation of context
+    """
+    if not context:
+        return "None provided"
+
+    lines = []
+    for key, value in context.items():
+        # Only allow whitelisted keys
+        if key not in ALLOWED_CONTEXT_KEYS:
+            continue
+
+        # Convert to string and limit length
+        safe_value = str(value)[:max_length]
+
+        # Remove potential injection patterns
+        for pattern in INJECTION_PATTERNS:
+            safe_value = re.sub(pattern, '[FILTERED]', safe_value, flags=re.IGNORECASE)
+
+        # Escape curly braces to prevent template injection
+        safe_value = safe_value.replace("{", "[").replace("}", "]")
+
+        # Remove any remaining suspicious content
+        safe_value = safe_value.replace("```", "'''")
+
+        lines.append(f"- {key}: {safe_value}")
+
+    return "\n".join(lines) if lines else "None provided"
+
+
 class BaseAgent(ABC):
     """Base class for all trading agents"""
 

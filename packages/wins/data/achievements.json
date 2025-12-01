@@ -1,0 +1,15 @@
+[
+  {
+    "id": "first_win",
+    "name": "First Blood",
+    "description": "Record your first win",
+    "icon": "first",
+    "requirement": {
+      "type": "wins",
+      "target": 1
+    },
+    "points": 100,
+    "rarity": "common",
+    "unlockedAt": 1764483524909
+  }
+]

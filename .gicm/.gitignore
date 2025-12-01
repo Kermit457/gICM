@@ -1,0 +1,4 @@
+# gICM local files
+cache/
+logs/
+*.local.json

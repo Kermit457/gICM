@@ -29,7 +29,7 @@ export class GitHubHunter implements BaseHunterSource {
 
   constructor(config: HunterConfig) {
     this.config = config;
-    this.token = config.apiToken ?? process.env.GITHUB_TOKEN ?? "";
+    this.token = config.apiKey ?? config.apiToken ?? process.env.GITHUB_TOKEN ?? "";
   }
 
   async hunt(): Promise<RawDiscovery[]> {

@@ -13,7 +13,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 PUMP_TRADER_CONFIG = AgentConfig(
@@ -191,7 +191,7 @@ CT/SOCIAL:
 - Twitter Followers: {market_data.get('twitter_followers', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 Apply the Ansem/GCR/$40M-whale framework:
 1. Is this a play or a pass?

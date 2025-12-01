@@ -1,0 +1,93 @@
+# Docker Compose for Integration Hub local development
+# Provides Redis for job queues and optional Postgres for analytics
+
+services:
+  # Redis for Bull job queues
+  redis:
+    image: redis:7-alpine
+    container_name: gicm-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis Commander (optional web UI for Redis)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: gicm-redis-ui
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles:
+      - ui
+
+  # PostgreSQL for analytics persistence (alternative to Supabase)
+  postgres:
+    image: postgres:16-alpine
+    container_name: gicm-postgres
+    environment:
+      POSTGRES_USER: gicm
+      POSTGRES_PASSWORD: gicm_local_dev
+      POSTGRES_DB: gicm_analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./src/storage/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gicm -d gicm_analytics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - postgres
+    restart: unless-stopped
+
+  # Adminer (optional web UI for Postgres)
+  adminer:
+    image: adminer:latest
+    container_name: gicm-adminer
+    ports:
+      - "8082:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - postgres
+      - ui
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  postgres-data:
+
+# Usage:
+#
+# Start Redis only (most common):
+#   docker compose up -d
+#
+# Start with Redis UI:
+#   docker compose --profile ui up -d
+#
+# Start with Postgres (for local analytics persistence):
+#   docker compose --profile postgres up -d
+#
+# Start everything:
+#   docker compose --profile ui --profile postgres up -d
+#
+# Stop all:
+#   docker compose down
+#
+# Clean volumes:
+#   docker compose down -v

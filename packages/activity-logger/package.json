@@ -46,9 +46,7 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist", "README.md"],
   "keywords": [
     "gicm",
     "activity-logger",
@@ -57,5 +55,14 @@
     "on-chain",
     "transparency"
   ],
-  "license": "MIT"
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/activity-logger"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/activity-logger#readme",
+  "bugs": { "url": "https://github.com/gicm-dev/gicm/issues" },
+  "publishConfig": { "access": "public" }
 }

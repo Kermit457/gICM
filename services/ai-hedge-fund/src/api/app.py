@@ -2,12 +2,19 @@
 FastAPI Application for AI Hedge Fund
 """
 
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routes import router
 from ..config import get_settings
+
+
+def get_allowed_origins() -> list[str]:
+    """Get allowed CORS origins from environment."""
+    origins_str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+    return [o.strip() for o in origins_str.split(",") if o.strip()]
 
 
 @asynccontextmanager
@@ -60,13 +67,13 @@ Multi-agent AI trading analysis powered by famous investor personas.
         lifespan=lifespan,
     )
 
-    # CORS middleware
+    # CORS middleware - restricted for security
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],  # Configure for production
+        allow_origins=get_allowed_origins(),
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+        allow_headers=["X-API-Key", "Content-Type", "Authorization"],
     )
 
     # Include routes

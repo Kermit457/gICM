@@ -244,20 +244,56 @@ When analyzing proposals, consider:
   }
 
   async analyzeVotingPower(
-    _daoId: string,
+    daoId: string,
     platformName = "snapshot"
   ): Promise<VotingPowerDistribution | null> {
     const platform = this.platforms.get(platformName);
     if (!platform) return null;
 
-    // Would need to aggregate voting power data
-    // For now, return placeholder
-    return {
-      totalPower: 0,
-      topHolders: [],
-      concentrationScore: 0,
-      giniCoefficient: 0,
-    };
+    // Get recent proposals to analyze voting patterns
+    const proposals = await platform.getProposals(daoId);
+    if (proposals.length === 0) {
+      return {
+        totalPower: 0,
+        topHolders: [],
+        concentrationScore: 0,
+        giniCoefficient: 0,
+      };
+    }
+
+    // Aggregate votes from recent proposals (up to 10)
+    const recentProposals = proposals.slice(0, 10);
+    const voterPowerMap = new Map<string, { power: number; voteCount: number }>();
+
+    for (const proposal of recentProposals) {
+      const votes = await platform.getVotes(proposal.id, 500);
+
+      for (const vote of votes) {
+        const existing = voterPowerMap.get(vote.voter);
+        if (existing) {
+          // Use max voting power seen (power can vary by proposal strategy)
+          existing.power = Math.max(existing.power, vote.votingPower);
+          existing.voteCount++;
+        } else {
+          voterPowerMap.set(vote.voter, {
+            power: vote.votingPower,
+            voteCount: 1,
+          });
+        }
+      }
+    }
+
+    // Convert to VotingPower array for analyzer
+    const holders: import("./types.js").VotingPower[] = Array.from(
+      voterPowerMap.entries()
+    ).map(([address, data]) => ({
+      address,
+      power: data.power,
+      percentage: 0, // Will be calculated by analyzer
+    }));
+
+    // Use the voting power analyzer
+    return this.votingPowerAnalyzer.analyzeDistribution(holders);
   }
 
   async getActiveProposals(

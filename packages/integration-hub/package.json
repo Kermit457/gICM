@@ -1,0 +1,69 @@
+{
+  "name": "@gicm/integration-hub",
+  "version": "0.1.1",
+  "description": "gICM Integration Hub - Central event bus, API gateway, and workflow automation",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "gicm-hub": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.js start",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/websocket": "^10.0.0",
+    "@gicm/growth-engine": "^1.0.0",
+    "@gicm/money-engine": "^1.0.0",
+    "@gicm/orchestrator": "^0.1.0",
+    "@gicm/product-engine": "^1.0.0",
+    "bullmq": "^5.0.0",
+    "commander": "^12.0.0",
+    "cron": "^3.1.0",
+    "eventemitter3": "^5.0.0",
+    "fastify": "^4.28.0",
+    "uuid": "^13.0.0",
+    "yaml": "^2.4.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^11.0.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "@vitest/ui": "^2.1.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.1.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "gicm",
+    "integration-hub",
+    "event-bus",
+    "api-gateway"
+  ],
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/integration-hub"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/integration-hub#readme",
+  "bugs": {
+    "url": "https://github.com/gicm-dev/gicm/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

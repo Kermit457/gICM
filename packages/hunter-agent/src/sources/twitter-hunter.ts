@@ -60,7 +60,7 @@ export class TwitterHunter implements BaseHunterSource {
   constructor(config: TwitterHunterConfig) {
     this.config = config;
     this.apifyToken =
-      config.apifyToken ?? process.env.APIFY_TOKEN ?? "";
+      config.apifyToken ?? config.apiToken ?? process.env.APIFY_TOKEN ?? "";
   }
 
   async hunt(): Promise<RawDiscovery[]> {
@@ -129,17 +129,17 @@ export class TwitterHunter implements BaseHunterSource {
   }
 
   private async searchTweets(query: string): Promise<ApifyTweet[]> {
-    // Use Apify's Twitter Scraper actor
-    // Actor ID: apify/twitter-scraper
-    const actorId = "apify~twitter-scraper";
+    // Use apidojo's Tweet Scraper V2 (most popular/reliable)
+    // Actor ID: apidojo/tweet-scraper
+    const actorId = "apidojo~tweet-scraper";
 
     const runInput = {
       searchTerms: [query],
       maxTweets: 50,
-      onlyVerified: false,
-      minLikes: this.config.minLikes ?? 10,
-      minRetweets: this.config.minReposts ?? 5,
-      start: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Last 24h
+      addUserInfo: true,
+      // Optional filters
+      // minLikes: this.config.minLikes ?? 10,
+      // minRetweets: this.config.minReposts ?? 5,
     };
 
     // Start the actor run

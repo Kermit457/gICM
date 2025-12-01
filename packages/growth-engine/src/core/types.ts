@@ -64,12 +64,13 @@ export type BlogCategory =
 export interface Tweet {
   id: string;
 
-  // Content
-  text: string;
+  // Content (support both text and content for compatibility)
+  text?: string;
+  content?: string;
   mediaUrls?: string[];
 
   // Thread
-  isThread: boolean;
+  isThread?: boolean;
   threadParts?: string[];
 
   // Engagement
@@ -77,8 +78,9 @@ export interface Tweet {
   quoteTweet?: string;
 
   // Status
-  status: ContentStatus;
+  status: ContentStatus | "posted";
   tweetId?: string;         // Twitter's ID after posting
+  twitterId?: string;       // Alias for tweetId
 
   // Schedule
   scheduledFor?: number;
@@ -103,7 +105,7 @@ export interface ContentMetrics {
   avgTimeOnPage: number;
   bounceRate: number;
   shares: number;
-  conversions: number;
+  conversions?: number;
 }
 
 // ============================================================================
@@ -111,23 +113,25 @@ export interface ContentMetrics {
 // ============================================================================
 
 export interface Keyword {
-  term: string;
+  keyword: string;
+  term?: string;
 
   // Metrics
-  searchVolume: number;
+  volume: number;
+  searchVolume?: number;
   difficulty: number;       // 0-100
-  cpc: number;              // Cost per click
+  cpc?: number;              // Cost per click
 
   // Status
   currentRanking?: number;
-  targetRanking: number;
+  targetRanking?: number;
 
   // Strategy
-  priority: "high" | "medium" | "low";
-  contentIds: string[];     // Content targeting this keyword
+  priority?: "high" | "medium" | "low";
+  contentIds?: string[];     // Content targeting this keyword
 
   // History
-  rankingHistory: Array<{ date: number; position: number }>;
+  rankingHistory?: Array<{ date: number; position: number }>;
 }
 
 export interface SEOReport {
@@ -216,26 +220,10 @@ export interface SocialPost {
 // ============================================================================
 
 export interface ContentCalendar {
-  // Weekly schedule
-  schedule: {
-    monday: ContentSlot[];
-    tuesday: ContentSlot[];
-    wednesday: ContentSlot[];
-    thursday: ContentSlot[];
-    friday: ContentSlot[];
-    saturday: ContentSlot[];
-    sunday: ContentSlot[];
-  };
-
-  // Upcoming content
-  upcoming: ScheduledContent[];
-
-  // Content mix targets
-  mix: {
-    blog: number;           // Posts per week
-    twitter: number;        // Tweets per day
-    discord: number;        // Updates per day
-  };
+  week: string;
+  blogPosts: BlogPost[];
+  tweets: Tweet[];
+  threads: Tweet[];
 }
 
 export interface ContentSlot {
@@ -257,39 +245,12 @@ export interface ScheduledContent {
 // ============================================================================
 
 export interface GrowthMetrics {
-  period: "daily" | "weekly" | "monthly";
-
   // Traffic
   traffic: {
-    visitors: number;
-    pageViews: number;
-    uniqueVisitors: number;
-    bounceRate: number;
-    avgSessionDuration: number;
-  };
-
-  // Sources
-  sources: {
-    organic: number;
-    social: number;
-    direct: number;
-    referral: number;
-  };
-
-  // Conversions
-  conversions: {
-    signups: number;
-    trials: number;
-    paid: number;
-    conversionRate: number;
-  };
-
-  // Social
-  social: {
-    followers: number;
-    engagement: number;
-    mentions: number;
-    shares: number;
+    daily: number;
+    weekly: number;
+    monthly: number;
+    trend: "up" | "down" | "stable";
   };
 
   // Content
@@ -297,13 +258,22 @@ export interface GrowthMetrics {
     postsPublished: number;
     totalViews: number;
     avgEngagement: number;
+    blogPosts?: number;
+    tweets?: number;
   };
 
-  // Growth rates
-  growth: {
-    traffic: number;        // % change
-    followers: number;
-    signups: number;
+  // Engagement
+  engagement: {
+    twitterFollowers: number;
+    discordMembers: number;
+    newsletterSubs: number;
+  };
+
+  // SEO
+  seo: {
+    avgPosition: number;
+    indexedPages: number;
+    backlinks: number;
   };
 }
 
@@ -312,27 +282,41 @@ export interface GrowthMetrics {
 // ============================================================================
 
 export interface GrowthEngineConfig {
-  // Content
-  blogPostsPerWeek: number;
-  tweetsPerDay: number;
-
-  // Twitter
-  twitter?: {
-    apiKey: string;
-    apiSecret: string;
-    accessToken: string;
-    accessSecret: string;
+  // Blog config
+  blog: {
+    postsPerWeek: number;
+    categories: string[];
+    targetWordCount: number;
   };
 
-  // Discord
-  discord?: {
-    botToken: string;
-    channelId: string;
+  // Twitter config
+  twitter: {
+    tweetsPerDay: number;
+    threadsPerWeek: number;
+    engagementEnabled: boolean;
   };
 
-  // Features
-  enableBlogGeneration: boolean;
-  enableTwitter: boolean;
-  enableDiscord: boolean;
-  enableSEO: boolean;
+  // SEO config
+  seo: {
+    primaryKeywords: string[];
+    competitors: string[];
+    targetPositions: Record<string, number>;
+  };
+
+  // Discord config
+  discord: {
+    serverId: string;
+    announcementChannel: string;
+    contentChannel: string;
+  };
+}
+
+// ============================================================================
+// GENERATOR OPTIONS
+// ============================================================================
+
+export interface GenerateOptions {
+  topic: string;
+  category: BlogCategory;
+  targetWordCount?: number;
 }

@@ -1,0 +1,64 @@
+{
+  "name": "@gicm/brain-config",
+  "version": "1.0.0",
+  "description": "Claude Opus 4.5 optimization toolkit - Token efficiency, extended thinking, prompt caching, and AI workflow management",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./presets": {
+      "import": "./dist/presets.js",
+      "types": "./dist/presets.d.ts"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "test": "vitest",
+    "lint": "eslint src/",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "claude",
+    "opus-4.5",
+    "anthropic",
+    "llm",
+    "ai",
+    "token-efficiency",
+    "prompt-caching",
+    "extended-thinking",
+    "ai-workflow",
+    "cost-optimization",
+    "gicm"
+  ],
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/brain-config"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/brain-config#readme",
+  "bugs": {
+    "url": "https://github.com/gicm-dev/gicm/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "zod": "^3.23.0",
+    "eventemitter3": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.0.0"
+  }
+}

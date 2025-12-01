@@ -186,6 +186,7 @@ export class DecisionScorer {
         timing: validated.scores.timing.score,
         quality: validated.scores.quality.score,
       },
+      roleStorming: validated.roleStorming,
       totalScore: validated.totalScore,
       recommendation: validated.recommendation,
       reasoning: validated.reasoning,

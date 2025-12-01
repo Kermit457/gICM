@@ -1,30 +1,53 @@
 {
   "name": "@gicm/orchestrator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Multi-agent orchestration - workflow coordination and routing",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "brain": "./dist/brain/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "brain": "node dist/brain/cli.js",
+    "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@gicm/agent-core": "workspace:*",
+    "@gicm/agent-core": "^1.0.0",
+    "@gicm/autonomy": "^1.0.0",
+    "@gicm/growth-engine": "^1.0.0",
+    "@gicm/hunter-agent": "^0.1.0",
+    "@gicm/integration-hub": "^0.1.0",
+    "@gicm/money-engine": "^1.0.0",
+    "@gicm/product-engine": "^1.0.0",
+    "cron": "^3.1.0",
+    "dotenv": "^16.4.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/cron": "^2.4.0",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0"
   },
-  "keywords": ["orchestrator", "multi-agent", "workflow", "coordination", "web3", "agent"],
-  "license": "MIT"
+  "keywords": ["orchestrator", "multi-agent", "workflow", "coordination", "web3", "agent", "autonomous"],
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/orchestrator"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/orchestrator#readme",
+  "bugs": { "url": "https://github.com/gicm-dev/gicm/issues" },
+  "publishConfig": { "access": "public" }
 }

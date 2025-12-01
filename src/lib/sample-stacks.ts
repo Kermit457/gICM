@@ -8,6 +8,33 @@ import { nanoid } from "nanoid";
 
 export const SAMPLE_STACKS: StackConfig[] = [
   {
+    id: "ptc-tool-search-stack",
+    name: "PTC + Tool Search Tool",
+    description:
+      "Programmatic Tool Calling with dynamic tool discovery. 85% context reduction + 37% token savings. Orchestrate 513+ agents via code pipelines.",
+    items: [
+      // Core PTC components
+      "ptc-coordinator",
+      "tool-search-api",
+      "pipeline-risk-classifier",
+      // Agent templates for PTC
+      "hunter-agent",
+      "defi-agent",
+      "decision-agent",
+      "audit-agent",
+      "wallet-agent",
+      // Supporting infrastructure
+      "context-engine-mcp",
+      "autonomy-engine",
+    ],
+    tags: ["ptc", "tool-search", "orchestration", "ai-agents", "context-reduction", "advanced"],
+    createdAt: new Date("2025-01-30").toISOString(),
+    updatedAt: new Date("2025-01-30").toISOString(),
+    author: "gICM Team",
+    version: "1.0.0",
+    featured: true,
+  },
+  {
     id: "sample-solana-starter",
     name: "Solana Development Starter",
     description:

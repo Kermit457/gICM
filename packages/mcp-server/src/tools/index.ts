@@ -11,6 +11,14 @@ import {
   analyzeToken,
   tradingTools,
 } from "./trading/index.js";
+import {
+  getContextBundle,
+  getStatus,
+  runAgent,
+  listAgents,
+  suggestCapabilities,
+  devTools,
+} from "./dev/index.js";
 
 // Tool definitions
 export const tools = {
@@ -109,6 +117,9 @@ export const tools = {
 
   // Trading tools
   ...tradingTools,
+
+  // Dev tools (THE DOOR)
+  ...devTools,
 };
 
 // Tool handler
@@ -195,6 +206,43 @@ export async function handleToolCall(
             .filter((c) => c.action === "buy")
             .map((c) => c.token),
         };
+        break;
+
+      // Dev tools (THE DOOR)
+      case "dev.get_context_bundle":
+        result = await getContextBundle(
+          args.task as string,
+          args.repository as string | undefined,
+          (args.max_chunks as number) || 10,
+          args.expand_context !== false
+        );
+        break;
+
+      case "dev.status":
+        result = await getStatus(args.project_path as string | undefined);
+        break;
+
+      case "dev.run_agent":
+        result = await runAgent(
+          args.agent_id as string,
+          (args.input as Record<string, unknown>) || {},
+          {
+            timeout: args.timeout as number | undefined,
+            dryRun: args.dry_run as boolean | undefined,
+          }
+        );
+        break;
+
+      case "dev.list_agents":
+        result = await listAgents();
+        break;
+
+      case "dev.suggest_capabilities":
+        result = await suggestCapabilities(
+          args.task as string,
+          (args.auto_install as boolean) || false,
+          (args.max_suggestions as number) || 5
+        );
         break;
 
       default:

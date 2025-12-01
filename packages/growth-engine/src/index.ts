@@ -10,11 +10,22 @@
  */
 
 import { CronJob } from "cron";
-import type { GrowthEngineConfig, GrowthMetrics, ContentCalendar } from "./core/types.js";
+import type { GrowthEngineConfig, GrowthMetrics, ContentCalendar, BlogPost } from "./core/types.js";
 import { BlogGenerator } from "./content/blog/generator.js";
+import { BlogStorage } from "./content/blog/storage.js";
 import { TwitterManager } from "./social/twitter/index.js";
+import { DiscordManager } from "./social/discord/index.js";
 import { KeywordResearcher, SEOOptimizer } from "./seo/index.js";
 import { Logger } from "./utils/logger.js";
+
+// Optional integration hub (may not be installed)
+let hub: any = null;
+try {
+  const { getHub } = await import("@gicm/integration-hub");
+  hub = getHub();
+} catch {
+  // Integration hub not available
+}
 
 export interface EngineStatus {
   running: boolean;
@@ -28,7 +39,9 @@ export class GrowthEngine {
   private config: GrowthEngineConfig;
 
   private blogGenerator: BlogGenerator;
+  private blogStorage: BlogStorage;
   private twitterManager: TwitterManager;
+  private discordManager: DiscordManager;
   private keywordResearcher: KeywordResearcher;
   private seoOptimizer: SEOOptimizer;
 
@@ -79,9 +92,11 @@ export class GrowthEngine {
     };
 
     this.blogGenerator = new BlogGenerator();
+    this.blogStorage = new BlogStorage();
     this.twitterManager = new TwitterManager({
       tweetsPerDay: this.config.twitter.tweetsPerDay,
     });
+    this.discordManager = new DiscordManager();
     this.keywordResearcher = new KeywordResearcher();
     this.seoOptimizer = new SEOOptimizer();
   }
@@ -92,42 +107,65 @@ export class GrowthEngine {
   async start(): Promise<void> {
     this.logger.info("Starting Growth Engine...");
 
+    // Initialize Twitter (graceful degradation)
     try {
-      // Initialize Twitter
       await this.twitterManager.init();
       this.twitterManager.start();
-
-      // Weekly blog generation (Sunday at 6 AM)
-      this.weeklyBlogCron = new CronJob("0 6 * * 0", async () => {
-        await this.generateWeeklyContent();
-      });
-      this.weeklyBlogCron.start();
-
-      // Metrics collection (every 6 hours)
-      this.metricsCollectCron = new CronJob("0 */6 * * *", async () => {
-        await this.collectMetrics();
-      });
-      this.metricsCollectCron.start();
-
-      this.status.running = true;
-      this.status.startedAt = Date.now();
-
-      this.logger.info("Growth Engine started successfully!");
-      this.logger.info(`- Blog: ${this.config.blog.postsPerWeek} posts/week`);
       this.logger.info(`- Twitter: ${this.config.twitter.tweetsPerDay} tweets/day`);
     } catch (error) {
-      this.logger.error(`Failed to start: ${error}`);
-      throw error;
+      this.logger.warn(`Twitter unavailable, continuing without it: ${error}`);
     }
+
+    // Initialize Discord (already has graceful degradation)
+    try {
+      await this.discordManager.start();
+      this.logger.info(`- Discord: ${this.discordManager.isReady() ? "connected" : "pending"}`);
+    } catch (error) {
+      this.logger.warn(`Discord unavailable, continuing without it: ${error}`);
+    }
+
+    // Weekly blog generation (Sunday at 6 AM) - always start
+    this.weeklyBlogCron = new CronJob("0 6 * * 0", async () => {
+      try {
+        await this.generateWeeklyContent();
+      } catch (error) {
+        this.logger.error(`Weekly content generation failed: ${error}`);
+      }
+    });
+    this.weeklyBlogCron.start();
+
+    // Metrics collection (every 6 hours) - always start
+    this.metricsCollectCron = new CronJob("0 */6 * * *", async () => {
+      try {
+        await this.collectMetrics();
+      } catch (error) {
+        this.logger.error(`Metrics collection failed: ${error}`);
+      }
+    });
+    this.metricsCollectCron.start();
+
+    this.status.running = true;
+
+    // Emit engine started event
+    if (hub) {
+      hub.engineStarted("growth-engine");
+      // Heartbeat every 30 seconds
+      setInterval(() => hub.heartbeat("growth-engine"), 30000);
+    }
+    this.status.startedAt = Date.now();
+
+    this.logger.info("Growth Engine started successfully!");
+    this.logger.info(`- Blog: ${this.config.blog.postsPerWeek} posts/week`);
   }
 
   /**
    * Stop the Growth Engine
    */
-  stop(): void {
+  async stop(): Promise<void> {
     this.logger.info("Stopping Growth Engine...");
 
     this.twitterManager.stop();
+    await this.discordManager.stop();
 
     if (this.weeklyBlogCron) {
       this.weeklyBlogCron.stop();
@@ -139,6 +177,32 @@ export class GrowthEngine {
 
     this.status.running = false;
     this.logger.info("Growth Engine stopped");
+  }
+
+  /**
+   * Announce on Discord
+   */
+  async announceFeature(feature: { name: string; description: string; url?: string }): Promise<void> {
+    await this.discordManager.announceFeature(feature);
+  }
+
+  async announceAgent(agent: { name: string; description: string; capabilities: string[] }): Promise<void> {
+    await this.discordManager.announceAgent(agent);
+  }
+
+  async announceComponent(component: { name: string; description: string; category: string }): Promise<void> {
+    await this.discordManager.announceComponent(component);
+  }
+
+  async announceUpdate(version: string, changes: string[]): Promise<void> {
+    await this.discordManager.announceUpdate(version, changes);
+  }
+
+  /**
+   * Get Discord member count
+   */
+  async getDiscordMembers(): Promise<number> {
+    return this.discordManager.getMemberCount();
   }
 
   /**
@@ -157,10 +221,13 @@ export class GrowthEngine {
       const category = this.config.blog.categories[i % this.config.blog.categories.length];
 
       try {
+        // Map targetWordCount to length
+        const length = this.config.blog.targetWordCount > 2000 ? "long" :
+                       this.config.blog.targetWordCount > 1200 ? "medium" : "short";
         const post = await this.blogGenerator.generate({
           topic: keyword.keyword,
           category: category as "tutorial" | "announcement" | "comparison" | "guide" | "case-study" | "thought-leadership" | "changelog",
-          targetWordCount: this.config.blog.targetWordCount,
+          length,
         });
 
         // Analyze SEO
@@ -175,8 +242,11 @@ export class GrowthEngine {
           );
         }
 
+        // Save to storage
+        await this.blogStorage.save(post);
+
         this.status.upcomingContent.blogPosts.push(post);
-        this.status.metrics.content.blogPosts++;
+        this.status.metrics.content.postsPublished++;
 
         // Promote on Twitter
         await this.twitterManager.promoteBlogPost({
@@ -185,7 +255,7 @@ export class GrowthEngine {
           url: `https://gicm.dev/blog/${post.slug}`,
         });
 
-        this.logger.info(`Generated blog post: ${post.title}`);
+        this.logger.info(`Generated and saved blog post: ${post.title}`);
       } catch (error) {
         this.logger.error(`Blog generation failed: ${error}`);
       }
@@ -218,15 +288,16 @@ export class GrowthEngine {
   /**
    * Generate content now
    */
-  async generateNow(type: "blog" | "tweet" | "thread"): Promise<void> {
+  async generateNow(type: "blog" | "tweet" | "thread", topic?: string): Promise<BlogPost | void> {
     switch (type) {
       case "blog":
         const post = await this.blogGenerator.generate({
-          topic: "AI development tools",
+          topic: topic || "AI development tools",
           category: "tutorial",
         });
-        this.logger.info(`Generated blog: ${post.title}`);
-        break;
+        await this.blogStorage.save(post);
+        this.logger.info(`Generated and saved blog: ${post.title}`);
+        return post;
 
       case "tweet":
         await this.twitterManager.generateDailyContent();
@@ -234,7 +305,7 @@ export class GrowthEngine {
         break;
 
       case "thread":
-        await this.twitterManager.queueThread("AI Development", [
+        await this.twitterManager.queueThread(topic || "AI Development", [
           "Introduction to AI tools",
           "Key benefits",
           "Getting started",
@@ -242,6 +313,24 @@ export class GrowthEngine {
         this.logger.info("Queued thread");
         break;
     }
+  }
+
+  /**
+   * Get all saved blog posts
+   */
+  async getBlogPosts(): Promise<BlogPost[]> {
+    return this.blogStorage.list();
+  }
+
+  /**
+   * Get blog storage stats
+   */
+  async getBlogStats(): Promise<{
+    totalPosts: number;
+    totalWords: number;
+    categories: Record<string, number>;
+  }> {
+    return this.blogStorage.getStats();
   }
 
   /**
@@ -258,6 +347,17 @@ export class GrowthEngine {
 
 // Exports
 export { BlogGenerator } from "./content/blog/generator.js";
+export { BlogStorage } from "./content/blog/storage.js";
 export { TwitterManager, TwitterClient, TweetGenerator, TweetQueue } from "./social/twitter/index.js";
+export { DiscordManager, DiscordClient, DiscordAnnouncer } from "./social/discord/index.js";
 export { KeywordResearcher, SEOOptimizer } from "./seo/index.js";
 export * from "./core/types.js";
+
+// Mind Mapping Content Ideation
+export {
+  MindMapper,
+  type BranchType,
+  type MindMapNode,
+  type MindMap,
+  type ContentIdea,
+} from "./content/mind-mapping.js";

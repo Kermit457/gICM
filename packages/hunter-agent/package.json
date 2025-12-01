@@ -1,6 +1,6 @@
 {
   "name": "@gicm/hunter-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tech discovery agent for gICM - hunts GitHub, HackerNews, and Twitter for valuable opportunities",
   "type": "module",
   "main": "dist/index.js",
@@ -22,14 +22,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@gicm/agent-core": "workspace:*",
-    "@gicm/activity-logger": "workspace:*",
+    "@gicm/activity-logger": "^0.1.0",
+    "@gicm/agent-core": "^1.0.0",
     "cron": "^3.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cron": "^2.4.0",
     "@types/node": "^20.17.0",
+    "dotenv": "^17.2.3",
     "tsup": "^8.3.5",
     "typescript": "^5.6.3",
     "vitest": "^2.1.0"
@@ -38,7 +39,8 @@
     "typescript": "^5.0.0"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "keywords": [
     "gicm",
@@ -48,5 +50,18 @@
     "hackernews",
     "twitter"
   ],
-  "license": "MIT"
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/hunter-agent"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/hunter-agent#readme",
+  "bugs": {
+    "url": "https://github.com/gicm-dev/gicm/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

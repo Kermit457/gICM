@@ -22,12 +22,24 @@
     "context",
     "semantic-search"
   ],
-  "author": "gICM",
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/mcp-server"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/gicm-dev/gicm/issues"
+  },
   "dependencies": {
+    "@gicm/memory": "workspace:*",
+    "@gicm/workflow-engine": "workspace:*",
     "@google/generative-ai": "^0.21.0",
     "@modelcontextprotocol/sdk": "^1.0.0",
     "@qdrant/js-client-rest": "^1.7.0",
+    "axios": "^1.13.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {

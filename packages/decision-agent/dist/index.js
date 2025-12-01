@@ -11,6 +11,26 @@ var DecisionScoresSchema = z.object({
   timing: z.number().min(0).max(100),
   quality: z.number().min(0).max(100)
 });
+var PersonaVerdictSchema = z.enum(["approve", "reject", "cautious"]);
+var RoleStormingConsensusSchema = z.enum([
+  "strong_approve",
+  "approve",
+  "mixed",
+  "reject",
+  "strong_reject"
+]);
+var PersonaEvaluationSchema = z.object({
+  verdict: PersonaVerdictSchema,
+  reasoning: z.string()
+});
+var RoleStormingResultSchema = z.object({
+  conservative: PersonaEvaluationSchema,
+  degen: PersonaEvaluationSchema,
+  whale: PersonaEvaluationSchema,
+  skeptic: PersonaEvaluationSchema,
+  builder: PersonaEvaluationSchema,
+  consensus: RoleStormingConsensusSchema
+});
 var RecommendationSchema = z.enum([
   "build",
   // Create new component/agent based on this
@@ -23,6 +43,7 @@ var RecommendationSchema = z.enum([
 ]);
 var DecisionResultSchema = z.object({
   scores: DecisionScoresSchema,
+  roleStorming: RoleStormingResultSchema.optional(),
   totalScore: z.number().min(0).max(100),
   recommendation: RecommendationSchema,
   reasoning: z.string(),
@@ -61,6 +82,7 @@ var LLMDecisionResponseSchema = z.object({
       reasoning: z.string()
     })
   }),
+  roleStorming: RoleStormingResultSchema.optional(),
   totalScore: z.number(),
   recommendation: RecommendationSchema,
   reasoning: z.string(),
@@ -92,6 +114,30 @@ gICM focuses on:
 - DeFi protocols and integrations
 - NFT and DAO tooling
 
+## Role Storming Evaluation
+
+You MUST evaluate each discovery from 5 distinct persona perspectives:
+
+\u{1F464} **The Conservative Investor**
+   Focus: Capital preservation, proven track record, established teams
+   Questions: Is the team reputable? Is there existing traction? What's the downside risk?
+
+\u{1F464} **The Aggressive Degen**
+   Focus: Maximum upside potential, early entry advantage, high-risk/high-reward
+   Questions: Could this 10x? Are we early enough? What's the alpha here?
+
+\u{1F464} **The Whale**
+   Focus: Scalability, market impact, liquidity implications
+   Questions: Can this scale? Does it move markets? Is there enough depth?
+
+\u{1F464} **The Skeptic**
+   Focus: Red flags, team quality, potential failure modes
+   Questions: What could go wrong? Is this vaporware? Where's the catch?
+
+\u{1F464} **The Builder**
+   Focus: Technical quality, code architecture, product-market fit
+   Questions: Is the code solid? Does it solve a real problem? Can we integrate it?
+
 Be decisive and score conservatively. Only truly exceptional discoveries should exceed 85/100.
 
 Output your evaluation as valid JSON matching this schema:
@@ -102,6 +148,14 @@ Output your evaluation as valid JSON matching this schema:
     "effort": { "score": 0-100, "reasoning": "..." },
     "timing": { "score": 0-100, "reasoning": "..." },
     "quality": { "score": 0-100, "reasoning": "..." }
+  },
+  "roleStorming": {
+    "conservative": { "verdict": "approve" | "reject" | "cautious", "reasoning": "..." },
+    "degen": { "verdict": "approve" | "reject" | "cautious", "reasoning": "..." },
+    "whale": { "verdict": "approve" | "reject" | "cautious", "reasoning": "..." },
+    "skeptic": { "verdict": "approve" | "reject" | "cautious", "reasoning": "..." },
+    "builder": { "verdict": "approve" | "reject" | "cautious", "reasoning": "..." },
+    "consensus": "strong_approve" | "approve" | "mixed" | "reject" | "strong_reject"
   },
   "totalScore": 0-100,
   "recommendation": "build" | "integrate" | "monitor" | "ignore",
@@ -287,6 +341,7 @@ ${prompt}` }]
         timing: validated.scores.timing.score,
         quality: validated.scores.quality.score
       },
+      roleStorming: validated.roleStorming,
       totalScore: validated.totalScore,
       recommendation: validated.recommendation,
       reasoning: validated.reasoning,
@@ -514,7 +569,11 @@ export {
   DecisionScorer,
   DecisionScoresSchema,
   LLMDecisionResponseSchema,
+  PersonaEvaluationSchema,
+  PersonaVerdictSchema,
   RecommendationSchema,
+  RoleStormingConsensusSchema,
+  RoleStormingResultSchema,
   SCORING_WEIGHTS,
   SYSTEM_PROMPT,
   buildEvaluationPrompt

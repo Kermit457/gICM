@@ -22,34 +22,69 @@ export interface TweetMetrics {
 }
 
 export class TwitterClient {
-  private client: TwitterApi;
+  private client?: TwitterApi;
   private logger: Logger;
   private userId?: string;
+  private config?: TwitterConfig;
+  private mockMode = false;
 
   constructor(config?: TwitterConfig) {
     this.logger = new Logger("TwitterClient");
+    this.config = config;
+    // Don't initialize client until init() is called - allows CLI to work without tokens
+    this.mockMode = this.detectMockMode();
+  }
 
-    const credentials = config || {
-      appKey: process.env.TWITTER_APP_KEY!,
-      appSecret: process.env.TWITTER_APP_SECRET!,
-      accessToken: process.env.TWITTER_ACCESS_TOKEN!,
-      accessSecret: process.env.TWITTER_ACCESS_SECRET!,
+  /**
+   * Check if credentials are available
+   */
+  private detectMockMode(): boolean {
+    const creds = this.config || {
+      appKey: process.env.TWITTER_APP_KEY,
+      appSecret: process.env.TWITTER_APP_SECRET,
+      accessToken: process.env.TWITTER_ACCESS_TOKEN,
+      accessSecret: process.env.TWITTER_ACCESS_SECRET,
     };
+    return !creds.appKey || !creds.appSecret || !creds.accessToken || !creds.accessSecret;
+  }
 
-    this.client = new TwitterApi(credentials);
+  /**
+   * Check if Twitter is available (not in mock mode)
+   */
+  isAvailable(): boolean {
+    return !this.mockMode && !!this.userId;
+  }
+
+  private getClient(): TwitterApi {
+    if (!this.client) {
+      const credentials = this.config || {
+        appKey: process.env.TWITTER_APP_KEY || "",
+        appSecret: process.env.TWITTER_APP_SECRET || "",
+        accessToken: process.env.TWITTER_ACCESS_TOKEN || "",
+        accessSecret: process.env.TWITTER_ACCESS_SECRET || "",
+      };
+      this.client = new TwitterApi(credentials);
+    }
+    return this.client;
   }
 
   /**
    * Initialize and verify credentials
    */
   async init(): Promise<void> {
+    // Skip authentication if in mock mode (no credentials)
+    if (this.mockMode) {
+      this.logger.warn("No Twitter credentials provided, running in MOCK mode");
+      return;
+    }
+
     try {
-      const me = await this.client.v2.me();
+      const me = await this.getClient().v2.me();
       this.userId = me.data.id;
       this.logger.info(`Authenticated as @${me.data.username}`);
     } catch (error) {
-      this.logger.error(`Authentication failed: ${error}`);
-      throw error;
+      this.logger.warn(`Authentication failed, switching to mock mode: ${error}`);
+      this.mockMode = true;
     }
   }
 
@@ -57,6 +92,12 @@ export class TwitterClient {
    * Post a tweet
    */
   async tweet(text: string, options?: { replyTo?: string; mediaIds?: string[] }): Promise<TweetV2> {
+    // Return mock tweet in mock mode
+    if (this.mockMode) {
+      this.logger.info(`[MOCK] Would post tweet: ${text.substring(0, 50)}...`);
+      return { id: `mock-${Date.now()}`, text } as TweetV2;
+    }
+
     try {
       const params: Record<string, unknown> = {};
 
@@ -68,7 +109,7 @@ export class TwitterClient {
         params.media = { media_ids: options.mediaIds };
       }
 
-      const result = await this.client.v2.tweet(text, params);
+      const result = await this.getClient().v2.tweet(text, params);
       this.logger.info(`Posted tweet: ${result.data.id}`);
       return result.data;
     } catch (error) {
@@ -99,7 +140,7 @@ export class TwitterClient {
    */
   async getMetrics(tweetId: string): Promise<TweetMetrics> {
     try {
-      const tweet = await this.client.v2.singleTweet(tweetId, {
+      const tweet = await this.getClient().v2.singleTweet(tweetId, {
         "tweet.fields": ["public_metrics"],
       });
 
@@ -124,7 +165,7 @@ export class TwitterClient {
       await this.init();
     }
 
-    const tweets = await this.client.v2.userTimeline(this.userId!, {
+    const tweets = await this.getClient().v2.userTimeline(this.userId!, {
       max_results: count,
       "tweet.fields": ["created_at", "public_metrics"],
     });
@@ -136,7 +177,7 @@ export class TwitterClient {
    * Search recent tweets
    */
   async search(query: string, count: number = 10): Promise<TweetV2[]> {
-    const results = await this.client.v2.search(query, {
+    const results = await this.getClient().v2.search(query, {
       max_results: count,
       "tweet.fields": ["created_at", "public_metrics", "author_id"],
     });
@@ -149,7 +190,7 @@ export class TwitterClient {
    */
   async getUser(username: string): Promise<UserV2 | null> {
     try {
-      const user = await this.client.v2.userByUsername(username, {
+      const user = await this.getClient().v2.userByUsername(username, {
         "user.fields": ["public_metrics", "description"],
       });
       return user.data;
@@ -162,7 +203,7 @@ export class TwitterClient {
    * Upload media
    */
   async uploadMedia(buffer: Buffer, mimeType: string): Promise<string> {
-    const mediaId = await this.client.v1.uploadMedia(buffer, { mimeType });
+    const mediaId = await this.getClient().v1.uploadMedia(buffer, { mimeType });
     return mediaId;
   }
 

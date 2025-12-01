@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 BURRY_CONFIG = AgentConfig(
@@ -110,7 +110,7 @@ ON-CHAIN REALITY:
 - Protocol Revenue (30d): ${market_data.get('revenue_30d', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 As Michael Burry, analyze this. What is the market getting wrong?
 Look for bubble signs, overvaluation, or overlooked value.

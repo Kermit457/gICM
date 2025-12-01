@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 SOLANA_CONFIG = AgentConfig(
@@ -117,7 +117,7 @@ SOL CORRELATION:
 - Beta to SOL: {market_data.get('sol_beta', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 Analyze this as a Solana ecosystem expert.
 Consider Solana-specific risks and opportunities.

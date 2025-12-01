@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 DEGEN_CONFIG = AgentConfig(
@@ -115,7 +115,7 @@ SMART MONEY:
 - Top 10 Holder %: {market_data.get('top10_percent', 'N/A')}%
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 Analyze this like a true degen. Is this a play or nah?
 What's the narrative? What's the R/R?

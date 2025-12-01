@@ -10,6 +10,35 @@ export const DecisionScoresSchema = z.object({
 });
 export type DecisionScores = z.infer<typeof DecisionScoresSchema>;
 
+// Role Storming verdicts
+export const PersonaVerdictSchema = z.enum(["approve", "reject", "cautious"]);
+export type PersonaVerdict = z.infer<typeof PersonaVerdictSchema>;
+
+export const RoleStormingConsensusSchema = z.enum([
+  "strong_approve",
+  "approve",
+  "mixed",
+  "reject",
+  "strong_reject",
+]);
+export type RoleStormingConsensus = z.infer<typeof RoleStormingConsensusSchema>;
+
+export const PersonaEvaluationSchema = z.object({
+  verdict: PersonaVerdictSchema,
+  reasoning: z.string(),
+});
+export type PersonaEvaluation = z.infer<typeof PersonaEvaluationSchema>;
+
+export const RoleStormingResultSchema = z.object({
+  conservative: PersonaEvaluationSchema,
+  degen: PersonaEvaluationSchema,
+  whale: PersonaEvaluationSchema,
+  skeptic: PersonaEvaluationSchema,
+  builder: PersonaEvaluationSchema,
+  consensus: RoleStormingConsensusSchema,
+});
+export type RoleStormingResult = z.infer<typeof RoleStormingResultSchema>;
+
 // Decision recommendation
 export const RecommendationSchema = z.enum([
   "build",      // Create new component/agent based on this
@@ -22,6 +51,7 @@ export type Recommendation = z.infer<typeof RecommendationSchema>;
 // Decision result
 export const DecisionResultSchema = z.object({
   scores: DecisionScoresSchema,
+  roleStorming: RoleStormingResultSchema.optional(),
   totalScore: z.number().min(0).max(100),
   recommendation: RecommendationSchema,
   reasoning: z.string(),
@@ -74,6 +104,7 @@ export const LLMDecisionResponseSchema = z.object({
       reasoning: z.string(),
     }),
   }),
+  roleStorming: RoleStormingResultSchema.optional(),
   totalScore: z.number(),
   recommendation: RecommendationSchema,
   reasoning: z.string(),

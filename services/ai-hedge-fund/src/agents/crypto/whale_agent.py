@@ -7,7 +7,7 @@ from typing import Any
 
 from langchain_core.language_models import BaseChatModel
 
-from ..base_agent import BaseAgent, AgentConfig, AgentSignal
+from ..base_agent import BaseAgent, AgentConfig, AgentSignal, sanitize_context
 
 
 WHALE_CONFIG = AgentConfig(
@@ -115,7 +115,7 @@ SMART MONEY:
 - Smart Wallet Activity (7d): {market_data.get('smart_wallet_activity', 'N/A')}
 
 ADDITIONAL CONTEXT:
-{context or 'None provided'}
+{sanitize_context(context)}
 
 What are the whales telling us? Accumulation or distribution?
 Is smart money involved? What's the signal?

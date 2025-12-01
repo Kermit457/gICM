@@ -1,7 +1,40 @@
 import { z } from "zod";
 
 // Hunt sources
-export const HuntSourceSchema = z.enum(["github", "hackernews", "twitter"]);
+export const HuntSourceSchema = z.enum([
+  // Social/Tech
+  "github",
+  "hackernews",
+  "twitter",
+  "reddit",
+  "producthunt",
+  "arxiv",
+  "lobsters",
+  "devto",
+  "tiktok",
+  // DeFi/Crypto
+  "defillama",
+  "geckoterminal",
+  "feargreed",
+  "binance",
+  "coingecko", // Market data, trending, categories
+  "coinmarketcap", // 2.4M assets, historical OHLCV, global metrics
+  "lunarcrush", // Social sentiment metrics
+  // Solana-Specific (FREE)
+  "rugcheck", // Token safety scanner (FREE, no auth)
+  "pumpfun", // Memecoin launches (FREE, no auth)
+  "vybe", // Enterprise Solana data (FREE tier, API key)
+  // Prediction Markets
+  "polymarket",
+  "kalshi",
+  // Economic/Financial
+  "fred",
+  "sec",
+  "finnhub",
+  // Alternative
+  "npm",
+  "rss", // NEW: Aggregated news feeds
+]);
 export type HuntSource = z.infer<typeof HuntSourceSchema>;
 
 // Raw discovery from source
@@ -238,7 +271,36 @@ export const RELEVANCE_KEYWORDS = {
 
 // Schedules
 export const DEFAULT_SCHEDULES: Record<HuntSource, string> = {
+  // Social/Tech
   github: "0 */4 * * *", // Every 4 hours
   hackernews: "0 */2 * * *", // Every 2 hours
   twitter: "*/30 * * * *", // Every 30 minutes
+  reddit: "0 */3 * * *", // Every 3 hours
+  producthunt: "0 */6 * * *", // Every 6 hours
+  arxiv: "0 0 * * *", // Once daily (rate limited)
+  lobsters: "0 */4 * * *", // Every 4 hours
+  devto: "0 */6 * * *", // Every 6 hours
+  tiktok: "0 */4 * * *", // Every 4 hours (Apify rate limited)
+  // DeFi/Crypto
+  defillama: "0 */2 * * *", // Every 2 hours (real-time TVL)
+  geckoterminal: "*/15 * * * *", // Every 15 minutes (new pools)
+  feargreed: "0 */6 * * *", // Every 6 hours (daily index)
+  binance: "*/5 * * * *", // Every 5 minutes (price moves)
+  coingecko: "*/10 * * * *", // Every 10 minutes (trending, market data)
+  coinmarketcap: "*/15 * * * *", // Every 15 minutes (price moves, global data)
+  lunarcrush: "*/15 * * * *", // Every 15 minutes (social sentiment)
+  // Solana-Specific (FREE)
+  rugcheck: "*/2 * * * *", // Every 2 minutes (safety scans, no limit)
+  pumpfun: "*/1 * * * *", // Every minute (new memecoin launches)
+  vybe: "*/5 * * * *", // Every 5 minutes (4 req/min limit)
+  // Prediction Markets
+  polymarket: "*/10 * * * *", // Every 10 minutes (active markets)
+  kalshi: "*/10 * * * *", // Every 10 minutes (active markets)
+  // Economic/Financial
+  fred: "0 8 * * *", // Daily at 8am (economic data releases)
+  sec: "0 */4 * * *", // Every 4 hours (filings)
+  finnhub: "0 */2 * * *", // Every 2 hours (congress trades)
+  // Alternative
+  npm: "0 0 * * 0", // Weekly on Sundays (package trends)
+  rss: "*/30 * * * *", // Every 30 minutes (aggregated news)
 };

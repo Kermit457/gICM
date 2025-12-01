@@ -6,7 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GICMAPIClient = void 0;
+exports.MarketplaceAPI = exports.GICMAPIClient = void 0;
 const axios_1 = __importDefault(require("axios"));
 const chalk_1 = __importDefault(require("chalk"));
 class GICMAPIClient {
@@ -91,6 +91,91 @@ class GICMAPIClient {
         }
     }
     /**
+     * Fetch a stack by ID
+     */
+    async getStack(stackId) {
+        try {
+            const { data } = await this.client.get(`/stacks/${stackId}`);
+            return data;
+        }
+        catch (error) {
+            this.handleError(error, `Failed to fetch stack: ${stackId}`);
+            throw error;
+        }
+    }
+    /**
+     * List all available stacks
+     */
+    async listStacks() {
+        try {
+            const { data } = await this.client.get('/stacks');
+            return data;
+        }
+        catch (error) {
+            this.handleError(error, 'Failed to fetch stacks');
+            throw error;
+        }
+    }
+    /**
+     * Search for PTC-compatible tools
+     */
+    async searchTools(query, options = {}) {
+        try {
+            const { data } = await this.client.post('/tools/search', {
+                query,
+                limit: options.limit || 10,
+                platform: options.platform,
+                kind: options.kind,
+                minQuality: options.minQuality,
+            });
+            return data;
+        }
+        catch (error) {
+            this.handleError(error, 'Tool search failed');
+            throw error;
+        }
+    }
+    /**
+     * Save a context to cloud storage
+     */
+    async saveContext(contextData) {
+        try {
+            const { data } = await this.client.post('/contexts', contextData);
+            return data;
+        }
+        catch (error) {
+            this.handleError(error, 'Failed to save context');
+            throw error;
+        }
+    }
+    /**
+     * Load a context from cloud storage
+     */
+    async loadContext(contextId) {
+        try {
+            const { data } = await this.client.get(`/contexts/${contextId}`);
+            return data;
+        }
+        catch (error) {
+            this.handleError(error, `Failed to load context: ${contextId}`);
+            throw error;
+        }
+    }
+    /**
+     * List available contexts
+     */
+    async listContexts(mineOnly) {
+        try {
+            const params = mineOnly ? '?mine=true' : '';
+            const { data } = await this.client.get(`/contexts${params}`);
+            return data;
+        }
+        catch (error) {
+            this.handleError(error, 'Failed to list contexts');
+            throw error;
+        }
+    }
+    /**
      * Handle API errors with user-friendly messages
      */
     handleError(error, context) {
@@ -123,4 +208,5 @@ class GICMAPIClient {
     }
 }
 exports.GICMAPIClient = GICMAPIClient;
+exports.MarketplaceAPI = GICMAPIClient;
 //# sourceMappingURL=api.js.map

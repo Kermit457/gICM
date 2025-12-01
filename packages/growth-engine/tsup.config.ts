@@ -7,7 +7,7 @@ export default defineConfig({
     "src/social/index.ts",
   ],
   format: ["esm"],
-  dts: false, // TODO: Fix type mismatches between types.ts and index.ts
+  dts: false, // TODO: Fix type mismatches in Twitter module (content vs text, BlogPost partial usage)
   clean: true,
   splitting: true,
   sourcemap: true,

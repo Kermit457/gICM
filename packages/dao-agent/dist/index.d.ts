@@ -150,7 +150,7 @@ declare class DAOAgent extends BaseAgent {
     getProposal(proposalId: string, platformName?: string): Promise<Proposal | null>;
     summarizeProposal(proposalId: string, platformName?: string): Promise<ProposalSummary | null>;
     getVotes(proposalId: string, platformName?: string, limit?: number): Promise<Vote[]>;
-    analyzeVotingPower(_daoId: string, platformName?: string): Promise<VotingPowerDistribution | null>;
+    analyzeVotingPower(daoId: string, platformName?: string): Promise<VotingPowerDistribution | null>;
     getActiveProposals(daoId: string, platformName?: string): Promise<Proposal[]>;
     getWhaleVoters(proposalId: string, platformName?: string): Promise<Array<{
         address: string;

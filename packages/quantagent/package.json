@@ -40,8 +40,16 @@
     "technical-analysis",
     "gicm"
   ],
-  "author": "gICM",
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/quantagent"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/quantagent#readme",
+  "bugs": { "url": "https://github.com/gicm-dev/gicm/issues" },
+  "publishConfig": { "access": "public" },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.0",
     "openai": "^4.50.0",

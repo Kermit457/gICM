@@ -21,13 +21,15 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
     "test": "vitest",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "prepublishOnly": "pnpm build"
   },
   "keywords": [
     "web3",
@@ -37,8 +39,20 @@
     "langchain",
     "gicm"
   ],
-  "author": "gICM",
+  "author": "Mirko Basil Dölger <mirko@gicm.dev>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gicm-dev/gicm.git",
+    "directory": "packages/agent-core"
+  },
+  "homepage": "https://github.com/gicm-dev/gicm/tree/main/packages/agent-core#readme",
+  "bugs": {
+    "url": "https://github.com/gicm-dev/gicm/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@langchain/core": "^0.3.0",
     "zod": "^3.23.0"
