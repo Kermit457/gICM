@@ -4,19 +4,16 @@ services:
     name: gicm-dashboard
     runtime: node
     region: oregon
-    rootDir: apps/dashboard
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: npm install -g pnpm && pnpm install && pnpm --filter @gicm/dashboard build
+    startCommand: cd apps/dashboard && npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3200
+        value: 10000
       - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
-        sync: false
-      - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
@@ -27,18 +24,15 @@ services:
     name: gicm-hub
     runtime: node
     region: oregon
-    rootDir: packages/integration-hub
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: npm install -g pnpm && pnpm install && pnpm --filter @gicm/integration-hub... build
+    startCommand: cd packages/integration-hub && npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 4000
+        value: 10000
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
-        sync: false
-      - key: REDIS_URL
         sync: false
     healthCheckPath: /health
