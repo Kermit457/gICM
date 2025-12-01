@@ -24,7 +24,7 @@ program
 program
   .command("start")
   .description("Start the integration hub")
-  .option("-p, --port <port>", "API port", "3001")
+  .option("-p, --port <port>", "API port", process.env.PORT || "3001")
   .option("--no-workflows", "Disable automated workflows")
   .action(async (options) => {
     console.log("Starting gICM Integration Hub...\n");
@@ -76,7 +76,7 @@ program
 program
   .command("status")
   .description("Show hub status (requires running hub)")
-  .option("-p, --port <port>", "API port", "3001")
+  .option("-p, --port <port>", "API port", process.env.PORT || "3001")
   .action(async (options) => {
     const port = options.port;
 
@@ -123,7 +123,7 @@ program
 program
   .command("events")
   .description("Show recent events")
-  .option("-p, --port <port>", "API port", "3001")
+  .option("-p, --port <port>", "API port", process.env.PORT || "3001")
   .option("-n, --limit <limit>", "Number of events", "20")
   .action(async (options) => {
     const port = options.port;
