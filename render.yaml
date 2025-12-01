@@ -1,13 +1,13 @@
 services:
   # Dashboard (Brain) - Admin UI for team
+  # Uses Docker for reliable monorepo builds
   - type: web
     name: gicm-dashboard
-    runtime: node
+    runtime: docker
     region: oregon
     plan: starter
-    nodeVersion: "20"
-    buildCommand: corepack enable && pnpm install && pnpm -r build
-    startCommand: cd apps/dashboard && node_modules/.bin/next start -p $PORT
+    dockerfilePath: ./Dockerfile.dashboard
+    dockerContext: .
     envVars:
       - key: NODE_ENV
         value: production

@@ -1,0 +1,46 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs (will be rebuilt)
+.next
+**/dist
+**/.next
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Tests
+**/__tests__
+**/e2e
+**/coverage
+playwright-report
+test-results
+
+# Documentation
+*.md
+docs/
+
+# Environment (will use Render's env vars)
+.env
+.env.*
+!.env.example
+
+# Cache and temp
+.cache
+.analytics
+.metrics
+*.log
+*.tmp
+
+# Large files
+*.png
+*.jpg
+*.jpeg
+lighthouse-report.json
+tsconfig.tsbuildinfo

@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable standalone output for deployment without node_modules
+  output: 'standalone',
   // Skip type checking and linting to speed up builds
   // These should be run separately in CI
   typescript: {
