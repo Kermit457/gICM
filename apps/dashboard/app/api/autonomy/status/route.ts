@@ -7,18 +7,21 @@ import { getAutonomy } from "@gicm/autonomy";
 export async function GET() {
   try {
     const autonomy = getAutonomy();
-    const config = autonomy.getConfig();
+    const status = autonomy.getStatus();
     const boundaries = autonomy.getBoundaries();
-    const queueStats = autonomy.getQueueStats();
+    const level = autonomy.getLevel();
 
     return NextResponse.json({
       ok: true,
       status: {
-        level: config.level,
-        levelName: ["manual", "bounded", "supervised", "delegated", "autonomous"][config.level - 1],
-        running: true,
+        level,
+        levelName: ["manual", "bounded", "supervised", "delegated", "autonomous"][level - 1],
+        running: status.running,
         boundaries,
-        queue: queueStats,
+        queue: status.queue,
+        usage: status.usage,
+        executor: status.executor,
+        audit: status.audit,
       },
     });
   } catch (error) {
