@@ -42,6 +42,14 @@ import {
   teamDelete,
   teamTools,
 } from "./team.js";
+import {
+  gitStatus,
+  gitAnalyze,
+  gitCommit,
+  gitPush,
+  gitPR,
+  gitTools,
+} from "./git.js";
 
 export {
   getContextBundle,
@@ -70,6 +78,11 @@ export {
   teamShared,
   teamSync,
   teamDelete,
+  gitStatus,
+  gitAnalyze,
+  gitCommit,
+  gitPush,
+  gitPR,
 };
 
 // Tool definitions for dev.* namespace
@@ -157,4 +170,7 @@ export const devTools = {
 
   // Team tools
   ...teamTools,
+
+  // Git tools
+  ...gitTools,
 };

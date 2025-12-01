@@ -77,11 +77,26 @@ import {
   URGENCY_PRIORITY
 } from "./chunk-TENKIGAJ.js";
 import {
+  CLAUDE_ACTION_BASE_RISK,
+  CONTEXT_RISK_MODIFIERS,
+  ClaudeCodeActionType,
+  ClaudeCodeContextSchema,
+  ClaudeWorkflowAdapter,
+  DANGEROUS_CLAUDE_ACTIONS,
+  DEFAULT_WORKFLOW_BOUNDARIES,
+  DailyImprovementSchema,
   EngineAdapter,
   GrowthEngineAdapter,
+  IMPROVEMENT_VALUE,
+  ImprovementStatsSchema,
   MoneyEngineAdapter,
-  ProductEngineAdapter
-} from "./chunk-GBFIXON4.js";
+  ProductEngineAdapter,
+  RISK_THRESHOLDS,
+  SAFE_CLAUDE_ACTIONS,
+  WorkflowActionType,
+  WorkflowContextSchema,
+  getWorkflowAdapter
+} from "./chunk-ZI5JHRPX.js";
 import {
   Logger
 } from "./chunk-ZB2ZVSPL.js";
@@ -106,10 +121,18 @@ export {
   BoundaryCheckResultSchema,
   BoundaryChecker,
   CATEGORY_BASE_RISK,
+  CLAUDE_ACTION_BASE_RISK,
+  CONTEXT_RISK_MODIFIERS,
+  ClaudeCodeActionType,
+  ClaudeCodeContextSchema,
+  ClaudeWorkflowAdapter,
   ContentBoundariesSchema,
   DANGEROUS_ACTION_TYPES,
+  DANGEROUS_CLAUDE_ACTIONS,
   DEFAULT_BOUNDARIES,
   DEFAULT_CONFIG,
+  DEFAULT_WORKFLOW_BOUNDARIES,
+  DailyImprovementSchema,
   DailyUsageSchema,
   DecisionOutcomeSchema,
   DecisionRouter,
@@ -125,6 +148,8 @@ export {
   HatPerspectiveSchema,
   HatTypeSchema,
   HatVerdictSchema,
+  IMPROVEMENT_VALUE,
+  ImprovementStatsSchema,
   Logger,
   MoneyEngineAdapter,
   NotificationChannelSchema,
@@ -139,6 +164,7 @@ export {
   RISK_FACTOR_WEIGHTS,
   RISK_LEVEL_OUTCOMES,
   RISK_SCORE_THRESHOLDS,
+  RISK_THRESHOLDS,
   RiskAssessmentSchema,
   RiskClassifier,
   RiskFactorSchema,
@@ -146,6 +172,7 @@ export {
   RollbackCheckpointSchema,
   RollbackManager,
   SAFE_ACTION_TYPES,
+  SAFE_CLAUDE_ACTIONS,
   SafeActions,
   SixHatsConsensusSchema,
   SixHatsEvaluator,
@@ -154,8 +181,11 @@ export {
   TradingBoundariesSchema,
   URGENCY_PRIORITY,
   UrgencySchema,
+  WorkflowActionType,
+  WorkflowContextSchema,
   createConfig,
   getAutonomy,
+  getWorkflowAdapter,
   loadConfigFromEnv,
   resetAutonomy
 };

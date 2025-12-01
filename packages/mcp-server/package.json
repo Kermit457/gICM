@@ -34,6 +34,7 @@
     "url": "https://github.com/gicm-dev/gicm/issues"
   },
   "dependencies": {
+    "@gicm/commit-agent": "workspace:*",
     "@gicm/memory": "workspace:*",
     "@gicm/workflow-engine": "workspace:*",
     "@google/generative-ai": "^0.21.0",

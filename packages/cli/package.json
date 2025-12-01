@@ -44,6 +44,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@gicm/commit-agent": "workspace:*",
     "@gicm/memory": "workspace:*",
     "@gicm/watcher": "workspace:*",
     "@gicm/workflow-engine": "workspace:*",

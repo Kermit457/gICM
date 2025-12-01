@@ -35,6 +35,7 @@ import {
 import { registerWatchCommands } from './commands/watch';
 import { registerMemoryCommands } from './commands/memory';
 import { registerTeamCommands } from './commands/team';
+import { registerCommitCommands } from './commands/commit';
 
 const program = new Command();
 
@@ -550,6 +551,9 @@ registerMemoryCommands(program);
 
 // Team command group - Collaborative contexts
 registerTeamCommands(program);
+
+// Commit command group - AI-powered git workflow
+registerCommitCommands(program);
 
 // Show help if no arguments
 if (process.argv.length === 2) {

@@ -27,3 +27,11 @@ export {
   type CommitParams,
   type DeployParams,
 } from "./product-adapter.js";
+
+// Claude Workflow Integration
+export {
+  ClaudeWorkflowAdapter,
+  getWorkflowAdapter,
+} from "./workflow-adapter.js";
+export * from "./workflow-types.js";
+export * from "./workflow-constants.js";

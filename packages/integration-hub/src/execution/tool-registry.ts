@@ -324,6 +324,32 @@ class ToolRegistry {
       estimatedTokens: 2000,
     });
 
+    // Commit Agent - AI-powered git commit workflow
+    this.register({
+      id: "commit-agent",
+      name: "Commit Agent",
+      description: "AI-powered git commit message generation with full workflow automation (stage, commit, push, PR)",
+      category: "content",
+      package: "@gicm/commit-agent",
+      agentClass: "CommitAgent",
+      defaultConfig: {
+        conventionalCommits: true,
+        includeCoAuthors: true,
+      },
+      inputSchema: z.object({
+        action: z.enum(["status", "generate", "commit", "push", "create_pr", "full"]).default("status"),
+        all: z.boolean().optional(),
+        message: z.string().optional(),
+        push: z.boolean().optional(),
+        createPr: z.boolean().optional(),
+        dryRun: z.boolean().optional(),
+        amend: z.boolean().optional(),
+      }),
+      estimatedCost: 0.005,
+      estimatedTokens: 1000,
+      requiresApiKey: ["ANTHROPIC_API_KEY"],
+    });
+
     this.initialized = true;
   }
 

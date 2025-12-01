@@ -118,9 +118,57 @@
       "Bash(packages/wallet-agent/src/solana-wallet.ts )",
       "Bash(packages/wallet-agent/package.json )",
       "Bash(apps/dashboard/lib/data/registry.ts )",
-      "Bash(npm version:*)"
+      "Bash(npm version:*)",
+      "Bash(git ls-tree:*)"
     ],
     "deny": []
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.js\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/pre-bash.js\"",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-write.js\"",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/post-bash.js\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
   },
   "mcpServers": {
     "gicm-dev": {

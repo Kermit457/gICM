@@ -13,18 +13,14 @@
 ### Completed
 - ✅ 12A: Circuit Breaker (`@gicm/agent-core/src/resilience/circuit-breaker.ts`)
 - ✅ 12B: Retry Strategy (`@gicm/agent-core/src/resilience/retry.ts`)
+- ✅ 12C: Timeout Manager (`@gicm/agent-core/src/resilience/timeout.ts`)
+- ✅ 12D: Health Aggregator (`@gicm/agent-core/src/resilience/health-aggregator.ts`)
+- ✅ 13A: Secrets Manager (`@gicm/agent-core/src/security/secrets.ts`)
+- ✅ 13B: Rate Limiter (`@gicm/agent-core/src/security/rate-limiter.ts`)
+- ✅ 13C: API Authentication (`@gicm/agent-core/src/security/auth.ts`)
+- ✅ 13D: Security Headers (`@gicm/agent-core/src/security/headers.ts`)
 
 ### In Progress
-- 12C: Timeout Manager
-- 12D: Health Aggregator
-
-### Backlog
-**Phase 13 - Security**
-- 13A: Secrets Manager
-- 13B: Rate Limiter
-- 13C: API Authentication
-- 13D: Security Headers
-
 **Phase 14 - Observability**
 - 14A: OpenTelemetry
 - 14B: Log Aggregator
