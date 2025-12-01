@@ -1,0 +1,419 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Search,
+  Star,
+  Download,
+  Eye,
+  Verified,
+  ArrowRight,
+  Package,
+  TrendingUp,
+  Clock,
+  Filter,
+} from "lucide-react";
+
+// Category info
+const CATEGORIES = [
+  { id: "automation", label: "Automation", icon: "⚡", count: 24 },
+  { id: "analytics", label: "Analytics", icon: "📊", count: 18 },
+  { id: "data-processing", label: "Data Processing", icon: "🔄", count: 15 },
+  { id: "integration", label: "Integration", icon: "🔗", count: 32 },
+  { id: "monitoring", label: "Monitoring", icon: "👁️", count: 12 },
+  { id: "ai-ml", label: "AI/ML", icon: "🤖", count: 28 },
+  { id: "devops", label: "DevOps", icon: "🛠️", count: 20 },
+  { id: "communication", label: "Communication", icon: "💬", count: 16 },
+];
+
+// Mock templates
+const mockTemplates = [
+  {
+    id: "1",
+    slug: "github-pr-analyzer",
+    name: "GitHub PR Analyzer",
+    description: "Automatically analyze pull requests with AI, provide code review suggestions, and detect potential issues.",
+    category: "devops",
+    tags: ["github", "code-review", "ai"],
+    version: "2.1.0",
+    author: { id: "a1", name: "gICM Team", verified: true },
+    stats: { installs: 1243, stars: 89, views: 5420 },
+    rating: { average: 4.8, count: 45 },
+    estimatedCost: { min: 0.02, max: 0.15, currency: "USD" },
+    iconUrl: "/icons/github.svg",
+  },
+  {
+    id: "2",
+    slug: "slack-sentiment-analyzer",
+    name: "Slack Sentiment Analyzer",
+    description: "Monitor Slack channels for sentiment trends, detect negative feedback, and alert team leads automatically.",
+    category: "communication",
+    tags: ["slack", "sentiment", "monitoring"],
+    version: "1.4.2",
+    author: { id: "a2", name: "CommunityDev", verified: false },
+    stats: { installs: 567, stars: 34, views: 2100 },
+    rating: { average: 4.2, count: 18 },
+    estimatedCost: { min: 0.01, max: 0.08, currency: "USD" },
+  },
+  {
+    id: "3",
+    slug: "daily-crypto-report",
+    name: "Daily Crypto Report",
+    description: "Generate comprehensive daily cryptocurrency market reports with price analysis, trends, and AI predictions.",
+    category: "analytics",
+    tags: ["crypto", "trading", "report"],
+    version: "3.0.1",
+    author: { id: "a1", name: "gICM Team", verified: true },
+    stats: { installs: 2891, stars: 156, views: 12400 },
+    rating: { average: 4.9, count: 87 },
+    estimatedCost: { min: 0.05, max: 0.25, currency: "USD" },
+  },
+  {
+    id: "4",
+    slug: "notion-sync-automation",
+    name: "Notion Sync Automation",
+    description: "Bidirectional sync between Notion databases and external services like Airtable, Google Sheets, and more.",
+    category: "integration",
+    tags: ["notion", "sync", "automation"],
+    version: "1.2.0",
+    author: { id: "a3", name: "DataFlowLabs", verified: true },
+    stats: { installs: 892, stars: 67, views: 3800 },
+    rating: { average: 4.5, count: 32 },
+    estimatedCost: { min: 0.00, max: 0.03, currency: "USD" },
+  },
+  {
+    id: "5",
+    slug: "smart-email-classifier",
+    name: "Smart Email Classifier",
+    description: "AI-powered email classification and routing. Automatically categorize, prioritize, and route incoming emails.",
+    category: "ai-ml",
+    tags: ["email", "classification", "ai"],
+    version: "2.0.0",
+    author: { id: "a4", name: "AITools", verified: false },
+    stats: { installs: 445, stars: 28, views: 1900 },
+    rating: { average: 4.1, count: 15 },
+    estimatedCost: { min: 0.02, max: 0.10, currency: "USD" },
+  },
+  {
+    id: "6",
+    slug: "uptime-monitor-alert",
+    name: "Uptime Monitor & Alert",
+    description: "Monitor website uptime, response times, and SSL certificates. Get instant alerts via Slack, Discord, or email.",
+    category: "monitoring",
+    tags: ["uptime", "monitoring", "alerts"],
+    version: "1.8.3",
+    author: { id: "a1", name: "gICM Team", verified: true },
+    stats: { installs: 1567, stars: 98, views: 6200 },
+    rating: { average: 4.7, count: 52 },
+    estimatedCost: { min: 0.00, max: 0.01, currency: "USD" },
+  },
+];
+
+export default function MarketplacePage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState("popular");
+  const [selectedTemplate, setSelectedTemplate] = useState<typeof mockTemplates[0] | null>(null);
+  const [showInstallModal, setShowInstallModal] = useState(false);
+
+  // Filter templates
+  const filteredTemplates = mockTemplates.filter((t) => {
+    if (searchQuery && !t.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !t.description.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false;
+    }
+    if (selectedCategory && t.category !== selectedCategory) {
+      return false;
+    }
+    return true;
+  });
+
+  // Sort templates
+  const sortedTemplates = [...filteredTemplates].sort((a, b) => {
+    switch (sortBy) {
+      case "popular": return b.stats.installs - a.stats.installs;
+      case "rating": return b.rating.average - a.rating.average;
+      case "recent": return 0; // Would need date field
+      default: return 0;
+    }
+  });
+
+  const handleInstall = (template: typeof mockTemplates[0]) => {
+    setSelectedTemplate(template);
+    setShowInstallModal(true);
+  };
+
+  const renderStars = (rating: number) => {
+    return (
+      <div className="flex items-center gap-0.5">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`h-3 w-3 ${
+              star <= rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+            }`}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="container mx-auto py-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <Package className="h-8 w-8" />
+            Pipeline Marketplace
+          </h1>
+          <p className="text-muted-foreground">
+            Discover and install pre-built pipeline templates
+          </p>
+        </div>
+        <Button variant="outline">
+          Submit Template
+        </Button>
+      </div>
+
+      {/* Search & Filters */}
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search templates..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="popular">
+              <span className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" /> Most Popular
+              </span>
+            </SelectItem>
+            <SelectItem value="rating">
+              <span className="flex items-center gap-2">
+                <Star className="h-4 w-4" /> Highest Rated
+              </span>
+            </SelectItem>
+            <SelectItem value="recent">
+              <span className="flex items-center gap-2">
+                <Clock className="h-4 w-4" /> Most Recent
+              </span>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Categories */}
+      <div className="flex flex-wrap gap-2">
+        <Button
+          variant={selectedCategory === null ? "default" : "outline"}
+          size="sm"
+          onClick={() => setSelectedCategory(null)}
+        >
+          All
+        </Button>
+        {CATEGORIES.map((cat) => (
+          <Button
+            key={cat.id}
+            variant={selectedCategory === cat.id ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSelectedCategory(cat.id)}
+          >
+            <span className="mr-1">{cat.icon}</span>
+            {cat.label}
+            <Badge variant="secondary" className="ml-2 text-xs">
+              {cat.count}
+            </Badge>
+          </Button>
+        ))}
+      </div>
+
+      {/* Template Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {sortedTemplates.map((template) => (
+          <Card key={template.id} className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-lg">
+                    {CATEGORIES.find((c) => c.id === template.category)?.icon || "📦"}
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">{template.name}</CardTitle>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <span>{template.author.name}</span>
+                      {template.author.verified && (
+                        <Verified className="h-3 w-3 text-blue-500" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="pb-2">
+              <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                {template.description}
+              </p>
+
+              <div className="flex flex-wrap gap-1 mb-3">
+                {template.tags.slice(0, 3).map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1">
+                    <Download className="h-3 w-3" />
+                    {template.stats.installs.toLocaleString()}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    {renderStars(template.rating.average)}
+                    <span className="text-muted-foreground">
+                      ({template.rating.count})
+                    </span>
+                  </span>
+                </div>
+                <Badge variant="outline" className="text-xs">
+                  v{template.version}
+                </Badge>
+              </div>
+            </CardContent>
+
+            <CardFooter className="pt-2">
+              <div className="flex items-center justify-between w-full">
+                <span className="text-xs text-muted-foreground">
+                  ~${template.estimatedCost?.min.toFixed(2)} - ${template.estimatedCost?.max.toFixed(2)}/run
+                </span>
+                <Button size="sm" onClick={() => handleInstall(template)}>
+                  Install
+                  <ArrowRight className="ml-1 h-3 w-3" />
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      {sortedTemplates.length === 0 && (
+        <div className="text-center py-12 text-muted-foreground">
+          <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <p>No templates found</p>
+          <p className="text-sm">Try adjusting your search or filters</p>
+        </div>
+      )}
+
+      {/* Install Modal */}
+      <Dialog open={showInstallModal} onOpenChange={setShowInstallModal}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                {CATEGORIES.find((c) => c.id === selectedTemplate?.category)?.icon || "📦"}
+              </div>
+              Install {selectedTemplate?.name}
+            </DialogTitle>
+            <DialogDescription>
+              This will create a new pipeline from this template
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedTemplate && (
+            <div className="space-y-4 py-4">
+              <div className="p-3 bg-muted rounded-lg">
+                <p className="text-sm">{selectedTemplate.description}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Version</p>
+                  <p className="font-medium">v{selectedTemplate.version}</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Author</p>
+                  <p className="font-medium flex items-center gap-1">
+                    {selectedTemplate.author.name}
+                    {selectedTemplate.author.verified && (
+                      <Verified className="h-3 w-3 text-blue-500" />
+                    )}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Estimated Cost</p>
+                  <p className="font-medium">
+                    ${selectedTemplate.estimatedCost?.min.toFixed(2)} - ${selectedTemplate.estimatedCost?.max.toFixed(2)}/run
+                  </p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Rating</p>
+                  <div className="flex items-center gap-1">
+                    {renderStars(selectedTemplate.rating.average)}
+                    <span className="font-medium ml-1">
+                      {selectedTemplate.rating.average.toFixed(1)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3 bg-yellow-50 dark:bg-yellow-950 rounded-lg text-sm text-yellow-700 dark:text-yellow-300">
+                This template will be installed and configured for your account.
+                You can customize it after installation.
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowInstallModal(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => {
+              // Would call install API
+              setShowInstallModal(false);
+            }}>
+              <Download className="mr-2 h-4 w-4" />
+              Install Template
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
