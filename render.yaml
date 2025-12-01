@@ -4,8 +4,10 @@ services:
     name: gicm-dashboard
     runtime: node
     region: oregon
-    buildCommand: npm install -g pnpm && pnpm install && pnpm -r build
-    startCommand: cd apps/dashboard && npm start
+    plan: starter
+    nodeVersion: "20"
+    buildCommand: corepack enable && pnpm install && pnpm -r build
+    startCommand: cd apps/dashboard && node_modules/.bin/next start -p $PORT
     envVars:
       - key: NODE_ENV
         value: production
