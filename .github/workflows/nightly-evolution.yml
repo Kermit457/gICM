@@ -1,0 +1,160 @@
+# OPUS 67 Nightly Evolution Workflow
+# Runs the evolution engine every night at 2 AM UTC to:
+# - Analyze recent patterns and performance
+# - Propose improvements to routing weights
+# - Update mode configurations based on usage data
+# - Archive evolution history to Neo4j
+
+name: OPUS 67 Nightly Evolution
+
+on:
+  schedule:
+    # Run every night at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_cycle:
+        description: 'Force run an evolution cycle'
+        required: false
+        default: 'false'
+        type: boolean
+      dry_run:
+        description: 'Run in dry-run mode (no actual changes)'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  evolution-cycle:
+    name: Run Evolution Cycle
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build OPUS 67
+        run: pnpm --filter @gicm/opus67... build
+
+      - name: Run Evolution Cycle
+        id: evolution
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          cd packages/opus67
+          node -e "
+            const { EvolutionLoop } = require('./dist/evolution/evolution-loop.js');
+            const { GraphitiMemory } = require('./dist/memory/graphiti.js');
+
+            async function runEvolutionCycle() {
+              console.log('🧬 Starting OPUS 67 Evolution Cycle...');
+              console.log('Environment: GitHub Actions');
+              console.log('Dry Run:', process.env.DRY_RUN === 'true');
+
+              const memory = new GraphitiMemory({
+                uri: process.env.NEO4J_URI,
+                username: process.env.NEO4J_USERNAME,
+                password: process.env.NEO4J_PASSWORD,
+                namespace: 'opus67-evolution'
+              });
+
+              await memory.connect().catch(() => {
+                console.log('⚠️ Neo4j not available, using local fallback');
+              });
+
+              const evolution = new EvolutionLoop({
+                memory,
+                dryRun: process.env.DRY_RUN === 'true'
+              });
+
+              const result = await evolution.runCycle();
+
+              // Store results in memory
+              await memory.addEpisode({
+                name: 'evolution-cycle-' + Date.now(),
+                content: JSON.stringify(result),
+                type: 'learning',
+                source: 'github-actions',
+                context: {
+                  runId: '${{ github.run_id }}',
+                  trigger: '${{ github.event_name }}'
+                }
+              });
+
+              console.log('✅ Evolution cycle complete');
+              console.log('Improvements:', result.improvements?.length ?? 0);
+              console.log('New patterns:', result.patterns?.length ?? 0);
+
+              await memory.disconnect();
+
+              // Set outputs for summary
+              const fs = require('fs');
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'improvements=' + (result.improvements?.length ?? 0) + '\n');
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'patterns=' + (result.patterns?.length ?? 0) + '\n');
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'status=success\n');
+            }
+
+            runEvolutionCycle().catch(err => {
+              console.error('❌ Evolution cycle failed:', err);
+              process.exit(1);
+            });
+          "
+
+      - name: Create Evolution Summary
+        if: always()
+        run: |
+          echo "## 🧬 OPUS 67 Evolution Cycle Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Run ID:** ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ steps.evolution.outputs.status || 'unknown' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Results" >> $GITHUB_STEP_SUMMARY
+          echo "- **Improvements Identified:** ${{ steps.evolution.outputs.improvements || '0' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **New Patterns Found:** ${{ steps.evolution.outputs.patterns || '0' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Powered by OPUS 67 v3 Self-Evolution Engine*" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 OPUS 67 Evolution Cycle Failed',
+              body: `The nightly evolution cycle failed on ${new Date().toISOString()}.
+
+              **Run ID:** ${context.runId}
+              **Workflow:** ${context.workflow}
+
+              Please check the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.`,
+              labels: ['bug', 'opus67', 'evolution']
+            });

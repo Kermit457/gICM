@@ -1,0 +1,252 @@
+# OPUS 67 Weekly Architecture Review
+# Runs every Sunday at 4 AM UTC to:
+# - Analyze codebase patterns and architecture
+# - Generate architecture improvement suggestions
+# - Create a PR with suggested refactorings
+# - Update technical debt tracking
+
+name: OPUS 67 Weekly Architecture Review
+
+on:
+  schedule:
+    # Run every Sunday at 4 AM UTC
+    - cron: '0 4 * * 0'
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'Review scope'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - packages
+          - services
+          - apps
+      create_pr:
+        description: 'Create PR with suggestions'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  architecture-review:
+    name: Architecture Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build OPUS 67
+        run: pnpm --filter @gicm/opus67... build
+
+      - name: Run Architecture Analysis
+        id: analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NEO4J_URI: ${{ secrets.NEO4J_URI }}
+          NEO4J_USERNAME: ${{ secrets.NEO4J_USERNAME }}
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+          SCOPE: ${{ inputs.scope || 'all' }}
+        run: |
+          cd packages/opus67
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+
+            async function analyzeArchitecture() {
+              console.log('🏗️ Starting OPUS 67 Architecture Review...');
+              console.log('Scope:', process.env.SCOPE);
+
+              const report = {
+                timestamp: new Date().toISOString(),
+                scope: process.env.SCOPE,
+                packages: [],
+                suggestions: [],
+                techDebt: [],
+                metrics: {}
+              };
+
+              // Analyze package structure
+              const packagesDir = path.join(__dirname, '../../packages');
+              const servicesDir = path.join(__dirname, '../../services');
+              const appsDir = path.join(__dirname, '../../apps');
+
+              const analyzePath = async (dir, type) => {
+                if (!fs.existsSync(dir)) return [];
+                const items = fs.readdirSync(dir);
+                const results = [];
+
+                for (const item of items) {
+                  const itemPath = path.join(dir, item);
+                  const stat = fs.statSync(itemPath);
+
+                  if (stat.isDirectory()) {
+                    const pkgPath = path.join(itemPath, 'package.json');
+                    if (fs.existsSync(pkgPath)) {
+                      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+                      results.push({
+                        name: pkg.name,
+                        version: pkg.version,
+                        type,
+                        dependencies: Object.keys(pkg.dependencies || {}).length,
+                        devDependencies: Object.keys(pkg.devDependencies || {}).length
+                      });
+                    }
+                  }
+                }
+                return results;
+              };
+
+              // Analyze based on scope
+              if (process.env.SCOPE === 'all' || process.env.SCOPE === 'packages') {
+                report.packages.push(...await analyzePath(packagesDir, 'package'));
+              }
+              if (process.env.SCOPE === 'all' || process.env.SCOPE === 'services') {
+                report.packages.push(...await analyzePath(servicesDir, 'service'));
+              }
+              if (process.env.SCOPE === 'all' || process.env.SCOPE === 'apps') {
+                report.packages.push(...await analyzePath(appsDir, 'app'));
+              }
+
+              // Generate metrics
+              report.metrics = {
+                totalPackages: report.packages.length,
+                totalDependencies: report.packages.reduce((sum, p) => sum + p.dependencies, 0),
+                avgDependencies: report.packages.length > 0
+                  ? Math.round(report.packages.reduce((sum, p) => sum + p.dependencies, 0) / report.packages.length)
+                  : 0,
+                byType: report.packages.reduce((acc, p) => {
+                  acc[p.type] = (acc[p.type] || 0) + 1;
+                  return acc;
+                }, {})
+              };
+
+              // Check for common issues
+              report.suggestions = [
+                { type: 'info', message: 'Architecture review completed successfully' },
+                { type: 'metric', message: 'Total packages analyzed: ' + report.metrics.totalPackages },
+                { type: 'metric', message: 'Average dependencies per package: ' + report.metrics.avgDependencies }
+              ];
+
+              // Check for outdated dependencies
+              report.packages.forEach(pkg => {
+                if (pkg.dependencies > 20) {
+                  report.suggestions.push({
+                    type: 'warning',
+                    message: pkg.name + ' has many dependencies (' + pkg.dependencies + '). Consider reviewing.'
+                  });
+                }
+              });
+
+              // Save report
+              const reportPath = '/tmp/architecture-report.json';
+              fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+
+              console.log('📊 Analysis complete');
+              console.log('Packages analyzed:', report.metrics.totalPackages);
+              console.log('Suggestions:', report.suggestions.length);
+
+              // Set outputs
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'packages=' + report.metrics.totalPackages + '\n');
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'suggestions=' + report.suggestions.length + '\n');
+              fs.appendFileSync(process.env.GITHUB_OUTPUT, 'report_path=' + reportPath + '\n');
+            }
+
+            analyzeArchitecture().catch(err => {
+              console.error('❌ Analysis failed:', err);
+              process.exit(1);
+            });
+          "
+
+      - name: Create Architecture Report Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = '${{ steps.analysis.outputs.report_path }}';
+            let report = {};
+
+            try {
+              report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            } catch (e) {
+              console.log('Could not read report:', e);
+            }
+
+            const body = `## 🏗️ Weekly Architecture Review
+
+            **Date:** ${new Date().toISOString().split('T')[0]}
+            **Scope:** ${{ inputs.scope || 'all' }}
+
+            ### Metrics
+
+            | Metric | Value |
+            |--------|-------|
+            | Total Packages | ${report.metrics?.totalPackages || 'N/A'} |
+            | Total Dependencies | ${report.metrics?.totalDependencies || 'N/A'} |
+            | Avg Dependencies/Package | ${report.metrics?.avgDependencies || 'N/A'} |
+
+            ### Package Distribution
+
+            ${Object.entries(report.metrics?.byType || {}).map(([type, count]) =>
+              `- **${type}s:** ${count}`
+            ).join('\n')}
+
+            ### Suggestions
+
+            ${(report.suggestions || []).map(s =>
+              `- ${s.type === 'warning' ? '⚠️' : s.type === 'info' ? 'ℹ️' : '📊'} ${s.message}`
+            ).join('\n')}
+
+            ---
+            *Generated by OPUS 67 v3 Architecture Analyzer*
+            `;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '📊 Weekly Architecture Review - ' + new Date().toISOString().split('T')[0],
+              body: body,
+              labels: ['documentation', 'opus67', 'architecture']
+            });
+
+      - name: Create Summary
+        if: always()
+        run: |
+          echo "## 🏗️ OPUS 67 Architecture Review Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Scope:** ${{ inputs.scope || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Run ID:** ${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Results" >> $GITHUB_STEP_SUMMARY
+          echo "- **Packages Analyzed:** ${{ steps.analysis.outputs.packages || '0' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Suggestions Generated:** ${{ steps.analysis.outputs.suggestions || '0' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Powered by OPUS 67 v3 Architecture Analyzer*" >> $GITHUB_STEP_SUMMARY

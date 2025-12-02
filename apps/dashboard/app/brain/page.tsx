@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import { useOpus67 } from "@/hooks/useOpus67";
 import { ConnectionIndicator } from "@/components/ConnectionIndicator";
 import {
   Brain,
@@ -25,10 +26,19 @@ import {
   ExternalLink,
   Lightbulb,
   ChevronRight,
+  ChevronDown,
+  Cpu,
 } from "lucide-react";
 import { hubApi, type BrainStatus, type AutonomyStatus, type EngineStatus, type KnowledgeItem, type BrainStats, type Pattern, type Prediction } from "../../lib/api/hub";
 import { brainApi } from "../../lib/api/brain";
 import { ActivityFeed } from "../../components/brain/ActivityFeed";
+import {
+  Opus67Status,
+  Opus67ModeSelector,
+  Opus67QueryPanel,
+  Opus67History,
+  Opus67Evolution,
+} from "./components";
 
 interface PhaseInfo {
   name: string;
@@ -592,6 +602,7 @@ export default function BrainPage() {
   const [autonomy, setAutonomy] = useState<AutonomyStatus | null>(null);
   const [engines, setEngines] = useState<Record<string, EngineStatus> | null>(null);
   const [currentPhase, setCurrentPhase] = useState(2);
+  const [opus67Expanded, setOpus67Expanded] = useState(true);
 
   // HYPER BRAIN state
   const [brainStats, setBrainStats] = useState<BrainStats | null>(null);
@@ -600,6 +611,9 @@ export default function BrainPage() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
 
   const pollingRef = useRef<NodeJS.Timeout | null>(null);
+
+  // OPUS 67 hook
+  const opus67 = useOpus67({ autoConnect: true });
 
   // WebSocket for real-time updates
   const ws = useWebSocket({
@@ -714,6 +728,77 @@ export default function BrainPage() {
 
       <QuickStats brain={brain} autonomy={autonomy} />
       <PhaseIndicator currentPhase={currentPhase} />
+
+      {/* OPUS 67 Section */}
+      <div className="bg-gicm-card border border-gicm-border rounded-xl overflow-hidden">
+        <button
+          onClick={() => setOpus67Expanded(!opus67Expanded)}
+          className="w-full flex items-center justify-between p-6 hover:bg-white/5 transition-colors"
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20">
+              <Cpu className="w-5 h-5 text-purple-400" />
+            </div>
+            <div className="text-left">
+              <h3 className="font-semibold flex items-center gap-2">
+                OPUS 67
+                <span className="text-xs px-2 py-0.5 rounded bg-purple-500/20 text-purple-400">v3</span>
+              </h3>
+              <p className="text-sm text-gray-400">Multi-model router & evolution engine</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${
+                opus67.connectionStatus === "connected" ? "bg-green-400 animate-pulse" :
+                opus67.connectionStatus === "connecting" ? "bg-yellow-400 animate-pulse" :
+                "bg-gray-500"
+              }`} />
+              <span className="text-sm text-gray-400 capitalize">{opus67.connectionStatus}</span>
+            </div>
+            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${opus67Expanded ? "rotate-180" : ""}`} />
+          </div>
+        </button>
+
+        {opus67Expanded && (
+          <div className="p-6 pt-0 space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Opus67Status
+                status={opus67.status}
+                metrics={opus67.metrics}
+                connectionStatus={opus67.connectionStatus}
+                loading={opus67.connectionStatus === "connecting"}
+              />
+              <Opus67ModeSelector
+                currentMode={opus67.currentMode}
+                onModeChange={opus67.setMode}
+                disabled={opus67.connectionStatus !== "connected"}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Opus67QueryPanel
+                onQuery={opus67.query}
+                currentMode={opus67.currentMode}
+                disabled={opus67.connectionStatus !== "connected"}
+              />
+              <Opus67Evolution
+                status={opus67.status}
+                metrics={opus67.metrics}
+                onStart={opus67.startEvolution}
+                onStop={opus67.stopEvolution}
+                onRunCycle={opus67.runEvolutionCycle}
+                disabled={opus67.connectionStatus !== "connected"}
+              />
+            </div>
+
+            <Opus67History
+              history={opus67.history}
+              loading={opus67.connectionStatus === "connecting"}
+            />
+          </div>
+        )}
+      </div>
 
       {/* HYPER BRAIN Section */}
       <HyperBrainStats stats={brainStats} />

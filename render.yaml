@@ -19,6 +19,10 @@ services:
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
+      - key: NEXT_PUBLIC_OPUS67_URL
+        value: https://opus67-brain.onrender.com
+      - key: NEXT_PUBLIC_HUB_URL
+        value: https://gicm-hub.onrender.com
     healthCheckPath: /
 
   # Integration Hub - Backend APIs
@@ -36,5 +40,38 @@ services:
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
+        sync: false
+    healthCheckPath: /health
+
+  # OPUS 67 BRAIN - Self-Evolving AI Runtime
+  - type: web
+    name: opus67-brain
+    runtime: node
+    region: oregon
+    plan: starter
+    buildCommand: npm install -g pnpm && pnpm install && pnpm --filter @gicm/opus67... build
+    startCommand: cd packages/opus67 && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      - key: LOG_LEVEL
+        value: info
+      - key: CORS_ORIGIN
+        value: https://gicm-dashboard.onrender.com
+      - key: NEO4J_URI
+        sync: false
+      - key: NEO4J_USERNAME
+        sync: false
+      - key: NEO4J_PASSWORD
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
         sync: false
     healthCheckPath: /health
