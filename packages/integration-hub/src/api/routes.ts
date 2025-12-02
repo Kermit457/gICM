@@ -14,6 +14,7 @@ import { vscodeRoutes } from "./vscode-routes.js";
 import { haRoutes } from "./ha-routes.js";
 import { drRoutes } from "./dr-routes.js";
 import { observabilityRoutes } from "./observability-routes.js";
+import { getAutonomy } from "@gicm/autonomy";
 
 // ============================================================================
 // PREDICTION MARKET TYPES & FETCHERS
@@ -621,19 +622,99 @@ export async function registerRoutes(
   });
 
   /**
-   * GET /api/autonomy/status - Autonomy engine status
+   * GET /api/autonomy/status - Autonomy engine status (LIVE)
    */
   fastify.get("/api/autonomy/status", async () => {
-    // TODO: Connect to actual autonomy engine when available
-    // For now, return sensible defaults
-    return {
-      ok: true,
-      level: 2, // Bounded autonomy
-      queue: { pending: 0, approved: 0, rejected: 0 },
-      audit: { total: 0, auto: 0, queued: 0, escalated: 0, successRate: 100 },
-      today: { autoExecuted: 0, queued: 0, escalated: 0, cost: 0, revenue: 0 },
-      stats: { autoExecuted: 0, queued: 0, pending: 0 },
-    };
+    try {
+      const autonomy = getAutonomy();
+      const status = autonomy.getStatus();
+      return {
+        ok: true,
+        level: status.level,
+        running: status.running,
+        queue: {
+          pending: status.queue.pending,
+          approved: status.queue.approved,
+          rejected: status.queue.rejected,
+        },
+        audit: status.audit,
+        today: {
+          autoExecuted: status.usage.actionsExecuted,
+          queued: status.usage.actionsQueued,
+          escalated: status.usage.escalations,
+          cost: status.usage.spending,
+          revenue: 0,
+        },
+        stats: {
+          autoExecuted: status.executor.totalExecuted,
+          queued: status.queue.pending,
+          pending: status.queue.pending,
+        },
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+        level: 2,
+        queue: { pending: 0, approved: 0, rejected: 0 },
+        audit: { total: 0, auto: 0, queued: 0, escalated: 0, successRate: 100 },
+        today: { autoExecuted: 0, queued: 0, escalated: 0, cost: 0, revenue: 0 },
+        stats: { autoExecuted: 0, queued: 0, pending: 0 },
+      };
+    }
+  });
+
+  /**
+   * GET /api/autonomy/queue - Get pending approval queue
+   */
+  fastify.get("/api/autonomy/queue", async () => {
+    try {
+      const autonomy = getAutonomy();
+      return { ok: true, queue: autonomy.getQueue() };
+    } catch (error) {
+      return { ok: false, error: error instanceof Error ? error.message : "Unknown error", queue: [] };
+    }
+  });
+
+  /**
+   * POST /api/autonomy/approve/:id - Approve a pending request
+   */
+  fastify.post("/api/autonomy/approve/:id", async (request) => {
+    try {
+      const { id } = request.params;
+      const autonomy = getAutonomy();
+      const result = await autonomy.approve(id);
+      return { ok: !!result, request: result };
+    } catch (error) {
+      return { ok: false, error: error instanceof Error ? error.message : "Unknown error" };
+    }
+  });
+
+  /**
+   * POST /api/autonomy/reject/:id - Reject a pending request
+   */
+  fastify.post("/api/autonomy/reject/:id", async (request) => {
+    try {
+      const { id } = request.params;
+      const { reason } = request.body || {};
+      const autonomy = getAutonomy();
+      const result = await autonomy.reject(id, reason || "Rejected by user");
+      return { ok: !!result, request: result };
+    } catch (error) {
+      return { ok: false, error: error instanceof Error ? error.message : "Unknown error" };
+    }
+  });
+
+  /**
+   * GET /api/autonomy/boundaries - Get current boundaries
+   */
+  fastify.get("/api/autonomy/boundaries", async () => {
+    try {
+      const autonomy = getAutonomy();
+      return { ok: true, boundaries: autonomy.getBoundaries() };
+    } catch (error) {
+      return { ok: false, error: error instanceof Error ? error.message : "Unknown error" };
+    }
   });
 
   // =========================================================================

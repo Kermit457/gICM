@@ -2,13 +2,13 @@
 import {
   IntegrationHub,
   setHubInstance
-} from "./chunk-OW2SLFFR.js";
+} from "./chunk-LYC4YFQE.js";
 
 // src/cli.ts
 import { Command } from "commander";
 var program = new Command();
 program.name("gicm-hub").description("gICM Integration Hub - Central event bus and API gateway").version("0.1.0");
-program.command("start").description("Start the integration hub").option("-p, --port <port>", "API port", "3001").option("--no-workflows", "Disable automated workflows").action(async (options) => {
+program.command("start").description("Start the integration hub").option("-p, --port <port>", "API port", process.env.PORT || "3001").option("--no-workflows", "Disable automated workflows").action(async (options) => {
   console.log("Starting gICM Integration Hub...\n");
   const hub = new IntegrationHub({
     apiPort: parseInt(options.port, 10),
@@ -42,7 +42,7 @@ program.command("start").description("Start the integration hub").option("-p, --
     process.exit(1);
   }
 });
-program.command("status").description("Show hub status (requires running hub)").option("-p, --port <port>", "API port", "3001").action(async (options) => {
+program.command("status").description("Show hub status (requires running hub)").option("-p, --port <port>", "API port", process.env.PORT || "3001").action(async (options) => {
   const port = options.port;
   try {
     const response = await fetch("http://localhost:" + port + "/api/status");
@@ -68,7 +68,7 @@ program.command("status").description("Show hub status (requires running hub)").
     process.exit(1);
   }
 });
-program.command("events").description("Show recent events").option("-p, --port <port>", "API port", "3001").option("-n, --limit <limit>", "Number of events", "20").action(async (options) => {
+program.command("events").description("Show recent events").option("-p, --port <port>", "API port", process.env.PORT || "3001").option("-n, --limit <limit>", "Number of events", "20").action(async (options) => {
   const port = options.port;
   const limit = options.limit;
   try {

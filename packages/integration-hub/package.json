@@ -20,6 +20,7 @@
   "dependencies": {
     "@fastify/cors": "^9.0.0",
     "@fastify/websocket": "^10.0.0",
+    "@gicm/autonomy": "workspace:*",
     "@gicm/growth-engine": "^1.0.0",
     "@gicm/money-engine": "^1.0.0",
     "@gicm/opus67": "workspace:*",
