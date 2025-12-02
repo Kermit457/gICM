@@ -3,8 +3,8 @@
  * Connects to the self-evolving AI runtime
  */
 
-// OPUS 67 BRAIN URL (separate from Hub)
-export const OPUS67_URL = process.env.NEXT_PUBLIC_OPUS67_URL || "http://localhost:3100";
+// OPUS 67 BRAIN URL (separate from Hub - runs on port 3102 locally)
+export const OPUS67_URL = process.env.NEXT_PUBLIC_OPUS67_URL || "http://localhost:3102";
 export const OPUS67_WS_URL = OPUS67_URL.replace(/^http/, "ws") + "/api/brain/ws";
 
 // Types matching packages/opus67/src/brain/brain-runtime.ts
@@ -213,9 +213,10 @@ export interface Opus67WebSocketMessage {
 export class Opus67WebSocket {
   private ws: WebSocket | null = null;
   private reconnectAttempts = 0;
-  private maxReconnectAttempts = 10;
+  private maxReconnectAttempts = 3; // Reduced - don't spam if OPUS67 not running
   private handlers: Map<string, Set<(data: unknown) => void>> = new Map();
   private pingInterval: NodeJS.Timeout | null = null;
+  private silentMode = false; // Stop logging after max attempts
 
   connect(): void {
     if (this.ws?.readyState === WebSocket.OPEN) return;
@@ -247,9 +248,12 @@ export class Opus67WebSocket {
         this.attemptReconnect();
       };
 
-      this.ws.onerror = (error) => {
-        console.error("[OPUS67-WS] Error:", error);
-        this.emit("error", { error });
+      this.ws.onerror = () => {
+        // Only log on first attempt to avoid console spam
+        if (!this.silentMode && this.reconnectAttempts === 0) {
+          console.warn("[OPUS67-WS] OPUS67 Brain not available (this is OK if not running locally)");
+        }
+        this.emit("error", {});
       };
     } catch (error) {
       console.error("[OPUS67-WS] Connection error:", error);
@@ -274,13 +278,18 @@ export class Opus67WebSocket {
 
   private attemptReconnect(): void {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.log("[OPUS67-WS] Max reconnection attempts reached");
+      if (!this.silentMode) {
+        console.log("[OPUS67-WS] OPUS67 Brain not running - disabling reconnects");
+        this.silentMode = true;
+      }
       return;
     }
 
     this.reconnectAttempts++;
     const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts), 30000);
-    console.log(`[OPUS67-WS] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
+    if (!this.silentMode) {
+      console.log(`[OPUS67-WS] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
+    }
 
     setTimeout(() => this.connect(), delay);
   }
