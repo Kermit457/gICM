@@ -30,7 +30,7 @@ services:
     name: gicm-hub
     runtime: node
     region: oregon
-    buildCommand: npm install -g pnpm && pnpm install && pnpm --filter @gicm/integration-hub... build
+    buildCommand: npm install -g pnpm@10 && pnpm install --no-frozen-lockfile && pnpm --filter @gicm/integration-hub... build
     startCommand: cd packages/integration-hub && npm start
     envVars:
       - key: NODE_ENV
@@ -49,7 +49,7 @@ services:
     runtime: node
     region: oregon
     plan: starter
-    buildCommand: npm install -g pnpm && pnpm install && pnpm --filter @gicm/opus67... build
+    buildCommand: npm install -g pnpm@10 && pnpm install --no-frozen-lockfile && pnpm --filter @gicm/opus67... build
     startCommand: cd packages/opus67 && npm start
     envVars:
       - key: NODE_ENV
