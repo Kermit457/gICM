@@ -2,7 +2,7 @@
  * Integration Hub API Client
  */
 
-export const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3001";
+export const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3100";
 
 // WebSocket URL (derives from HUB_URL)
 export const WS_URL = HUB_URL.replace(/^http/, "ws") + "/ws";

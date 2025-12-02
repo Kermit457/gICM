@@ -23,7 +23,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3001";
+const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3100";
 
 // Webhook types
 interface WebhookConfig {

@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 
 // Hub API configuration
-const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3001";
+const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3100";
 
 // Types
 interface StepProgress {

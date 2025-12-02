@@ -35,7 +35,7 @@ import {
   Legend,
 } from "recharts";
 
-const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3001";
+const HUB_URL = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3100";
 
 // Chart colors
 const COLORS = {
