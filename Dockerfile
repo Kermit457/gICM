@@ -35,6 +35,9 @@ RUN pnpm --filter @gicm/autonomy build || echo "Autonomy build skipped"
 WORKDIR /app/apps/dashboard
 RUN pnpm build
 
+# Ensure public directory exists (may be empty)
+RUN mkdir -p /app/apps/dashboard/public
+
 # Stage 3: Production
 FROM node:20-alpine AS runner
 WORKDIR /app
@@ -46,7 +49,7 @@ ENV HOSTNAME="0.0.0.0"
 # Copy standalone output
 COPY --from=builder /app/apps/dashboard/.next/standalone ./
 COPY --from=builder /app/apps/dashboard/.next/static ./apps/dashboard/.next/static
-COPY --from=builder /app/apps/dashboard/public ./apps/dashboard/public 2>/dev/null || true
+COPY --from=builder /app/apps/dashboard/public ./apps/dashboard/public
 
 WORKDIR /app/apps/dashboard
 
