@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 // Fallback WS URL if not imported
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3001/ws";
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:3100/ws";
 
 // HubEvent type for compatibility with hub.ts
 export interface HubEvent {

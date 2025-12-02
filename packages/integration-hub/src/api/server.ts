@@ -50,6 +50,13 @@ export class ApiServer {
     this.fastify.get("/ws", { websocket: true }, (socket) => {
       console.log("[HUB-API] WebSocket client connected");
 
+      // Send welcome message immediately
+      socket.send(JSON.stringify({
+        type: "connected",
+        timestamp: Date.now(),
+        message: "Connected to gICM Hub"
+      }));
+
       // Subscribe to all events
       const handler = (event: any) => {
         try {
@@ -66,6 +73,10 @@ export class ApiServer {
         this.hub.getEventBus().off("*", handler);
       });
 
+      socket.on("error", (err) => {
+        console.log("[HUB-API] WebSocket error:", err.message);
+      });
+
       socket.on("message", (message) => {
         try {
           const data = JSON.parse(message.toString());
@@ -73,9 +84,23 @@ export class ApiServer {
           // Handle incoming commands
           if (data.type === "ping") {
             socket.send(JSON.stringify({ type: "pong", timestamp: Date.now() }));
+          } else if (data.type === "subscribe") {
+            // Acknowledge subscription request
+            socket.send(JSON.stringify({
+              type: "subscribed",
+              channels: data.channels || [],
+              timestamp: Date.now()
+            }));
+          } else if (data.action === "subscribe") {
+            // Alternative format from useWebSocket hook
+            socket.send(JSON.stringify({
+              type: "subscribed",
+              rooms: data.rooms || [],
+              timestamp: Date.now()
+            }));
           }
         } catch {
-          // Invalid message
+          // Invalid message - ignore
         }
       });
     });

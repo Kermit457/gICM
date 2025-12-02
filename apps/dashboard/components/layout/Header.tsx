@@ -22,7 +22,8 @@ export function Header({ onMenuToggle, menuOpen }: HeaderProps) {
     // Check connection to Integration Hub
     const checkConnection = async () => {
       try {
-        const res = await fetch("http://localhost:3001/api/v1/status", {
+        const hubUrl = process.env.NEXT_PUBLIC_HUB_URL || "http://localhost:3100";
+        const res = await fetch(`${hubUrl}/api/status`, {
           method: "GET",
           signal: AbortSignal.timeout(2000)
         });

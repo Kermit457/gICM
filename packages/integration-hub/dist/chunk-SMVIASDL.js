@@ -15195,6 +15195,11 @@ var ApiServer = class {
     await registerRoutes(this.fastify, this.hub);
     this.fastify.get("/ws", { websocket: true }, (socket) => {
       console.log("[HUB-API] WebSocket client connected");
+      socket.send(JSON.stringify({
+        type: "connected",
+        timestamp: Date.now(),
+        message: "Connected to gICM Hub"
+      }));
       const handler = (event) => {
         try {
           socket.send(JSON.stringify(event));
@@ -15206,11 +15211,26 @@ var ApiServer = class {
         console.log("[HUB-API] WebSocket client disconnected");
         this.hub.getEventBus().off("*", handler);
       });
+      socket.on("error", (err) => {
+        console.log("[HUB-API] WebSocket error:", err.message);
+      });
       socket.on("message", (message) => {
         try {
           const data = JSON.parse(message.toString());
           if (data.type === "ping") {
             socket.send(JSON.stringify({ type: "pong", timestamp: Date.now() }));
+          } else if (data.type === "subscribe") {
+            socket.send(JSON.stringify({
+              type: "subscribed",
+              channels: data.channels || [],
+              timestamp: Date.now()
+            }));
+          } else if (data.action === "subscribe") {
+            socket.send(JSON.stringify({
+              type: "subscribed",
+              rooms: data.rooms || [],
+              timestamp: Date.now()
+            }));
           }
         } catch {
         }
@@ -15964,4 +15984,4 @@ export {
   setHubInstance,
   getHub
 };
-//# sourceMappingURL=chunk-LYC4YFQE.js.map
+//# sourceMappingURL=chunk-SMVIASDL.js.map
