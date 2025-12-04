@@ -21,6 +21,7 @@ export const MODEL_COSTS = {
   // Claude - QUALITY
   'claude-sonnet-4': { input: 3, output: 15 },
   'claude-opus-4': { input: 15, output: 75 },
+  'claude-opus-4.5': { input: 3, output: 15 }, // Opus 4.5 with extended thinking
   'claude-haiku-3.5': { input: 0.8, output: 4 },
 
   // OpenAI (fallback)

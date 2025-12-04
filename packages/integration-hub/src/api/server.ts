@@ -7,6 +7,7 @@ import fastifyCors from "@fastify/cors";
 import fastifyWebsocket from "@fastify/websocket";
 import type { IntegrationHub } from "../hub.js";
 import { registerRoutes } from "./routes.js";
+import authPlugin from "./auth-plugin.js";
 
 export interface ApiServerConfig {
   port?: number;
@@ -34,14 +35,61 @@ export class ApiServer {
    * Initialize the server
    */
   async initialize(): Promise<void> {
-    // Register CORS
+    // Register CORS - Secure configuration
     await this.fastify.register(fastifyCors, {
-      origin: true,
-      methods: ["GET", "POST", "PUT", "DELETE"],
+      origin: (origin, cb) => {
+        // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
+        if (!origin) return cb(null, true);
+
+        const allowedOrigins = [
+          "http://localhost:3000",
+          "http://localhost:3001",
+          "http://localhost:3200",
+          "https://gicm.dev",
+          "https://dashboard.gicm.dev",
+          "https://gicm-dashboard.vercel.app",
+          process.env.DASHBOARD_URL,
+        ].filter(Boolean);
+
+        if (allowedOrigins.includes(origin)) {
+          cb(null, true);
+        } else {
+          // Log unauthorized origin attempts in development
+          if (process.env.NODE_ENV !== "production") {
+            console.warn(`[HUB-API] CORS blocked origin: ${origin}`);
+          }
+          cb(null, false);
+        }
+      },
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     });
 
     // Register WebSocket
     await this.fastify.register(fastifyWebsocket);
+
+    // Register Authentication plugin
+    await this.fastify.register(authPlugin, {
+      jwtSecret: process.env.GICM_JWT_SECRET,
+      apiKeyPrefix: process.env.GICM_API_KEY_PREFIX || "gicm",
+      enabled: process.env.NODE_ENV === "production" || process.env.GICM_AUTH_ENABLED === "true",
+      publicRoutes: [
+        "/",
+        "/health",
+        "/ws",
+        "/api/status",
+        "/api/brain/status",
+        "/api/events",
+        "/api/events/*",
+        "/api/predictions/*",
+        "/api/v1/predictions/*",
+        "/api/autonomy/status",
+        "/api/money/status",
+        "/api/growth/status",
+        "/api/product/status",
+        "/api/hunter/status",
+      ],
+    });
 
     // Register REST routes
     await registerRoutes(this.fastify, this.hub);

@@ -1,0 +1,29 @@
+# Embeddings & RAG Expert
+
+> **ID:** `embeddings-expert`
+> **Tier:** 2
+> **Token Cost:** 10000
+> **MCP Connections:** context7, pinecone, qdrant
+
+## 🎯 What This Skill Does
+
+- Vector embeddings generation with OpenAI, Cohere, Voyage AI
+- Vector database integration (Pinecone, Qdrant, Weaviate, ChromaDB)
+- Advanced chunking strategies (token-aware, semantic, recursive)
+- Similarity search and semantic retrieval
+- Reranking with Cohere Rerank API
+- Complete RAG (Retrieval Augmented Generation) pipelines
+- Multi-tenant vector isolation patterns
+- Cost optimization for embeddings at scale
+- Production-ready code search and document QA systems
+
+## 📚 When to Use
+
+This skill is automatically loaded when:
+
+- **Keywords:** embeddings, vector, rag, retrieval, semantic search, similarity, pinecone, qdrant, weaviate, chromadb, rerank
+- **File Types:** N/A
+- **Directories:** N/A
+
+## 🚀 Core Capabilities
+

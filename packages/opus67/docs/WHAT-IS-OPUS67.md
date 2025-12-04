@@ -46,7 +46,7 @@ It's a **configuration layer** that makes Claude extremely powerful by giving it
 │   └─────────────────────────────────────────────────────┘   │
 │                         +                                   │
 │   ┌─────────────┐ ┌─────────────┐ ┌─────────────┐          │
-│   │ 84 MCPs     │ │ 95 Skills   │ │ 82 Agents   │          │
+│   │ 82 MCPs     │ │ 140 Skills  │ │ 84 Agents   │          │
 │   │ (tools)     │ │ (workflows) │ │ (personas)  │          │
 │   └─────────────┘ └─────────────┘ └─────────────┘          │
 │                         +                                   │
@@ -67,9 +67,9 @@ It's a **configuration layer** that makes Claude extremely powerful by giving it
 
 ```
 OPUS 67 = Claude (the brain)
-        + 84 MCP Servers (live tools)
-        + 95 Skills (expert workflows)
-        + 82 Agents (specialist personas)
+        + 82 MCP Servers (live tools)
+        + 140 Skills (expert workflows)
+        + 84 Agents (specialist personas)
         + 30 Modes (task-optimized contexts)
         + Memory (persistent across sessions)
         + Multi-model routing (cost optimization)

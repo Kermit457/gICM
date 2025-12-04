@@ -13,11 +13,12 @@ import { tokenTracker, type ModelName, type TokenUsage } from '../benchmark/toke
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Types
-export type ModelTier = 'free' | 'cheap' | 'quality';
+export type ModelTier = 'free' | 'cheap' | 'quality' | 'premium';
 export type TaskType =
   | 'scan' | 'analyze' | 'monitor' | 'index'      // FREE tier
   | 'generate' | 'build' | 'refactor' | 'code'    // CHEAP tier
-  | 'review' | 'synthesize' | 'chairman' | 'audit' | 'reason'; // QUALITY tier
+  | 'review' | 'synthesize' | 'chairman' | 'audit' // QUALITY tier
+  | 'reason' | 'complex-reasoning' | 'critical';   // PREMIUM tier (extended thinking)
 
 export interface RoutingRule {
   taskTypes: TaskType[];
@@ -82,14 +83,21 @@ const DEFAULT_CONFIG: RoutingConfig = {
     },
     // QUALITY tier - Claude
     {
-      taskTypes: ['review', 'synthesize', 'chairman', 'audit', 'reason'],
+      taskTypes: ['review', 'synthesize', 'chairman', 'audit'],
       model: 'claude-sonnet-4',
       tier: 'quality',
+      fallback: 'claude-opus-4'
+    },
+    // PREMIUM tier - Extended Thinking (Opus 4.5)
+    {
+      taskTypes: ['reason', 'complex-reasoning', 'critical'],
+      model: 'claude-opus-4.5',
+      tier: 'premium',
       fallback: 'claude-opus-4'
     }
   ],
   defaultModel: 'deepseek-chat',
-  fallbackChain: ['gemini-2.0-flash', 'deepseek-chat', 'claude-haiku-3.5', 'claude-sonnet-4']
+  fallbackChain: ['gemini-2.0-flash', 'deepseek-chat', 'claude-haiku-3.5', 'claude-sonnet-4', 'claude-opus-4.5']
 };
 
 /**
@@ -141,7 +149,7 @@ export class MultiModelRouter extends EventEmitter<RouterEvents> {
     const models: ModelName[] = [
       'gemini-2.0-flash', 'gemini-2.0-flash-thinking', 'gemini-1.5-flash', 'gemini-1.5-pro',
       'deepseek-chat', 'deepseek-coder', 'deepseek-reasoner',
-      'claude-sonnet-4', 'claude-opus-4', 'claude-haiku-3.5',
+      'claude-sonnet-4', 'claude-opus-4', 'claude-opus-4.5', 'claude-haiku-3.5',
       'gpt-4o', 'gpt-4o-mini'
     ];
 
@@ -265,6 +273,7 @@ export class MultiModelRouter extends EventEmitter<RouterEvents> {
   getTier(model: ModelName): ModelTier {
     if (model.startsWith('gemini')) return 'free';
     if (model.startsWith('deepseek')) return 'cheap';
+    if (model === 'claude-opus-4.5') return 'premium';
     return 'quality';
   }
 
@@ -299,7 +308,7 @@ export class MultiModelRouter extends EventEmitter<RouterEvents> {
   getRoutingStats(): { byTier: Record<ModelTier, number>; byModel: Record<string, number> } {
     const summary = tokenTracker.getSummary();
 
-    const byTier: Record<ModelTier, number> = { free: 0, cheap: 0, quality: 0 };
+    const byTier: Record<ModelTier, number> = { free: 0, cheap: 0, quality: 0, premium: 0 };
     const byModel: Record<string, number> = {};
 
     for (const [model, data] of summary.byModel) {
@@ -367,9 +376,10 @@ export class MultiModelRouter extends EventEmitter<RouterEvents> {
 │                                                                  │
 │  COST BY TIER                                                    │
 │  ────────────────────────────────────────────────────────────    │
-│  FREE (Gemini):    $${stats.byTier.free.toFixed(4).padEnd(12)}                         │
-│  CHEAP (DeepSeek): $${stats.byTier.cheap.toFixed(4).padEnd(12)}                         │
-│  QUALITY (Claude): $${stats.byTier.quality.toFixed(4).padEnd(12)}                         │
+│  FREE (Gemini):        $${stats.byTier.free.toFixed(4).padEnd(12)}                     │
+│  CHEAP (DeepSeek):     $${stats.byTier.cheap.toFixed(4).padEnd(12)}                     │
+│  QUALITY (Claude):     $${stats.byTier.quality.toFixed(4).padEnd(12)}                     │
+│  PREMIUM (Opus 4.5):   $${stats.byTier.premium.toFixed(4).padEnd(12)} 🧠                   │
 │                                                                  │
 │  MODEL HEALTH                                                    │
 │  ────────────────────────────────────────────────────────────    │`;
@@ -385,9 +395,10 @@ export class MultiModelRouter extends EventEmitter<RouterEvents> {
 │                                                                  │
 │  ROUTING RULES                                                   │
 │  ────────────────────────────────────────────────────────────    │
-│  scan/analyze/monitor → Gemini (FREE)                            │
-│  generate/build/code  → DeepSeek ($0.14/M)                       │
-│  review/synthesize    → Claude ($3/M)                            │
+│  scan/analyze/monitor       → Gemini (FREE)                      │
+│  generate/build/code        → DeepSeek ($0.14/M)                 │
+│  review/synthesize          → Claude ($3/M)                      │
+│  reason/critical-reasoning  → Opus 4.5 🧠 (PREMIUM)              │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘`;
 

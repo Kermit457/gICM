@@ -49,7 +49,7 @@ export interface UseWebSocketOptions {
 const DEFAULT_OPTIONS: Required<UseWebSocketOptions> = {
   autoReconnect: true,
   reconnectDelay: 3000,
-  maxReconnectAttempts: 10,
+  maxReconnectAttempts: 3, // Reduced - don't spam if Hub not running
   heartbeat: true,
   heartbeatInterval: 30000,
   rooms: [],
@@ -71,6 +71,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
   const reconnectTimeout = useRef<NodeJS.Timeout | null>(null);
   const heartbeatInterval = useRef<NodeJS.Timeout | null>(null);
   const mountedRef = useRef(true);
+  const errorLoggedRef = useRef(false); // Only log error once
 
   const updateStatus = useCallback((newStatus: ConnectionStatus) => {
     if (mountedRef.current) {
@@ -135,6 +136,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       ws.onopen = () => {
         if (!mountedRef.current) return;
         reconnectAttempts.current = 0;
+        errorLoggedRef.current = false; // Reset error flag on successful connect
         updateStatus("connected");
         startHeartbeat();
 
@@ -166,9 +168,13 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
         }
       };
 
-      ws.onerror = (event) => {
+      ws.onerror = () => {
         if (!mountedRef.current) return;
-        console.error("WebSocket error:", event);
+        // Only log once to avoid console spam
+        if (!errorLoggedRef.current) {
+          console.warn("[Hub-WS] Hub WebSocket not available (this is OK if Hub not running locally)");
+          errorLoggedRef.current = true;
+        }
         setError("Connection error");
         updateStatus("error");
       };

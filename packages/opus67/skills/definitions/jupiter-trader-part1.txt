@@ -1,0 +1,29 @@
+# Jupiter Trader
+
+> **ID:** > **Tier:** 1
+> **Token Cost:** 8000
+> **MCP Connections:** jupiter
+
+## What This Skill Does
+
+Expert-level Jupiter DEX aggregator integration for Solana token swaps with optimal routing, price impact analysis, slippage management, and MEV protection. Covers Jupiter V6 API, swap execution, limit orders, DCA strategies, and production trading patterns.
+
+## When to Use
+
+This skill is automatically loaded when:
+
+- **Keywords:** swap, jupiter, buy token, sell token, exchange, dex, trade, quote, route
+- **File Types:** .ts, .tsx, .js
+- **Directories:** integrations/, defi/, trading/
+
+---
+
+## Core Capabilities
+
+### 1. Quote API
+
+The Jupiter Quote API finds the best price across all Solana DEXes. It aggregates liquidity from Raydium, Orca, Meteora, Phoenix, Lifinity, OpenBook, and 20+ other venues.
+
+**API Endpoints:**
+
+\

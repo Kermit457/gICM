@@ -14,6 +14,8 @@ import { evolutionLoop, EvolutionLoop, createEvolutionLoop, patternDetector, typ
 import { metricsCollector, tokenTracker, latencyProfiler, type MetricsSnapshot } from '../benchmark/index.js';
 import { detectMode, getMode, type ModeName, type DetectionResult } from '../mode-selector.js';
 import { generateBootScreen, generateStatusLine } from '../boot-sequence.js';
+import { PromptCacheManager, createPromptCache, type CacheStatistics } from '../cache/prompt-cache.js';
+import { FileContextManager, createFileContext, type ConsistencyCheck } from './file-context.js';
 
 // v4.0 Intelligence Layer
 import {
@@ -29,6 +31,8 @@ export interface BrainConfig {
   enableMemory: boolean;
   enableEvolution: boolean;
   enableIntelligence: boolean;  // v4.0: Pre-indexed knowledge layer
+  enableCaching: boolean;  // v5.0: Ephemeral prompt caching
+  enableFileContext: boolean;  // v5.0: File-aware memory system
   defaultMode: ModeName;
   autoStartEvolution: boolean;
   councilThreshold: number; // Complexity score threshold for council
@@ -70,6 +74,8 @@ export interface BrainResponse {
     recommendations: string[];
   };
   detectedSkills?: string[];
+  // v5.0: File-aware memory results
+  fileConsistency?: ConsistencyCheck;
 }
 
 export interface BrainStatus {
@@ -101,6 +107,8 @@ const DEFAULT_CONFIG: BrainConfig = {
   enableMemory: true,
   enableEvolution: true,
   enableIntelligence: true,  // v4.0: Pre-indexed knowledge enabled by default
+  enableCaching: true,  // v5.0: Prompt caching enabled by default
+  enableFileContext: true,  // v5.0: File-aware memory enabled by default
   defaultMode: 'auto',
   autoStartEvolution: false,
   councilThreshold: 7, // Use council for complexity >= 7
@@ -120,6 +128,8 @@ export class BrainRuntime extends EventEmitter<BrainEvents> {
   private evolution: EvolutionLoop;
   private modelClient: ModelClient;
   private intelligence: KnowledgeStore;  // v4.0
+  private promptCache: PromptCacheManager;  // v5.0
+  private fileContext: FileContextManager;  // v5.0: File-aware memory
 
   private running = false;
   private currentMode: ModeName;
@@ -145,6 +155,19 @@ export class BrainRuntime extends EventEmitter<BrainEvents> {
 
     // v4.0: Initialize intelligence layer
     this.intelligence = getKnowledgeStore();
+
+    // v5.0: Initialize prompt cache
+    this.promptCache = createPromptCache({
+      enableCaching: this.config.enableCaching,
+      anthropicApiKey: process.env.ANTHROPIC_API_KEY
+    });
+
+    // v5.0: Initialize file-aware memory
+    this.fileContext = createFileContext({
+      enableRelationshipTracking: this.config.enableFileContext,
+      enableAutoSummary: true,
+      maxSessionFiles: 100
+    });
 
     // Register pattern detector with evolution
     this.evolution.registerDetector(patternDetector.createDetector());
@@ -285,16 +308,32 @@ export class BrainRuntime extends EventEmitter<BrainEvents> {
           taskType: this.modeToTaskType(detection.mode)
         });
 
-        // Call the actual AI model API
-        const systemPrompt = `You are OPUS 67, an advanced AI assistant powered by Claude Opus 4.5.
+        // v5.0: Use prompt caching for complex queries (complexity >= 6)
+        const useCache = this.config.enableCaching && detection.complexity_score >= 6;
+
+        if (useCache) {
+          // Use cached prompts for complex queries
+          const cacheResult = await this.promptCache.query({
+            query: enhancedQuery,
+            loadedSkills: detectedSkills,
+            userContext: memoryContext?.enhancedPrompt,
+            systemPrompt: `Current mode: ${detection.mode.toUpperCase()}\nTask type: ${this.modeToTaskType(detection.mode)}`
+          });
+
+          response = cacheResult.content;
+          model = routingDecision.model;
+        } else {
+          // Standard model call without caching
+          const systemPrompt = `You are OPUS 67, an advanced AI assistant powered by Claude Opus 4.5.
 Current mode: ${detection.mode.toUpperCase()}
 Task type: ${this.modeToTaskType(detection.mode)}
 
 Be helpful, accurate, and concise. Respond appropriately for the current mode.`;
 
-        const modelResult = await this.modelClient.call(routingDecision, enhancedQuery, systemPrompt);
-        response = modelResult.content;
-        model = modelResult.model;
+          const modelResult = await this.modelClient.call(routingDecision, enhancedQuery, systemPrompt);
+          response = modelResult.content;
+          model = modelResult.model;
+        }
       }
 
       const latencyMs = performance.now() - startTime;
@@ -447,6 +486,29 @@ Be helpful, accurate, and concise. Respond appropriately for the current mode.`;
   }
 
   /**
+   * Get file context manager (v5.0)
+   */
+  getFileContext(): FileContextManager {
+    return this.fileContext;
+  }
+
+  /**
+   * Track a file in context (v5.0)
+   */
+  async trackFile(filePath: string, content?: string): Promise<void> {
+    if (this.config.enableFileContext) {
+      await this.fileContext.accessFile(filePath, content);
+    }
+  }
+
+  /**
+   * Check file consistency (v5.0)
+   */
+  async checkFileConsistency(filePath: string): Promise<ConsistencyCheck> {
+    return this.fileContext.checkConsistency(filePath);
+  }
+
+  /**
    * Set mode manually
    */
   setMode(mode: ModeName): void {
@@ -574,12 +636,31 @@ Be helpful, accurate, and concise. Respond appropriately for the current mode.`;
     return this.intelligenceReady;
   }
 
+  // ===========================================================================
+  // v5.0 PROMPT CACHING METHODS
+  // ===========================================================================
+
+  /**
+   * Get prompt cache statistics
+   */
+  getCacheStats(): CacheStatistics {
+    return this.promptCache.getStats();
+  }
+
+  /**
+   * Format cache statistics for display
+   */
+  formatCacheStats(): string {
+    return this.promptCache.formatStats();
+  }
+
   /**
    * Format status for display
    */
   async formatStatus(): Promise<string> {
     const status = await this.getStatus();
     const uptimeHours = (status.uptime / 3600000).toFixed(1);
+    const cacheStats = this.getCacheStats();
 
     return `
 ╔══════════════════════════════════════════════════════════════════╗
@@ -596,6 +677,7 @@ Be helpful, accurate, and concise. Respond appropriately for the current mode.`;
 ║  Memory:       ${this.config.enableMemory ? '✅ ENABLED' : '❌ DISABLED'.padEnd(47)} ║
 ║  Evolution:    ${status.evolutionActive ? '🔄 ACTIVE' : '⏸ PAUSED'.padEnd(47)} ║
 ║  Intelligence: ${this.intelligenceReady ? '🧠 READY' : '⏳ LOADING'.padEnd(47)} ║
+║  Caching:      ${this.config.enableCaching ? '💾 ENABLED' : '❌ DISABLED'.padEnd(47)} ║
 ║                                                                  ║
 ║  METRICS                                                         ║
 ║  ────────────────────────────────────────────────────────────    ║
@@ -605,6 +687,12 @@ Be helpful, accurate, and concise. Respond appropriately for the current mode.`;
 ║  Memory Nodes: ${String(status.memoryNodes).padEnd(46)} ║
 ║  Evolution Cycles: ${String(status.evolutionCycles).padEnd(42)} ║
 ║  Uptime: ${uptimeHours}h${' '.repeat(51)} ║
+║                                                                  ║
+║  PROMPT CACHING (v5.0)                                           ║
+║  ────────────────────────────────────────────────────────────    ║
+║  Cache Hit Rate: ${(cacheStats.hitRate * 100).toFixed(1)}%${' '.repeat(41)} ║
+║  Total Saved: $${cacheStats.totalSaved.toFixed(2).padEnd(45)} ║
+║  Cached Size: ${String(cacheStats.cachedContentSize).padEnd(44)} tokens ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝`;
   }

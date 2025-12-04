@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { ContextIndexer, SkillLoader, MCPHub, AutonomyEngine } from './chunk-F3FXQMHP.js';
+import { ContextIndexer, SkillLoader, MCPHub, AutonomyEngine } from './chunk-3PPYRVBY.js';
 import { EventEmitter } from 'eventemitter3';
 import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';

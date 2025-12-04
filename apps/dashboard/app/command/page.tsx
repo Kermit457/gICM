@@ -54,7 +54,8 @@ interface EngineMetrics {
 }
 
 // Format currency
-function formatCurrency(value: number): string {
+function formatCurrency(value: number | undefined | null): string {
+  if (value == null) return "$0";
   if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
   if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
   return `$${value.toFixed(0)}`;
@@ -127,7 +128,7 @@ const ENGINE_CONFIG = [
     icon: Shield,
     color: "yellow",
     description: "Approvals & audit",
-    link: "/brain",
+    link: "/autonomy",
   },
   {
     id: "hunter",

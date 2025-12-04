@@ -1,6 +1,6 @@
 # OPUS 67
 
-> Self-Evolving AI Runtime v4.1 - 95 Skills • 84 MCPs • 30 Modes • 190 Tests
+> Self-Evolving AI Runtime v5.1 - 140 Skills • 82 MCPs • 30 Modes • 84 Agents
 
 ---
 
@@ -21,9 +21,10 @@
 ```
 
 **OPUS 67** wraps Claude with:
-- **95 specialist skills** (auto-loaded based on task)
-- **84 MCP connections** (live data, APIs, blockchain)
+- **140 specialist skills** (auto-loaded based on task)
+- **82 MCP connections** (live data, APIs, blockchain)
 - **30 optimized modes** (right context for each task)
+- **84 expert agents** (domain-specific personas)
 - **Persistent memory** (remembers across sessions)
 - **Multi-model routing** (Opus/Sonnet/Haiku for cost optimization)
 
@@ -45,12 +46,12 @@ See [docs/WHAT-IS-OPUS67.md](./docs/WHAT-IS-OPUS67.md) for the full explanation.
 ║  ╚██████╔╝██║     ╚██████╔╝███████║    ╚██████╔╝   ██║                    ║
 ║   ╚═════╝ ╚═╝      ╚═════╝ ╚══════╝     ╚═════╝    ╚═╝                    ║
 ║                                                                           ║
-║                    Self-Evolving AI Runtime v4.1                          ║
+║                    Self-Evolving AI Runtime v5.1                          ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
 ```
 
-**95 Skills • 84 MCPs • 30 Modes • Multi-Model Router • 190 Tests**
+**140 Skills • 82 MCPs • 30 Modes • 84 Agents • Unified Brain API**
 
 </div>
 

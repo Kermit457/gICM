@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "indexed": "2025-12-04T05:54:36.764Z",
+  "indexed": "2025-12-04T10:30:51.851Z",
   "files": [
     {
       "path": "agents\\learning-observer.yaml",
@@ -166,15 +166,15 @@
     },
     {
       "path": "docs\\VERSION-HISTORY.md",
-      "hash": "f5b782b25ae4cf91b09e049ebdc14b19",
-      "tokens": 1658,
-      "lastModified": "2025-12-04T05:45:03.810Z"
+      "hash": "60d718116460c287ea3549a4ce9992ea",
+      "tokens": 2015,
+      "lastModified": "2025-12-04T10:06:46.288Z"
     },
     {
       "path": "docs\\WHAT-IS-OPUS67.md",
-      "hash": "254e736a649be25bc5f88ad3a24e17a5",
+      "hash": "1084b33f236d84307b518c45baca8cc5",
       "tokens": 1961,
-      "lastModified": "2025-12-02T08:07:42.768Z"
+      "lastModified": "2025-12-04T10:06:03.341Z"
     },
     {
       "path": "door\\THE_DOOR.md",
@@ -232,15 +232,15 @@
     },
     {
       "path": "package.json",
-      "hash": "22e469e35c7f9aac478a3a4b55f994fe",
-      "tokens": 351,
-      "lastModified": "2025-12-04T05:40:38.283Z"
+      "hash": "dc62f82f0be6ef94ca610a33a160316a",
+      "tokens": 365,
+      "lastModified": "2025-12-04T10:04:48.965Z"
     },
     {
       "path": "README.md",
-      "hash": "b64fd7557900dee5c239243aa11c4a81",
-      "tokens": 2282,
-      "lastModified": "2025-12-04T05:45:48.517Z"
+      "hash": "429b14c9ebe377fe43fdd368a22b352d",
+      "tokens": 2295,
+      "lastModified": "2025-12-04T10:05:29.013Z"
     },
     {
       "path": "scripts\\efficiency-calculator.js",
@@ -271,6 +271,30 @@
       "hash": "f86e129411f94e4c6f493ec382e00cf0",
       "tokens": 2452,
       "lastModified": "2025-12-02T03:12:19.822Z"
+    },
+    {
+      "path": "skills\\definitions\\document-generation\\chart-visualization-expert.md",
+      "hash": "b3e13808f66876f198bf0f4669db600f",
+      "tokens": 4496,
+      "lastModified": "2025-12-04T07:50:22.537Z"
+    },
+    {
+      "path": "skills\\definitions\\document-generation\\excel-sheets-master.md",
+      "hash": "edf2b715d9d98c8aadbbbb1cfde3493f",
+      "tokens": 3526,
+      "lastModified": "2025-12-04T07:44:20.019Z"
+    },
+    {
+      "path": "skills\\definitions\\document-generation\\pdf-report-generator.md",
+      "hash": "604dee77aaa91cc02abfd62606d191cb",
+      "tokens": 4352,
+      "lastModified": "2025-12-04T07:48:54.184Z"
+    },
+    {
+      "path": "skills\\definitions\\document-generation\\powerpoint-slides-master.md",
+      "hash": "2a6f53a4db10eaef19eb00d574977950",
+      "tokens": 4097,
+      "lastModified": "2025-12-04T07:46:07.813Z"
     },
     {
       "path": "skills\\definitions\\nextjs-14-expert.md",
@@ -1006,9 +1030,9 @@
     },
     {
       "path": "skills\\registry.yaml",
-      "hash": "de38da01d2d41dc6d77daf28f6a43049",
-      "tokens": 15794,
-      "lastModified": "2025-12-04T04:33:45.270Z"
+      "hash": "ec5d227f8ab25634285e55e574391485",
+      "tokens": 16378,
+      "lastModified": "2025-12-04T10:04:24.579Z"
     },
     {
       "path": "src\\agents\\index.ts",
@@ -1084,9 +1108,9 @@
     },
     {
       "path": "src\\benchmark\\token-tracker.ts",
-      "hash": "43e55de4b8042e95dde31948e183b8d9",
-      "tokens": 2503,
-      "lastModified": "2025-12-02T04:58:20.908Z"
+      "hash": "e9849f5770dcf2496a3f945213cd09bc",
+      "tokens": 2523,
+      "lastModified": "2025-12-04T07:15:48.844Z"
     },
     {
       "path": "src\\boot-sequence.ts",
@@ -1108,21 +1132,63 @@
     },
     {
       "path": "src\\brain\\brain-runtime.ts",
-      "hash": "5e870bda29cba6d0b70b01cd77b3bc69",
-      "tokens": 4855,
-      "lastModified": "2025-12-02T10:50:46.771Z"
+      "hash": "97d0e9ede0b2be2e10567402486b1ec3",
+      "tokens": 5687,
+      "lastModified": "2025-12-04T08:11:51.392Z"
+    },
+    {
+      "path": "src\\brain\\file-context.ts",
+      "hash": "7bc8fceb2de271e0d8a2146eebeb31c6",
+      "tokens": 5789,
+      "lastModified": "2025-12-04T08:05:54.619Z"
     },
     {
       "path": "src\\brain\\index.ts",
-      "hash": "4f5feecbafce0bda752124be72c3d8a6",
-      "tokens": 123,
-      "lastModified": "2025-12-02T05:47:27.048Z"
+      "hash": "79b340c406616edb3ce5b8d3bea75f94",
+      "tokens": 559,
+      "lastModified": "2025-12-04T08:31:50.268Z"
+    },
+    {
+      "path": "src\\brain\\long-horizon-planning.ts",
+      "hash": "7c9c35b252671d9a556815cef554cb65",
+      "tokens": 4131,
+      "lastModified": "2025-12-04T08:22:07.309Z"
+    },
+    {
+      "path": "src\\brain\\reasoning.ts",
+      "hash": "7c7c09c283199d2398e3daa95bf5e359",
+      "tokens": 4342,
+      "lastModified": "2025-12-04T07:21:58.066Z"
     },
     {
       "path": "src\\brain\\server.ts",
       "hash": "49287fa9c95e8600f6e5951fe450fe52",
       "tokens": 2768,
       "lastModified": "2025-12-02T07:24:36.632Z"
+    },
+    {
+      "path": "src\\brain\\swe-bench-patterns.ts",
+      "hash": "a5ef77c64efbadd50aaaf2cc51d079df",
+      "tokens": 3434,
+      "lastModified": "2025-12-04T08:17:16.215Z"
+    },
+    {
+      "path": "src\\brain\\unified-api.ts",
+      "hash": "d13620da40e5a571cb4fd0e17a3377c5",
+      "tokens": 3396,
+      "lastModified": "2025-12-04T08:33:53.163Z"
+    },
+    {
+      "path": "src\\brain\\verification-loops.ts",
+      "hash": "da59e2bde5ce244bc7f0b4a45af33974",
+      "tokens": 4607,
+      "lastModified": "2025-12-04T08:25:33.951Z"
+    },
+    {
+      "path": "src\\cache\\prompt-cache.ts",
+      "hash": "f5c0d8e7a8df76a0499ae14442b50912",
+      "tokens": 3500,
+      "lastModified": "2025-12-04T07:27:56.379Z"
     },
     {
       "path": "src\\cli.ts",
@@ -1269,16 +1335,22 @@
       "lastModified": "2025-12-02T10:44:06.111Z"
     },
     {
+      "path": "src\\mcp\\discovery.ts",
+      "hash": "d5642940ab4710038f900f1ed99f04f7",
+      "tokens": 2511,
+      "lastModified": "2025-12-04T07:35:48.110Z"
+    },
+    {
       "path": "src\\mcp\\hub.ts",
-      "hash": "d126d65c26b141aca92af8462784c435",
-      "tokens": 3139,
-      "lastModified": "2025-12-02T07:27:29.016Z"
+      "hash": "a71ed4eb2eea30e05e20bb6994f7187e",
+      "tokens": 3421,
+      "lastModified": "2025-12-04T07:39:11.352Z"
     },
     {
       "path": "src\\mcp\\index.ts",
-      "hash": "76254bc137f6a0d648c198f67c519414",
-      "tokens": 22,
-      "lastModified": "2025-12-04T05:20:54.129Z"
+      "hash": "55b6caa0841a6f608af748d64c1f122c",
+      "tokens": 36,
+      "lastModified": "2025-12-04T07:36:01.554Z"
     },
     {
       "path": "src\\mcp-hub.ts",
@@ -1396,9 +1468,9 @@
     },
     {
       "path": "src\\models\\pricing.ts",
-      "hash": "a6e308bb103eb4108626f59ecda53541",
-      "tokens": 480,
-      "lastModified": "2025-12-04T05:32:17.263Z"
+      "hash": "6e586ff9fb87eea74004b5b14d567f02",
+      "tokens": 505,
+      "lastModified": "2025-12-04T07:15:57.905Z"
     },
     {
       "path": "src\\models\\providers.ts",
@@ -1408,9 +1480,9 @@
     },
     {
       "path": "src\\models\\router.ts",
-      "hash": "54c009687392eed906572ca58c9ee1e0",
-      "tokens": 3109,
-      "lastModified": "2025-12-02T04:58:23.525Z"
+      "hash": "d00392d80ac3e48a4f1348f26fe00ee1",
+      "tokens": 3249,
+      "lastModified": "2025-12-04T07:17:11.330Z"
     },
     {
       "path": "src\\models\\types.ts",
@@ -1521,6 +1593,30 @@
       "lastModified": "2025-12-02T07:57:41.158Z"
     },
     {
+      "path": "src\\tests\\discovery.test.ts",
+      "hash": "5bf73c9d29c27a925b4afac9ebe185be",
+      "tokens": 2405,
+      "lastModified": "2025-12-04T07:40:09.852Z"
+    },
+    {
+      "path": "src\\tests\\e2e-integration.test.ts",
+      "hash": "84fc66d34234932e8d38d4e5f0382efc",
+      "tokens": 3994,
+      "lastModified": "2025-12-04T08:34:10.669Z"
+    },
+    {
+      "path": "src\\tests\\file-context.test.ts",
+      "hash": "13bcc6003786af94cd85e1a9d55cc2c8",
+      "tokens": 3904,
+      "lastModified": "2025-12-04T08:06:20.720Z"
+    },
+    {
+      "path": "src\\tests\\long-horizon-planning.test.ts",
+      "hash": "72bb5c1ed8270c74fd6f300f2c09435c",
+      "tokens": 4313,
+      "lastModified": "2025-12-04T08:21:44.085Z"
+    },
+    {
       "path": "src\\tests\\modules.test.ts",
       "hash": "3044b10e698b3934fcedef78c76b9795",
       "tokens": 1366,
@@ -1533,10 +1629,28 @@
       "lastModified": "2025-12-04T05:10:45.382Z"
     },
     {
+      "path": "src\\tests\\reasoning.test.ts",
+      "hash": "881cc36166a92212c4268809a292c3f8",
+      "tokens": 1995,
+      "lastModified": "2025-12-04T07:18:51.433Z"
+    },
+    {
+      "path": "src\\tests\\swe-bench-patterns.test.ts",
+      "hash": "9ac238170d382457bdcd47a5e0b84021",
+      "tokens": 3319,
+      "lastModified": "2025-12-04T08:18:35.815Z"
+    },
+    {
+      "path": "src\\tests\\verification-loops.test.ts",
+      "hash": "91ad965d61cb4f675185cb28fb09f311",
+      "tokens": 4398,
+      "lastModified": "2025-12-04T08:28:00.963Z"
+    },
+    {
       "path": "THE_DOOR.md",
-      "hash": "63fdc16632cd082eaabf4e5d56329a9e",
-      "tokens": 2732,
-      "lastModified": "2025-12-01T07:14:39.654Z"
+      "hash": "dc4d4b1f1ddc42de9dde6207f35e5e2c",
+      "tokens": 6311,
+      "lastModified": "2025-12-04T10:03:41.866Z"
     },
     {
       "path": "tsconfig.json",
@@ -1557,5 +1671,5 @@
       "lastModified": "2025-12-04T05:42:51.627Z"
     }
   ],
-  "totalTokens": 427392
+  "totalTokens": 506197
 }

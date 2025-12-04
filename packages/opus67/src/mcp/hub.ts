@@ -6,6 +6,7 @@
 import { readFileSync } from "fs";
 import { parse as parseYaml } from "yaml";
 import { EventEmitter } from "eventemitter3";
+import { DynamicToolDiscovery, createDiscovery, type DiscoveryResult } from './discovery.js';
 
 // =============================================================================
 // TYPES
@@ -71,10 +72,12 @@ export class MCPHub extends EventEmitter<MCPHubEvents> {
   private config: MCPConfig | null = null;
   private connected: Map<string, MCPConnection> = new Map();
   private clients: Map<string, MCPClient> = new Map();
+  private discovery: DynamicToolDiscovery; // v5.0: Dynamic tool discovery
 
   constructor(configPath: string) {
     super();
     this.configPath = configPath;
+    this.discovery = createDiscovery(); // v5.0
   }
 
   /**
@@ -83,6 +86,12 @@ export class MCPHub extends EventEmitter<MCPHubEvents> {
   async loadConfig(): Promise<MCPConfig> {
     const content = readFileSync(this.configPath, "utf-8");
     this.config = parseYaml(content) as MCPConfig;
+
+    // v5.0: Register connections with discovery engine
+    if (this.config.connections) {
+      this.discovery.registerConnections(this.config.connections);
+    }
+
     return this.config;
   }
 
@@ -183,6 +192,37 @@ export class MCPHub extends EventEmitter<MCPHubEvents> {
     for (const mcpId of group) {
       await this.connect(mcpId);
     }
+  }
+
+  /**
+   * v5.0: Discover and connect relevant MCPs for a task
+   *
+   * This is the dynamic discovery method that analyzes the task
+   * and connects only relevant MCPs instead of all 84.
+   */
+  async discoverAndConnect(task: string): Promise<DiscoveryResult> {
+    if (!this.config) {
+      await this.loadConfig();
+    }
+
+    // Discover relevant tools
+    const result = await this.discovery.discoverTools(task);
+
+    // Connect discovered MCPs
+    for (const conn of result.connections) {
+      if (!this.connected.has(conn.id)) {
+        await this.connect(conn.id);
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Get discovery engine (for advanced usage)
+   */
+  getDiscovery(): DynamicToolDiscovery {
+    return this.discovery;
   }
 
   /**

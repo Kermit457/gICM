@@ -1,0 +1,59 @@
+{
+  "name": "@gicm/skill-solana-toolkit",
+  "version": "1.0.0",
+  "description": "Solana development utilities for OPUS 67 skills",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./token": {
+      "import": "./dist/token.js",
+      "types": "./dist/token.d.ts"
+    },
+    "./anchor": {
+      "import": "./dist/anchor.js",
+      "types": "./dist/anchor.d.ts"
+    },
+    "./jupiter": {
+      "import": "./dist/jupiter.js",
+      "types": "./dist/jupiter.d.ts"
+    },
+    "./pda": {
+      "import": "./dist/pda.js",
+      "types": "./dist/pda.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0",
+    "@solana/spl-token": "^0.4.0",
+    "bs58": "^5.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "solana",
+    "web3",
+    "blockchain",
+    "opus67",
+    "gicm"
+  ],
+  "author": "Mirko Basil Dölger",
+  "license": "MIT"
+}

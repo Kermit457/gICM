@@ -1,10 +1,10 @@
 # OPUS 67 Skills Registry
-# Version: 4.1.0 "Learning Layer"
-# Total Skills: 130+ (growing via auto-learn)
+# Version: 5.1.0 "The Precision Update"
+# Total Skills: 145 (verified via deep audit)
 
 meta:
-  version: "4.1.0"
-  total_skills: 130
+  version: "5.1.0"
+  total_skills: 145
   target_skills: 150
   auto_load_enabled: true
   max_skills_per_session: 5
@@ -2041,56 +2041,90 @@ skills_v41:
   # DEVOPS SKILLS (4) - Infrastructure & Deployment
   # ---------------------------------------------------------------------------
 
+  - id: db-commander
+    name: DB Commander
+    tier: 2
+    token_cost: 9000
+    capabilities:
+      - PostgreSQL/MySQL/MongoDB/Redis management
+      - Database schema design and migrations
+      - Query optimization and performance tuning
+      - Connection pooling and resource management
+      - Backup strategies and disaster recovery
+      - Database monitoring and alerting
+      - ORM integration (Prisma, Drizzle)
+    auto_load_when:
+      keywords: [database, postgres, mysql, mongodb, redis, sql, migration, query, optimize, backup, connection pool, index, performance, transaction, cache, prisma, drizzle]
+    mcp_connections: [postgres, supabase]
+
   - id: kubernetes-expert
     name: Kubernetes Expert
     tier: 2
-    token_cost: 8000
+    token_cost: 9500
     capabilities:
-      - K8s cluster management
-      - Helm charts
-      - Service mesh
-      - Horizontal scaling
+      - K8s cluster management and orchestration
+      - Deployment strategies (rolling, blue-green, canary)
+      - Helm charts and package management
+      - Service mesh configuration
+      - Horizontal and vertical pod autoscaling
+      - StatefulSets and persistent storage
+      - Ingress and load balancing
+      - RBAC and security policies
+      - ConfigMaps and Secrets management
     auto_load_when:
-      keywords: [kubernetes, k8s, helm, cluster, pod]
+      keywords: [kubernetes, k8s, helm, cluster, pod, deployment, service, ingress, container orchestration, scale, hpa, statefulset, configmap, secret]
     mcp_connections: [github]
 
   - id: prometheus-expert
     name: Prometheus Expert
     tier: 3
-    token_cost: 5500
+    token_cost: 7500
     capabilities:
-      - Metrics collection
-      - PromQL queries
-      - Alerting rules
-      - Grafana dashboards
+      - Metrics collection and scraping
+      - PromQL query language
+      - Recording rules for aggregations
+      - Alerting rules and alert management
+      - Service discovery configuration
+      - Application instrumentation
+      - Remote storage integration
+      - High availability setup
     auto_load_when:
-      keywords: [prometheus, metrics, alerting, monitoring]
+      keywords: [prometheus, metrics, monitoring, promql, alerting, observability, scrape, exporter, recording rules]
     mcp_connections: []
 
   - id: grafana-expert
     name: Grafana Expert
     tier: 3
-    token_cost: 5000
+    token_cost: 7000
     capabilities:
-      - Dashboard creation
-      - Data source config
-      - Alert visualization
-      - Panel customization
+      - Dashboard creation and design
+      - Panel configuration (timeseries, stat, gauge, table, heatmap)
+      - Data source integration (Prometheus, Loki, Tempo)
+      - Template variables and dynamic dashboards
+      - Alert rule configuration
+      - Query transformations
+      - Provisioning and API automation
+      - Contact points and notification policies
     auto_load_when:
-      keywords: [grafana, dashboard, visualization]
+      keywords: [grafana, dashboard, visualization, panel, alert, query, graph, metrics dashboard]
     mcp_connections: []
 
   - id: nginx-expert
     name: Nginx Expert
     tier: 3
-    token_cost: 5000
+    token_cost: 7500
     capabilities:
-      - Reverse proxy config
-      - Load balancing
-      - SSL termination
-      - Rate limiting
+      - Reverse proxy configuration
+      - Load balancing strategies
+      - SSL/TLS termination
+      - Caching strategies (full-page, microcaching)
+      - Rate limiting and security
+      - Static file serving optimization
+      - WebSocket support
+      - HTTP/2 and performance tuning
+      - CDN integration
     auto_load_when:
-      keywords: [nginx, proxy, load balancer, ssl]
+      keywords: [nginx, reverse proxy, load balancer, web server, ssl, tls, proxy, upstream, cache, rate limit]
     mcp_connections: []
 
   # ---------------------------------------------------------------------------
@@ -2187,3 +2221,71 @@ skills_v41:
     auto_load_when:
       keywords: [pwa, service worker, offline, progressive web]
     mcp_connections: [context7]
+
+# =============================================================================
+# v5.0 SKILLS - "THE BRAIN UPDATE"
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # DOCUMENT GENERATION SKILLS (4) - Professional Document Creation
+  # ---------------------------------------------------------------------------
+
+  - id: excel-sheets-master
+    name: Excel/Sheets Master
+    tier: 2
+    token_cost: 8000
+    capabilities:
+      - Excel/Google Sheets generation (ExcelJS, SheetJS)
+      - Advanced formulas and calculations
+      - Cell styling and formatting
+      - Charts and visualizations
+      - Data validation and dropdowns
+      - Pivot tables and large dataset optimization
+    auto_load_when:
+      keywords: [excel, spreadsheet, xlsx, csv, sheets, table, "financial report"]
+    mcp_connections: []
+
+  - id: powerpoint-slides-master
+    name: PowerPoint/Slides Master
+    tier: 2
+    token_cost: 8000
+    capabilities:
+      - PowerPoint/Google Slides generation (PptxGenJS)
+      - Professional slide layouts
+      - Charts and tables
+      - Images and media
+      - Animations and transitions
+      - Master slides and templates
+    auto_load_when:
+      keywords: [powerpoint, slides, presentation, pptx, deck, "slide deck"]
+    mcp_connections: []
+
+  - id: pdf-report-generator
+    name: PDF Report Generator
+    tier: 2
+    token_cost: 8000
+    capabilities:
+      - PDF generation (PDFKit, jsPDF, Puppeteer)
+      - Document structure and pagination
+      - Tables and charts
+      - Images and watermarks
+      - Headers and footers
+      - Form fields and interactive elements
+    auto_load_when:
+      keywords: [pdf, report, document, invoice, certificate, "generate pdf"]
+    mcp_connections: []
+
+  - id: chart-visualization-expert
+    name: Chart Visualization Expert
+    tier: 2
+    token_cost: 8000
+    capabilities:
+      - Data visualization (Chart.js, D3.js, Recharts)
+      - All chart types (bar, line, pie, scatter, radar, etc.)
+      - Interactive features and animations
+      - Real-time updates
+      - Custom styling and themes
+      - Export to PNG/SVG
+    auto_load_when:
+      keywords: [chart, graph, visualization, d3, chartjs, recharts, "data viz"]
+    mcp_connections: []

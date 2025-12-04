@@ -1,0 +1,59 @@
+{
+  "name": "@gicm/skill-devops-toolkit",
+  "version": "1.0.0",
+  "description": "DevOps utilities for OPUS 67 skills - CI/CD, Docker, Kubernetes helpers",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./docker": {
+      "import": "./dist/docker.js",
+      "types": "./dist/docker.d.ts"
+    },
+    "./github-actions": {
+      "import": "./dist/github-actions.js",
+      "types": "./dist/github-actions.d.ts"
+    },
+    "./kubernetes": {
+      "import": "./dist/kubernetes.js",
+      "types": "./dist/kubernetes.d.ts"
+    },
+    "./terraform": {
+      "import": "./dist/terraform.js",
+      "types": "./dist/terraform.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "yaml": "^2.4.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "devops",
+    "docker",
+    "kubernetes",
+    "github-actions",
+    "terraform",
+    "opus67",
+    "gicm"
+  ],
+  "author": "Mirko Basil Dölger",
+  "license": "MIT"
+}

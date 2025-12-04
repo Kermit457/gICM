@@ -256,13 +256,14 @@ export async function registerRoutes(
    */
   fastify.post<{ Body: { engineId: string } }>("/api/engines/register", async (req) => {
     const { engineId } = req.body;
-    const validEngines = ["brain", "money", "growth", "product", "trading"];
+    const validEngines = ["brain", "money", "growth", "product", "trading", "opus67"] as const;
+    type ValidEngineId = typeof validEngines[number];
 
-    if (!validEngines.includes(engineId)) {
+    if (!validEngines.includes(engineId as ValidEngineId)) {
       return { ok: false, error: `Invalid engine ID. Must be one of: ${validEngines.join(", ")}` };
     }
 
-    hub.getEngineManager().markConnected(engineId as any);
+    hub.getEngineManager().markConnected(engineId as ValidEngineId);
     console.log(`[HUB] Engine registered via API: ${engineId}`);
 
     return { ok: true, message: `Engine ${engineId} registered`, engineId };
@@ -273,13 +274,14 @@ export async function registerRoutes(
    */
   fastify.post<{ Body: { engineId: string } }>("/api/engines/heartbeat", async (req) => {
     const { engineId } = req.body;
-    const validEngines = ["brain", "money", "growth", "product", "trading"];
+    const validEngines = ["brain", "money", "growth", "product", "trading", "opus67"] as const;
+    type ValidEngineId = typeof validEngines[number];
 
-    if (!validEngines.includes(engineId)) {
+    if (!validEngines.includes(engineId as ValidEngineId)) {
       return { ok: false, error: "Invalid engine ID" };
     }
 
-    hub.getEngineManager().recordHeartbeat(engineId as any);
+    hub.getEngineManager().recordHeartbeat(engineId as ValidEngineId);
 
     return { ok: true, timestamp: Date.now() };
   });
@@ -289,7 +291,14 @@ export async function registerRoutes(
    */
   fastify.post<{ Body: { engineId: string } }>("/api/engines/unregister", async (req) => {
     const { engineId } = req.body;
-    hub.getEngineManager().markDisconnected(engineId as any);
+    const validEngines = ["brain", "money", "growth", "product", "trading", "opus67"] as const;
+    type ValidEngineId = typeof validEngines[number];
+
+    if (!validEngines.includes(engineId as ValidEngineId)) {
+      return { ok: false, error: "Invalid engine ID" };
+    }
+
+    hub.getEngineManager().markDisconnected(engineId as ValidEngineId);
     console.log(`[HUB] Engine unregistered: ${engineId}`);
 
     return { ok: true, message: `Engine ${engineId} unregistered` };

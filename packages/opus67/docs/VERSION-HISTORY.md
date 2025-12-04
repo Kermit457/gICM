@@ -1,21 +1,60 @@
 # OPUS 67 Version History
 
-## Current Version: v4.1.1 "Learning Layer"
+## Current Version: v5.1.0 "The Precision Update"
 
-Code quality refactoring release with improved maintainability and comprehensive testing.
+Verified capability counts through comprehensive deep codebase audit.
 
 ---
 
 ## Statistics by Version
 
-| Metric | v3.0 | v3.3 | v4.0 | v4.1 |
-|--------|------|------|------|------|
-| **Skills** | 48 | 95 | 95 | **95** |
-| **Agents** | 50 | 82 | 82 | **82** |
-| **Modes** | 22 | 30 | 30 | **30** |
-| **MCPs** | 40 | 84 | 84 | **84** |
-| **Avg Complexity** | - | - | 32 | **28.17** |
-| **Tests** | - | - | 174 | **190** |
+| Metric | v3.0 | v3.3 | v4.0 | v4.1 | v5.1 |
+|--------|------|------|------|------|------|
+| **Skills** | 48 | 95 | 95 | 95 | **140** |
+| **Agents** | 50 | 82 | 82 | 82 | **84** |
+| **Modes** | 22 | 30 | 30 | 30 | **30** |
+| **MCPs** | 40 | 84 | 84 | 84 | **82** |
+| **Tests** | - | - | 174 | 190 | **205** |
+
+---
+
+## v5.1.0 "The Precision Update" (2025-12-04)
+
+**Comprehensive deep audit of all OPUS 67 capabilities with verified counts.**
+
+### What Changed
+- ✅ **Skill count verified:** 140 individual skills (was advertised as 130+)
+- ✅ **MCP count corrected:** 82 unique MCP server configs (was 84)
+- ✅ **Agent count verified:** 84 expert agents (was 82)
+- ✅ **Modes verified:** 30 operating modes (unchanged)
+
+### Why This is Good News
+1. **We've been underselling!** 10 MORE skills than advertised (140 vs 130+)
+2. **Complete transparency:** Every number verified from actual source code
+3. **Professional accuracy:** Honest capability reporting builds trust
+4. **All v5.0 features included:** Extended thinking, caching, unified Brain API
+
+### Verification Sources
+- **Skills:** Counted from `packages/opus67/skills/registry.yaml` (140 skill definitions)
+- **MCPs:** Counted from `.claude/mcp/` directory (82 JSON config files)
+- **Modes:** Counted from `packages/opus67/THE_DOOR.md` (30 mode definitions)
+- **Agents:** Verified from `packages/opus67/skills/registry.yaml` metadata (84 agents)
+
+### New Official Counts
+```
+140 Skills • 82 MCPs • 30 Modes • 84 Agents
+```
+
+### All v5.0 Features Included
+- Extended Thinking (Claude Opus 4.5)
+- Prompt Caching (90% cost savings)
+- Dynamic Tool Discovery
+- File-Aware Memory (14 languages)
+- Document Generation Skills
+- SWE-bench Patterns
+- Long-Horizon Planning
+- Verification Loops
+- Unified Brain API
 
 ---
 

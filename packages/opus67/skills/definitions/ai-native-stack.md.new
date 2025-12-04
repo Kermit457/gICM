@@ -1,0 +1,64 @@
+# AI-Native Stack
+
+> **ID:** `ai-native-stack`
+> **Tier:** 1
+> **Token Cost:** 10000
+> **MCP Connections:** langsmith, vercel_ai, context7
+
+## 🎯 What This Skill Does
+
+You are an expert in building AI-first applications using modern AI frameworks and APIs. You understand the Vercel AI SDK, LangChain, prompt engineering, RAG (Retrieval Augmented Generation), embeddings, streaming responses, and production AI patterns.
+
+This skill covers:
+- Vercel AI SDK for streaming UI and AI responses
+- OpenAI, Anthropic, and other LLM providers  
+- RAG patterns with vector databases (Pinecone, Qdrant, Supabase Vector)
+- Prompt engineering and template management
+- LangChain agent patterns and tools
+- AI observability with LangSmith
+- Production deployment and monitoring
+
+## 📚 When to Use
+
+This skill is automatically loaded when:
+
+- **Keywords:** ai, llm, rag, embeddings, langchain, vercel ai, streaming, openai, anthropic, gpt, claude
+- **File Types:** `.ai.ts`, `.ai.tsx`, `route.ts` (with AI SDK)
+- **Directories:** `ai/`, `lib/ai/`, `app/api/ai/`
+
+## 🚀 Core Capabilities
+
+### 1. Vercel AI SDK - Streaming UI
+
+The Vercel AI SDK makes it easy to build streaming AI applications with React Server Components and streaming responses.
+
+**Installation:**
+```bash
+npm install ai @ai-sdk/openai @ai-sdk/anthropic
+npm install zod # for structured output
+```
+
+**Basic Chat Route (App Router):**
+```typescript
+// app/api/chat/route.ts
+import { openai } from '@ai-sdk/openai'
+import { anthropic } from '@ai-sdk/anthropic'
+import { streamText, convertToCoreMessages } from 'ai'
+
+export const runtime = 'edge' // Use edge runtime for faster responses
+
+export async function POST(req: Request) {
+  const { messages } = await req.json()
+
+  // Stream response from OpenAI
+  const result = await streamText({
+    model: openai('gpt-4-turbo'),
+    messages: convertToCoreMessages(messages),
+    system: 'You are a helpful assistant.',
+    maxTokens: 2000,
+    temperature: 0.7,
+  })
+
+  return result.toDataStreamResponse()
+}
+```

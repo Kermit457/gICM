@@ -7,7 +7,8 @@
 const CLAUDE_PRICES: Record<string, { input: number; output: number }> = {
   'claude-3-5-sonnet-20241022': { input: 3, output: 15 },
   'claude-3-5-haiku-20241022': { input: 1, output: 5 },
-  'claude-3-opus-20240229': { input: 15, output: 75 }
+  'claude-3-opus-20240229': { input: 15, output: 75 },
+  'claude-opus-4-5-20250929': { input: 3, output: 15 } // Opus 4.5 (thinking tokens counted as input)
 };
 
 /** Gemini model pricing per million tokens */

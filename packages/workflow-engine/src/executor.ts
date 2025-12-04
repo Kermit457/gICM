@@ -129,7 +129,8 @@ export class StepExecutor extends EventEmitter<ExecutorEvents> {
   }
 
   /**
-   * Evaluate condition expression
+   * Evaluate condition expression safely
+   * Uses safe operators instead of arbitrary code execution
    */
   private evaluateCondition(
     condition: string,
@@ -144,16 +145,80 @@ export class StepExecutor extends EventEmitter<ExecutorEvents> {
         ),
       };
 
-      // Simple expression evaluation (can be extended for more complex cases)
-      const func = new Function(
-        "ctx",
-        `with(ctx) { return Boolean(${condition}); }`
-      );
-      return func(evalContext);
+      // Safe condition evaluation - only allow specific patterns
+      // Pattern: "variables.name === 'value'" or "results.stepId.success === true"
+
+      // Simple equality check: variables.name === 'value'
+      const simpleEqMatch = condition.match(/^(\w+(?:\.\w+)*)\s*(===|!==|==|!=|>|<|>=|<=)\s*(.+)$/);
+      if (simpleEqMatch) {
+        const [, path, op, rawValue] = simpleEqMatch;
+        const leftValue = this.getNestedValue(evalContext, path);
+        const rightValue = this.parseValue(rawValue.trim());
+
+        switch (op) {
+          case "===": return leftValue === rightValue;
+          case "!==": return leftValue !== rightValue;
+          case "==": return leftValue == rightValue;
+          case "!=": return leftValue != rightValue;
+          case ">": return Number(leftValue) > Number(rightValue);
+          case "<": return Number(leftValue) < Number(rightValue);
+          case ">=": return Number(leftValue) >= Number(rightValue);
+          case "<=": return Number(leftValue) <= Number(rightValue);
+          default: return true;
+        }
+      }
+
+      // Check for truthy/falsy: "variables.name" or "results.stepId"
+      const truthyMatch = condition.match(/^(\w+(?:\.\w+)*)$/);
+      if (truthyMatch) {
+        const value = this.getNestedValue(evalContext, truthyMatch[1]);
+        return Boolean(value);
+      }
+
+      // Default: if we can't safely evaluate, return true
+      console.warn(`[Executor] Cannot safely evaluate condition: ${condition}`);
+      return true;
     } catch {
       // If condition evaluation fails, default to true
       return true;
     }
+  }
+
+  /**
+   * Get nested value from object by path
+   */
+  private getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+    const parts = path.split(".");
+    let current: unknown = obj;
+
+    for (const part of parts) {
+      if (current === null || current === undefined) return undefined;
+      current = (current as Record<string, unknown>)[part];
+    }
+
+    return current;
+  }
+
+  /**
+   * Parse a value string to appropriate type
+   */
+  private parseValue(value: string): unknown {
+    // String (quoted)
+    if ((value.startsWith("'") && value.endsWith("'")) ||
+        (value.startsWith('"') && value.endsWith('"'))) {
+      return value.slice(1, -1);
+    }
+    // Boolean
+    if (value === "true") return true;
+    if (value === "false") return false;
+    // Null/undefined
+    if (value === "null") return null;
+    if (value === "undefined") return undefined;
+    // Number
+    const num = Number(value);
+    if (!isNaN(num)) return num;
+    // Default to string
+    return value;
   }
 
   /**
